@@ -10,12 +10,21 @@ def get_binary_list(string):
 		binary_list.append(binary_value)
 	return binary_list
 
+def print_image_array(image_array):
+	print("Shape of the image : " + str(image_array.shape))
+	for row in image_array:
+		for col in row:
+			bgr_array = col
+			rgb_array = list( reversed(bgr_array) )
+			print( str(rgb_array) + " " ),
+		print("\n------------")
+
 secret_message = "sak@234"
 binary_list = get_binary_list(secret_message)
-print( str(binary_list) )
 
-#image_array = cv2.imread("kaki.jpg")
-#print("Shape of the image : " + str(image_array.shape))
+# cv2.imread(image) gives you BGR, instead of RGB values
+image_array = cv2.imread("kaki.jpg")
+print_image_array(image_array)
 
 #x = random.randint(1, 5)
 #print(x)
