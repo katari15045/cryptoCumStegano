@@ -116,12 +116,12 @@ def encode_location_array(secret_message_location):
 	encoded_string = encoded_string[:-1]
 	return encoded_string
 
-secret_message = "sak@234"
+secret_message = "All is well"
 secret_binary_list = get_binary_list(secret_message)
 #print("secret binary list : " + str(secret_binary_list))
 
 # cv2.imread(image) gives you BGR, instead of RGB values
-image_array = cv2.imread("kaki.jpg")
+image_array = cv2.imread("vitaly.jpg")
 secret_message_location = get_location_for_secret_message(secret_binary_list, image_array)
 #print("Size : " + str(len(secret_message_location)) )
 #print( "location array : \n" +  str(secret_message_location) )
