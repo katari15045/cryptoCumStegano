@@ -64,8 +64,30 @@ def get_location_for_a_secret_bit(binary_string, image_array, binary_string_inde
 	location_array = [ random_row, random_col, random_color, color_binary_bit_index ]
 	return location_array
 
+def get_message_str_from_binary_array(binary_array):
+	#Club 7 bits together
+	array_length = len(binary_array)
+	total_7_bit_chunks = array_length / 7
+	current_chunk = 1
+	secret_message = ""
+	while(current_chunk <= total_7_bit_chunks):
+		current_index = (current_chunk-1) * 7
+		current_binary_str = ""
+		current_binary_str = current_binary_str + binary_array[current_index]
+		current_binary_str = current_binary_str + binary_array[current_index+1]
+		current_binary_str = current_binary_str + binary_array[current_index+2]
+		current_binary_str = current_binary_str + binary_array[current_index+3]
+		current_binary_str = current_binary_str + binary_array[current_index+4]
+		current_binary_str = current_binary_str + binary_array[current_index+5]
+		current_binary_str = current_binary_str + binary_array[current_index+6]
+		ascii_int = int(current_binary_str, 2)
+		ascii_char = chr(ascii_int)
+		secret_message = secret_message + ascii_char
+		current_chunk = current_chunk + 1
+	return secret_message
+
 def decode_secret_message_location(image_array, secret_message_location):
-	secret_message_binary_string = []
+	secret_message_binary_array = []
 	pipe_splitted_str = secret_message_location.split("|")
 	for element in pipe_splitted_str:
 		comma_splitted_str = element.split(",")
@@ -76,8 +98,10 @@ def decode_secret_message_location(image_array, secret_message_location):
 		target_color_value = image_array[current_row][current_col][current_color_index]
 		target_color_binary_string = format(target_color_value, '#09b')
 		target_bit = target_color_binary_string[current_color_bit_index]
-		secret_message_binary_string.append(target_bit)
-	return secret_message_binary_string
+		secret_message_binary_array.append(target_bit)
+		secret_message = get_message_str_from_binary_array(secret_message_binary_array)
+
+	return secret_message
 
 def encode_location_array(secret_message_location):
 	encoded_string = ""
@@ -94,7 +118,7 @@ def encode_location_array(secret_message_location):
 
 secret_message = "sak@234"
 secret_binary_list = get_binary_list(secret_message)
-print("secret binary list : " + str(secret_binary_list))
+#print("secret binary list : " + str(secret_binary_list))
 
 # cv2.imread(image) gives you BGR, instead of RGB values
 image_array = cv2.imread("kaki.jpg")
@@ -105,4 +129,4 @@ encoded_location_string = encode_location_array(secret_message_location)
 print("encoded location string : \n" + encoded_location_string)
 
 decoded_message = decode_secret_message_location(image_array, encoded_location_string)
-print("Decoded message : " + str(decoded_message) )
+print("Decoded message : " + decoded_message )
