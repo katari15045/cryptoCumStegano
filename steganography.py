@@ -66,18 +66,18 @@ def get_location_for_a_secret_bit(binary_string, image_array, binary_string_inde
 
 def decode_secret_message_location(image_array, secret_message_location):
 	secret_message_binary_string = []
-	splitted_str = secret_message_location.split("], [")
-	for element in secret_message_location:
-		print(str(element)),
-		continue
-		current_row = element[0]
-		current_col = element[1]
-		current_color_index = element[2]
-		current_color_bit_index = element[3]
+	pipe_splitted_str = secret_message_location.split("|")
+	for element in pipe_splitted_str:
+		comma_splitted_str = element.split(",")
+		current_row = int(comma_splitted_str[0])
+		current_col = int(comma_splitted_str[1])
+		current_color_index = int(comma_splitted_str[2])
+		current_color_bit_index = int(comma_splitted_str[3])
 		target_color_value = image_array[current_row][current_col][current_color_index]
 		target_color_binary_string = format(target_color_value, '#09b')
 		target_bit = target_color_binary_string[current_color_bit_index]
 		secret_message_binary_string.append(target_bit)
+	return secret_message_binary_string
 
 def encode_location_array(secret_message_location):
 	encoded_string = ""
@@ -94,15 +94,15 @@ def encode_location_array(secret_message_location):
 
 secret_message = "sak@234"
 secret_binary_list = get_binary_list(secret_message)
-#print("secret binary list : " + str(secret_binary_list))
+print("secret binary list : " + str(secret_binary_list))
 
 # cv2.imread(image) gives you BGR, instead of RGB values
 image_array = cv2.imread("kaki.jpg")
 secret_message_location = get_location_for_secret_message(secret_binary_list, image_array)
 #print("Size : " + str(len(secret_message_location)) )
-print( "location array : \n" +  str(secret_message_location) )
+#print( "location array : \n" +  str(secret_message_location) )
 encoded_location_string = encode_location_array(secret_message_location)
 print("encoded location string : \n" + encoded_location_string)
 
-#decoded_message = decode_secret_message_location(image_array, secret_message_location)
-#print("Decoded message : " + decoded_message)
+decoded_message = decode_secret_message_location(image_array, encoded_location_string)
+print("Decoded message : " + str(decoded_message) )
