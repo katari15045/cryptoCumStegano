@@ -40,7 +40,7 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 		System.out.println("Location String -> " + locationString);
 	}
 	
-	private static String embedMessageInAnImage(String message, BufferedImage image)
+	private String embedMessageInAnImage(String message, BufferedImage image)
 	{
 		int currentIndex = 0;
 		char currentBit;
@@ -68,7 +68,7 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 		return locationString.toString();
 	}
 
-	private static int[] embedBitInAnImage(char inpBit, BufferedImage image)
+	private int[] embedBitInAnImage(char inpBit, BufferedImage image)
 	{
 		int[] randomPosition;
 		int[] pixel;
@@ -94,7 +94,7 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 		return randomPosition;
 	}
 
-	private static String getBinaryFromChars(String inp)
+	private String getBinaryFromChars(String inp)
 	{
 		StringBuilder stringBuilder;
 		int currentIndex = 0;
@@ -115,7 +115,7 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 		return stringBuilder.toString();
 	}
 
-	private static String getBinaryFromDecimal(int decimal)
+	private String getBinaryFromDecimal(int decimal)
 	{
 		// decimal must be in [0, 255]
 
@@ -144,7 +144,7 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 		return new String(binary);
 	}
 
-	private static int getNearestPowerOfTwo(int num)
+	private int getNearestPowerOfTwo(int num)
 	{
 		// num should be atleast 1
 
@@ -161,7 +161,7 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 		return exponent - 1;
 	}
 
-	private static int[] getRandomPosition(int rows, int cols)
+	private int[] getRandomPosition(int rows, int cols)
 	{
 		Random random;
 		int[] positionArray;
