@@ -10,6 +10,8 @@ public class Main
 {
 	public static void main(String[] args)
 	{
+		System.out.println( getDecimalFromBinary("11111111") );
+	/*
 		BufferedImage bufferedImage;
 		String originalMessage, binaryMessage;
 		String locationString;
@@ -26,7 +28,27 @@ public class Main
 		System.out.println("Image -> (" + rows + ", " + cols + ")");
 
 		locationString = embedMessageInAnImage(binaryMessage, bufferedImage);
-		System.out.println("Location String -> " + locationString);
+		System.out.println("Location String -> " + locationString);*/
+	}
+
+	private static String extractMessage(String locationString, BufferedImage image)
+	{
+		String[] bitLocations;
+		int currentBitIndex = 0;
+		int[] currentPixel;
+
+		bitLocations = locationString.split("|");
+
+		while( currentBitIndex < bitLocations.length )
+		{
+			String[] sublocations = bitLocations[currentBitIndex].split("-");
+			//currentPixel = image.getRaster().getPixel(, currentRow, new int[3]);
+
+			currentBitIndex = currentBitIndex + 1;
+		}
+
+		return null;
+
 	}
 
 	private static String embedMessageInAnImage(String message, BufferedImage image)
@@ -102,6 +124,27 @@ public class Main
 		}
 
 		return stringBuilder.toString();
+	}
+
+	private static int getDecimalFromBinary(String binary)
+	{
+		int currentIndex, currentBit;
+		int exponent = 0, value;
+		int decimal = 0;
+
+		currentIndex = binary.length()-1;
+
+		while( currentIndex >= 0 )
+		{
+			value = (int)Math.pow(2, exponent);
+			currentBit = Integer.valueOf( String.valueOf( binary.charAt(currentIndex) ) );
+			decimal = decimal + (value*currentBit);
+
+			exponent = exponent + 1;
+			currentIndex = currentIndex - 1;
+		}
+
+		return decimal;
 	}
 
 	private static String getBinaryFromDecimal(int decimal)
