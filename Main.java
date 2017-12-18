@@ -1,3 +1,4 @@
+import java.lang.Math;
 import java.util.Random;
 import java.io.IOException;
 import java.io.File;
@@ -19,9 +20,46 @@ public class Main
 		cols = bufferedImage.getWidth();
 		System.out.println("Image -> (" + rows + ", " + cols + ")");
 
-		randomPosition = getRandomPosition(rows, cols);
-		System.out.println("(" + randomPosition[0] + ", " + randomPosition[1] + ", " + randomPosition[2] + ", " + randomPosition[3] + ")");
+		//randomPosition = getRandomPosition(rows, cols);
+		//System.out.println("(" + randomPosition[0] + ", " + randomPosition[1] + ", " + randomPosition[2] + ", " + randomPosition[3] + ")");
 
+		System.out.println( "Binary num -> " + getBinaryFromDecimal(14) );
+
+	}
+
+	private static String getBinaryFromDecimal(int decimal)
+	{
+		// decimal must be in [0, 255]
+
+		if( decimal == 0 )
+		{
+			return "00000000";
+		}
+
+		if( decimal == 1 )
+		{
+			return "00000001";
+		}
+
+		System.out.println("Nearest Power -> " +  getNearestPowerOfTwo(255) );
+		return null;
+	}
+
+	private static int getNearestPowerOfTwo(int num)
+	{
+		// num should be atleast 1
+
+		int value = -2;
+		int exponent = 0;
+
+		do
+		{
+			exponent = exponent + 1;
+			value = (int)Math.pow(2, exponent);
+		}
+		while(value <= num);
+
+		return exponent - 1;
 	}
 
 	private static int[] getRandomPosition(int rows, int cols)
