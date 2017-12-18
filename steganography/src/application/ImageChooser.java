@@ -21,10 +21,9 @@ class ImageChooser implements EventHandler<ActionEvent>
 	
 	BufferedImage bufferedImage;
 	
-	public ImageChooser(Stage stage, TextField textField) 
+	public ImageChooser(Stage stage) 
 	{
 		this.stage = stage;
-		this.textField = textField;
 	}
 	
 	@Override

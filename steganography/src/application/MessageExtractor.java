@@ -4,28 +4,36 @@ import java.awt.image.BufferedImage;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.TextField;
 
 public class MessageExtractor implements EventHandler<ActionEvent>
 {
+	TextField textFieldLocationStr;
+	ImageChooser imageChooser;
+	
 	String locationString;
 	BufferedImage bufferedImage;
 	
-	public MessageExtractor(String locationString, BufferedImage bufferedImage) 
+	String extractedBinaryMessage;
+	String extractedMessage;
+	
+	public MessageExtractor(TextField textFieldLocationStr, ImageChooser imageChooser) 
 	{
-			this.locationString = locationString;
-			this.bufferedImage = bufferedImage;
+			this.textFieldLocationStr = textFieldLocationStr;
+			this.imageChooser = imageChooser;
 	}
 	
 	@Override
 	public void handle(ActionEvent event)
 	{
-		String extractedBinaryMessage, extratedMessage;
-
+		locationString = textFieldLocationStr.getText();
+		bufferedImage = imageChooser.getImage();
+		
 		extractedBinaryMessage = extractBinaryMessage(locationString, bufferedImage);
 		System.out.println("Extracted Binary Message -> " + extractedBinaryMessage);
 
-		extratedMessage = extractMessage(extractedBinaryMessage);
-		System.out.println("Extracted Message -> " + extratedMessage);
+		extractedMessage = extractMessage(extractedBinaryMessage);
+		System.out.println("Extracted Message -> " + extractedMessage);
 	}
 	
 	private String extractMessage(String binaryMessage)

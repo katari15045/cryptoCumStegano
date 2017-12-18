@@ -1,5 +1,5 @@
 package application;
-	
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,44 +10,45 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class Main extends Application 
+public class Destination extends Application 
 {
-	Label label;
-	TextField textField;
+	Label labelLocationStr;
+	TextField textFieldLocationStr;
 	Button buttonChooseImage;
-	Button buttonEmbedMessage;
+	Button buttonExtractor;
 	
 	ImageChooser imageChooser;
-	MessageEmbedder messageEmbedder;
+	MessageExtractor messageExtractor;
 	
 	@Override
-	public void start(Stage stage) 
-	{	
-		label = new Label();
-		textField = new TextField();
+	public void start(Stage stage) throws Exception 
+	{
+		labelLocationStr = new Label();
+		textFieldLocationStr = new TextField();
 		buttonChooseImage = new Button();
-		buttonEmbedMessage = new Button();
-		imageChooser = new ImageChooser(stage, textField);
+		buttonExtractor = new Button();
+		imageChooser = new ImageChooser(stage);
+		messageExtractor = new MessageExtractor(textFieldLocationStr, imageChooser);
 		
-		label.setText("Message : ");
+		labelLocationStr.setText("Location String : ");
 		buttonChooseImage.setText("Choose image");
 		buttonChooseImage.setOnAction(imageChooser);
-		buttonEmbedMessage.setText("Embed Message");
-		buttonEmbedMessage.setOnAction( new MessageEmbedder(imageChooser, textField) );
+		buttonExtractor.setText("Extract Message");
+		buttonExtractor.setOnAction(messageExtractor);
 		
 		GridPane pane = new GridPane();
-		pane.add(label, 0, 0);
-		pane.add(textField, 1, 0);
-		pane.add(buttonChooseImage, 0, 1);
-		pane.add(buttonEmbedMessage, 0, 2);
+		pane.add(labelLocationStr, 0, 0);
+		pane.add(textFieldLocationStr, 1, 0);
+		pane.add(buttonChooseImage, 0, 2);
+		pane.add(buttonExtractor, 0, 3);
 		pane.setAlignment(Pos.CENTER);
 		pane.setPadding( new Insets(30, 30, 30, 30) );
 		GridPane.setMargin(buttonChooseImage, new Insets(30, 0, 0, 0));
-		GridPane.setMargin(buttonEmbedMessage, new Insets(30, 0, 0, 0));
+		GridPane.setMargin(buttonExtractor, new Insets(30, 0, 0, 0));
 		
 		Scene scene = new Scene(pane, 900, 400);
 		stage.setScene(scene);
-		stage.setTitle("Steganography");
+		stage.setTitle("Extract Message");
 		stage.show();
 	}
 	
@@ -55,23 +56,5 @@ public class Main extends Application
 	{
 		launch(args);
 	}
+	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
