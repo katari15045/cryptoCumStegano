@@ -11,24 +11,76 @@ public class Main
 	public static void main(String[] args)
 	{
 		BufferedImage bufferedImage;
-		String original_message, binary_message;
+		String originalMessage, binaryMessage;
+		String locationString;
 		int rows, cols;
-		int[] randomPosition;
 
-		original_message = "sak";
-		binary_message = getBinaryFromChars(original_message);
-
-		System.out.println("Original Message : " + original_message);
-		System.out.println( "Binary Message : " + binary_message );
+		originalMessage = "sak";
+		binaryMessage = getBinaryFromChars(originalMessage);
+		System.out.println("Original Message : " + originalMessage);
+		System.out.println( "Binary Message : " + binaryMessage );
 
 		bufferedImage = getImage("./images/bear_grylls.jpg");
 		rows = bufferedImage.getHeight();
 		cols = bufferedImage.getWidth();
 		System.out.println("Image -> (" + rows + ", " + cols + ")");
 
-		//randomPosition = getRandomPosition(rows, cols);
-		//System.out.println("(" + randomPosition[0] + ", " + randomPosition[1] + ", " + randomPosition[2] + ", " + randomPosition[3] + ")");
+		locationString = embedMessageInAnImage(binaryMessage, bufferedImage);
+		System.out.println("Location String -> " + locationString);
+	}
 
+	private static String embedMessageInAnImage(String message, BufferedImage image)
+	{
+		int currentIndex = 0;
+		char currentBit;
+		int[] randomPosition;
+		StringBuilder locationString;
+
+		locationString = new StringBuilder();
+
+		while( currentIndex < message.length() )
+		{
+			currentBit = message.charAt(currentIndex);
+			randomPosition = embedBitInAnImage(currentBit, image);
+
+			if( randomPosition == null )
+			{
+				continue;
+			}
+
+			locationString.append( randomPosition[0] ).append("-").append( randomPosition[1] ).append("-").append( randomPosition[2] );
+			locationString.append("-").append( randomPosition[3] ).append("|");
+
+			currentIndex = currentIndex + 1;
+		}
+
+		return locationString.toString();
+	}
+
+	private static int[] embedBitInAnImage(char inpBit, BufferedImage image)
+	{
+		int[] randomPosition;
+		int[] pixel;
+		int rows, cols;
+		int color;
+		String binaryColor;
+		char randomBit;
+
+		rows = image.getHeight();
+		cols = image.getWidth();
+
+		randomPosition = getRandomPosition(rows, cols);
+		pixel = image.getRaster().getPixel(randomPosition[1], randomPosition[0], new int[3]);
+		color = pixel[ randomPosition[2] ];
+		binaryColor = getBinaryFromDecimal(color);
+		randomBit = binaryColor.charAt( randomPosition[3] );
+
+		if( inpBit != randomBit )
+		{
+			return null;
+		}
+
+		return randomPosition;
 	}
 
 	private static String getBinaryFromChars(String inp)
