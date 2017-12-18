@@ -18,8 +18,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -27,26 +25,36 @@ public class Main extends Application
 {
 	Label label;
 	TextField textField;
-	Button button;
+	Button buttonChooseImage;
+	Button buttonEmbedMessage;
+	
+	ImageChooser imageChooser;
+	MessageEmbedder messageEmbedder;
 	
 	@Override
 	public void start(Stage stage) 
 	{	
 		label = new Label();
 		textField = new TextField();
-		button = new Button();
+		buttonChooseImage = new Button();
+		buttonEmbedMessage = new Button();
+		imageChooser = new ImageChooser(stage, textField);
 		
 		label.setText("Message : ");
-		button.setText("Choose image");
-		button.setOnAction(new MyHandler(stage, textField) );
+		buttonChooseImage.setText("Choose image");
+		buttonChooseImage.setOnAction(imageChooser);
+		buttonEmbedMessage.setText("Embed Message");
+		buttonEmbedMessage.setOnAction( new MessageEmbedder(imageChooser, textField) );
 		
 		GridPane pane = new GridPane();
 		pane.add(label, 0, 0);
 		pane.add(textField, 1, 0);
-		pane.add(button, 0, 1);
+		pane.add(buttonChooseImage, 0, 1);
+		pane.add(buttonEmbedMessage, 0, 2);
 		pane.setAlignment(Pos.CENTER);
 		pane.setPadding( new Insets(30, 30, 30, 30) );
-		GridPane.setMargin(button, new Insets(30, 0, 0, 0));
+		GridPane.setMargin(buttonChooseImage, new Insets(30, 0, 0, 0));
+		GridPane.setMargin(buttonEmbedMessage, new Insets(30, 0, 0, 0));
 		
 		Scene scene = new Scene(pane, 900, 400);
 		stage.setScene(scene);
@@ -60,7 +68,7 @@ public class Main extends Application
 	}
 }
 
-class MyHandler implements EventHandler<ActionEvent>
+class ImageChooser implements EventHandler<ActionEvent>
 {
 	Stage stage;
 	TextField textField;
@@ -68,9 +76,8 @@ class MyHandler implements EventHandler<ActionEvent>
 	File file;
 	
 	BufferedImage bufferedImage;
-	String originalMessage, locationString;
 	
-	public MyHandler(Stage stage, TextField textField) 
+	public ImageChooser(Stage stage, TextField textField) 
 	{
 		this.stage = stage;
 		this.textField = textField;
@@ -78,9 +85,7 @@ class MyHandler implements EventHandler<ActionEvent>
 	
 	@Override
 	public void handle(ActionEvent event)
-	{
-		originalMessage = textField.getText();
-		
+	{	
 		fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose an image");
 		fileChooser.setInitialDirectory( new File( System.getProperty("user.home") ) );
@@ -92,24 +97,53 @@ class MyHandler implements EventHandler<ActionEvent>
 			return;
 		}
 		
-		processImage(file);
+		try
+		{
+			bufferedImage = ImageIO.read(file);
+		}
+
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
-	private void processImage(File file)
+	public BufferedImage getImage()
 	{
-		String binaryMessage;
-		int rows, cols;
+		return bufferedImage;
+	}
+}
+
+class MessageEmbedder implements EventHandler<ActionEvent>
+{
+	TextField textField;
+	ImageChooser imageChooser;
+	BufferedImage image;
+	
+	String binaryMessage, originalMessage, locationString;
+	int rows, cols;
+	
+	public MessageEmbedder(ImageChooser imageChooser, TextField textField) 
+	{
+		this.imageChooser = imageChooser;
+		this.textField = textField;
+	}
+	
+	@Override
+	public void handle(ActionEvent event)
+	{
+		this.image = imageChooser.getImage();
+		originalMessage = textField.getText();
 		
 		binaryMessage = getBinaryFromChars(originalMessage);
 		System.out.println("Original Message : " + originalMessage);
 		System.out.println( "Binary Message : " + binaryMessage );
 		
-		bufferedImage = getImage(file);
-		rows = bufferedImage.getHeight();
-		cols = bufferedImage.getWidth();
+		rows = image.getHeight();
+		cols = image.getWidth();
 		System.out.println("Image -> (" + rows + ", " + cols + ")");
 		
-		locationString = embedMessageInAnImage(binaryMessage, bufferedImage);
+		locationString = embedMessageInAnImage(binaryMessage, image);
 		System.out.println("Location String -> " + locationString);
 	}
 	
@@ -276,22 +310,6 @@ class MyHandler implements EventHandler<ActionEvent>
 		}
 	}
 */
-	private static BufferedImage getImage(File file)
-	{
-		BufferedImage bufferedImage = null;
-
-		try
-		{
-			bufferedImage = ImageIO.read(file);
-		}
-
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-
-		return bufferedImage;
-	}
 }
 
 
