@@ -10,8 +10,6 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		System.out.println( getDecimalFromBinary("11111111") );
-	/*
 		BufferedImage bufferedImage;
 		String originalMessage, binaryMessage;
 		String locationString;
@@ -28,26 +26,44 @@ public class Main
 		System.out.println("Image -> (" + rows + ", " + cols + ")");
 
 		locationString = embedMessageInAnImage(binaryMessage, bufferedImage);
-		System.out.println("Location String -> " + locationString);*/
+		System.out.println("Location String -> " + locationString);
+
+		String extractedMessage;
+
+		extractedMessage = extractMessage(locationString, bufferedImage);
+		System.out.println("Extracted Message -> " + extractedMessage);
 	}
 
 	private static String extractMessage(String locationString, BufferedImage image)
 	{
 		String[] bitLocations;
-		int currentBitIndex = 0;
+		int currentBitLocationIndex = 0, currentColIndex, currentRowIndex, currentColorIndex, currentBitIndex;
+		int currentColorDecimal;
+		String currentColorBinary;
 		int[] currentPixel;
+		char currentBitChar;
+		StringBuilder extractedMessage;
 
-		bitLocations = locationString.split("|");
+		extractedMessage = new StringBuilder();
+		bitLocations = locationString.split("\\|");	// https://stackoverflow.com/questions/26192481/java-string-splits-by-every-character
 
-		while( currentBitIndex < bitLocations.length )
+		while( currentBitLocationIndex < bitLocations.length )
 		{
-			String[] sublocations = bitLocations[currentBitIndex].split("-");
-			//currentPixel = image.getRaster().getPixel(, currentRow, new int[3]);
+			String[] sublocations = bitLocations[currentBitLocationIndex].split("-");
+			currentRowIndex = Integer.valueOf( sublocations[0] );
+			currentColIndex = Integer.valueOf( sublocations[1] );
+			currentColorIndex = Integer.valueOf( sublocations[2] );
+			currentBitIndex = Integer.valueOf( sublocations[3] );
+			currentPixel = image.getRaster().getPixel( currentColIndex, currentRowIndex, new int[3]);
+			currentColorDecimal = currentPixel[currentColorIndex];
+			currentColorBinary = getBinaryFromDecimal(currentColorDecimal);
+			currentBitChar = currentColorBinary.charAt(currentBitIndex);
+			extractedMessage.append(currentBitChar);
 
-			currentBitIndex = currentBitIndex + 1;
+			currentBitLocationIndex = currentBitLocationIndex + 1;
 		}
 
-		return null;
+		return extractedMessage.toString();
 
 	}
 
