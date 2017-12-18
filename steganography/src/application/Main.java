@@ -1,5 +1,6 @@
 package application;
 	
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,27 +11,44 @@ import javax.imageio.ImageIO;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class Main extends Application 
 {
+	Label label;
+	TextField textField;
 	Button button;
 	
 	@Override
 	public void start(Stage stage) 
 	{	
+		label = new Label();
+		textField = new TextField();
 		button = new Button();
+		
+		label.setText("Message : ");
 		button.setText("Choose image");
-		button.setOnAction(new MyHandler(stage) );
+		button.setOnAction(new MyHandler(stage, textField) );
 		
-		StackPane root = new StackPane();
-		root.getChildren().add(button);
+		GridPane pane = new GridPane();
+		pane.add(label, 0, 0);
+		pane.add(textField, 1, 0);
+		pane.add(button, 0, 1);
+		pane.setAlignment(Pos.CENTER);
+		pane.setPadding( new Insets(30, 30, 30, 30) );
+		GridPane.setMargin(button, new Insets(30, 0, 0, 0));
 		
-		Scene scene = new Scene(root, 900, 400);
+		Scene scene = new Scene(pane, 900, 400);
 		stage.setScene(scene);
 		stage.setTitle("Steganography");
 		stage.show();
@@ -45,20 +63,24 @@ public class Main extends Application
 class MyHandler implements EventHandler<ActionEvent>
 {
 	Stage stage;
+	TextField textField;
 	FileChooser fileChooser;
 	File file;
 	
 	BufferedImage bufferedImage;
 	String originalMessage, locationString;
 	
-	public MyHandler(Stage stage) 
+	public MyHandler(Stage stage, TextField textField) 
 	{
 		this.stage = stage;
+		this.textField = textField;
 	}
 	
 	@Override
 	public void handle(ActionEvent event)
 	{
+		originalMessage = textField.getText();
+		
 		fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose an image");
 		fileChooser.setInitialDirectory( new File( System.getProperty("user.home") ) );
@@ -78,7 +100,6 @@ class MyHandler implements EventHandler<ActionEvent>
 		String binaryMessage;
 		int rows, cols;
 		
-		originalMessage = "sak";
 		binaryMessage = getBinaryFromChars(originalMessage);
 		System.out.println("Original Message : " + originalMessage);
 		System.out.println( "Binary Message : " + binaryMessage );
