@@ -1,3 +1,4 @@
+import java.lang.StringBuilder;
 import java.lang.Math;
 import java.util.Random;
 import java.io.IOException;
@@ -10,12 +11,17 @@ public class Main
 	public static void main(String[] args)
 	{
 		BufferedImage bufferedImage;
+		String original_message, binary_message;
 		int rows, cols;
 		int[] randomPosition;
 
-		bufferedImage = getImage("./images/bear_grylls.jpg");
-		//printImage(bufferedImage);
+		original_message = "sak";
+		binary_message = getBinaryFromChars(original_message);
 
+		System.out.println("Original Message : " + original_message);
+		System.out.println( "Binary Message : " + binary_message );
+
+		bufferedImage = getImage("./images/bear_grylls.jpg");
 		rows = bufferedImage.getHeight();
 		cols = bufferedImage.getWidth();
 		System.out.println("Image -> (" + rows + ", " + cols + ")");
@@ -23,8 +29,27 @@ public class Main
 		//randomPosition = getRandomPosition(rows, cols);
 		//System.out.println("(" + randomPosition[0] + ", " + randomPosition[1] + ", " + randomPosition[2] + ", " + randomPosition[3] + ")");
 
-		System.out.println( "Binary num -> " + getBinaryFromDecimal(167) );
+	}
 
+	private static String getBinaryFromChars(String inp)
+	{
+		StringBuilder stringBuilder;
+		int currentIndex = 0;
+		int currentAscii;
+		String currentBinary;
+
+		stringBuilder = new StringBuilder();
+
+		while( currentIndex < inp.length() )
+		{
+			currentAscii = (int) inp.charAt(currentIndex);
+			currentBinary = getBinaryFromDecimal(currentAscii);
+			stringBuilder.append(currentBinary);
+
+			currentIndex = currentIndex + 1;
+		}
+
+		return stringBuilder.toString();
 	}
 
 	private static String getBinaryFromDecimal(int decimal)
