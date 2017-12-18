@@ -23,7 +23,7 @@ public class Main
 		//randomPosition = getRandomPosition(rows, cols);
 		//System.out.println("(" + randomPosition[0] + ", " + randomPosition[1] + ", " + randomPosition[2] + ", " + randomPosition[3] + ")");
 
-		System.out.println( "Binary num -> " + getBinaryFromDecimal(14) );
+		System.out.println( "Binary num -> " + getBinaryFromDecimal(167) );
 
 	}
 
@@ -41,8 +41,19 @@ public class Main
 			return "00000001";
 		}
 
-		System.out.println("Nearest Power -> " +  getNearestPowerOfTwo(255) );
-		return null;
+		char[] binary = {'0', '0', '0', '0', '0', '0', '0', '0'};
+		int exponent, value;
+
+		do
+		{
+			exponent = getNearestPowerOfTwo(decimal);
+			binary[7-exponent] = '1';
+			value = (int)Math.pow(2, exponent);
+			decimal = decimal - value;
+		}
+		while( decimal > 0 );
+
+		return new String(binary);
 	}
 
 	private static int getNearestPowerOfTwo(int num)
