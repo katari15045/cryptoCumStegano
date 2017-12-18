@@ -28,7 +28,7 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 		this.image = imageChooser.getImage();
 		originalMessage = textField.getText();
 		
-		binaryMessage = getBinaryFromChars(originalMessage);
+		binaryMessage = Binary.getBinaryFromChars(originalMessage);
 		System.out.println("Original Message : " + originalMessage);
 		System.out.println( "Binary Message : " + binaryMessage );
 		
@@ -83,7 +83,7 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 		randomPosition = getRandomPosition(rows, cols);
 		pixel = image.getRaster().getPixel(randomPosition[1], randomPosition[0], new int[3]);
 		color = pixel[ randomPosition[2] ];
-		binaryColor = getBinaryFromDecimal(color);
+		binaryColor = Binary.getBinaryFromDecimal(color);
 		randomBit = binaryColor.charAt( randomPosition[3] );
 
 		if( inpBit != randomBit )
@@ -94,72 +94,7 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 		return randomPosition;
 	}
 
-	private String getBinaryFromChars(String inp)
-	{
-		StringBuilder stringBuilder;
-		int currentIndex = 0;
-		int currentAscii;
-		String currentBinary;
-
-		stringBuilder = new StringBuilder();
-
-		while( currentIndex < inp.length() )
-		{
-			currentAscii = (int) inp.charAt(currentIndex);
-			currentBinary = getBinaryFromDecimal(currentAscii);
-			stringBuilder.append(currentBinary);
-
-			currentIndex = currentIndex + 1;
-		}
-
-		return stringBuilder.toString();
-	}
-
-	private String getBinaryFromDecimal(int decimal)
-	{
-		// decimal must be in [0, 255]
-
-		if( decimal == 0 )
-		{
-			return "00000000";
-		}
-
-		if( decimal == 1 )
-		{
-			return "00000001";
-		}
-
-		char[] binary = {'0', '0', '0', '0', '0', '0', '0', '0'};
-		int exponent, value;
-
-		do
-		{
-			exponent = getNearestPowerOfTwo(decimal);
-			binary[7-exponent] = '1';
-			value = (int)Math.pow(2, exponent);
-			decimal = decimal - value;
-		}
-		while( decimal > 0 );
-
-		return new String(binary);
-	}
-
-	private int getNearestPowerOfTwo(int num)
-	{
-		// num should be atleast 1
-
-		int value = -2;
-		int exponent = 0;
-
-		do
-		{
-			exponent = exponent + 1;
-			value = (int)Math.pow(2, exponent);
-		}
-		while(value <= num);
-
-		return exponent - 1;
-	}
+	
 
 	private int[] getRandomPosition(int rows, int cols)
 	{
