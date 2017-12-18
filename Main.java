@@ -28,13 +28,39 @@ public class Main
 		locationString = embedMessageInAnImage(binaryMessage, bufferedImage);
 		System.out.println("Location String -> " + locationString);
 
-		String extractedMessage;
+		String extractedBinaryMessage, extratedMessage;
 
-		extractedMessage = extractMessage(locationString, bufferedImage);
-		System.out.println("Extracted Message -> " + extractedMessage);
+		extractedBinaryMessage = extractBinaryMessage(locationString, bufferedImage);
+		System.out.println("Extracted Binary Message -> " + extractedBinaryMessage);
+
+		extratedMessage = extractMessage(extractedBinaryMessage);
+		System.out.println("Extracted Message -> " + extratedMessage);
 	}
 
-	private static String extractMessage(String locationString, BufferedImage image)
+	private static String extractMessage(String binaryMessage)
+	{
+		int currentStartIndex = 0, currentEndIndex = 7, currentAscii;
+		String currentBinary;
+		char currentChar;
+		StringBuilder message;
+
+		message = new StringBuilder();
+
+		while( currentEndIndex < binaryMessage.length() )
+		{
+			currentBinary = binaryMessage.substring(currentStartIndex, currentEndIndex+1);
+			currentAscii = getDecimalFromBinary(currentBinary);
+			currentChar = (char)currentAscii;
+			message.append(currentChar);
+
+			currentStartIndex = currentStartIndex + 8;
+			currentEndIndex = currentEndIndex + 8;
+		}
+
+		return message.toString();
+	}
+
+	private static String extractBinaryMessage(String locationString, BufferedImage image)
 	{
 		String[] bitLocations;
 		int currentBitLocationIndex = 0, currentColIndex, currentRowIndex, currentColorIndex, currentBitIndex;
