@@ -121,7 +121,7 @@ secret_binary_list = get_binary_list(secret_message)
 #print("secret binary list : " + str(secret_binary_list))
 
 # cv2.imread(image) gives you BGR, instead of RGB values
-image_array = cv2.imread("vitaly.jpg")
+image_array = cv2.imread("./images/vitaly.jpg")
 secret_message_location = get_location_for_secret_message(secret_binary_list, image_array)
 #print("Size : " + str(len(secret_message_location)) )
 #print( "location array : \n" +  str(secret_message_location) )
