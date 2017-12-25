@@ -7,7 +7,6 @@ public class Main extends Application
 {	
 	private KeyGeneratorGUI keyGeneratorGUI = null;
 	
-	
 	@Override
 	public void start(Stage stage) 
 	{

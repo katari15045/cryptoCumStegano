@@ -14,9 +14,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 
 public class KeyGenerator implements EventHandler<ActionEvent>
 {	
+	private Stage stage = null;
+	
+	public KeyGenerator(Stage stage) 
+	{
+		this.stage = stage;
+	}
+	
 	@Override
 	public void handle(ActionEvent event)
 	{
@@ -102,11 +110,15 @@ public class KeyGenerator implements EventHandler<ActionEvent>
 	private void postSuccess()
 	{
 		Alert alert = null;
+		KeyTransferChannelSelectorGUI keyTransferChannelSelectorGUI = null;
 		
 		alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Step 1 completed!");
 		alert.setHeaderText("Success!");
 		alert.setContentText("Asymmetric keys have been created!");
 		alert.show();
+		
+		keyTransferChannelSelectorGUI = new KeyTransferChannelSelectorGUI();
+		keyTransferChannelSelectorGUI.start(stage);
 	}
 }

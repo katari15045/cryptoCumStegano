@@ -29,7 +29,7 @@ public class KeyGeneratorGUI
 		
 		button = new Button();
 		button.setText("Generate keys");
-		button.setOnAction( new KeyGenerator() );
+		button.setOnAction( new KeyGenerator(stage) );
 		
 		gridPane = new GridPane();
 		gridPane.add(labelHeading, 0, 0);
