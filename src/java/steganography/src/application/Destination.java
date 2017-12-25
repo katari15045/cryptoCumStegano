@@ -1,5 +1,7 @@
 package application;
 
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,8 +20,11 @@ public class Destination extends Application
 	Button buttonExtractor;
 	Label labelMessage;
 	
-	ImageChooser imageChooser;
+	MyFileChooser imageChooser;
 	MessageExtractor messageExtractor;
+	
+	public static File imageFile;
+	public static File publicKeyFile;
 	
 	@Override
 	public void start(Stage stage) throws Exception 
@@ -29,7 +34,7 @@ public class Destination extends Application
 		buttonChooseImage = new Button();
 		buttonExtractor = new Button();
 		labelMessage = new Label();
-		imageChooser = new ImageChooser(stage);
+		imageChooser = new MyFileChooser(stage, "choose an image", MyFileChooser.DST_IMG);
 		messageExtractor = new MessageExtractor(textFieldLocationStr, imageChooser, labelMessage);
 		
 		labelLocationStr.setText("Location String : ");

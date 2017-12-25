@@ -1,6 +1,9 @@
 package application;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,16 +13,16 @@ import javafx.scene.control.TextField;
 public class MessageExtractor implements EventHandler<ActionEvent>
 {
 	TextField textFieldLocationStr;
-	ImageChooser imageChooser;
+	MyFileChooser imageChooser;
 	Label labelMessage;
 	
 	String locationString;
-	BufferedImage bufferedImage;
+	BufferedImage bufferedImage = null;
 	
 	String extractedBinaryMessage;
 	String extractedMessage;
 	
-	public MessageExtractor(TextField textFieldLocationStr, ImageChooser imageChooser, Label labelMessage) 
+	public MessageExtractor(TextField textFieldLocationStr, MyFileChooser imageChooser, Label labelMessage) 
 	{
 			this.textFieldLocationStr = textFieldLocationStr;
 			this.imageChooser = imageChooser;
@@ -29,8 +32,19 @@ public class MessageExtractor implements EventHandler<ActionEvent>
 	@Override
 	public void handle(ActionEvent event)
 	{
+		File file;
 		locationString = textFieldLocationStr.getText();
-		bufferedImage = imageChooser.getImage();
+		file = Destination.imageFile;
+		
+		try 
+		{
+			bufferedImage = ImageIO.read(file);
+		}
+		
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 		
 		extractedBinaryMessage = extractBinaryMessage(locationString, bufferedImage);
 		System.out.println("Extracted Binary Message -> " + extractedBinaryMessage);

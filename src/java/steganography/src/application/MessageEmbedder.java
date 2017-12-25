@@ -1,7 +1,10 @@
 package application;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,14 +12,14 @@ import javafx.scene.control.TextField;
 
 public class MessageEmbedder implements EventHandler<ActionEvent>
 {
-	TextField textField;
-	ImageChooser imageChooser;
-	BufferedImage image;
+	TextField textField = null;
+	MyFileChooser imageChooser = null;
+	BufferedImage image = null;
 	
 	String binaryMessage, originalMessage, locationString;
 	int rows, cols;
 	
-	public MessageEmbedder(ImageChooser imageChooser, TextField textField) 
+	public MessageEmbedder(MyFileChooser imageChooser, TextField textField) 
 	{
 		this.imageChooser = imageChooser;
 		this.textField = textField;
@@ -25,7 +28,19 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 	@Override
 	public void handle(ActionEvent event)
 	{
-		this.image = imageChooser.getImage();
+		File file;
+		file = Source.imageFile;
+		
+		try
+		{
+			this.image = ImageIO.read(file);
+		}
+		
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
 		originalMessage = textField.getText();
 		
 		binaryMessage = Binary.getBinaryFromChars(originalMessage);
