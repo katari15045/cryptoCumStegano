@@ -1,11 +1,12 @@
 package application;
 
+import java.io.File;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -15,46 +16,51 @@ public class KeyTransferOverEmailGUI
 {
 	private Label labelHeading = null;
 	private Label labelContent = null;
-	private Label labelEmailID = null;
-	private TextField textFieldEmailID = null;
-	private Label labelPassword = null;
-	private PasswordField passwordField = null;
-	private Button buttonSendEmail;
+	private Label labelToEmailID = null;
+	private TextField textFieldToEmailID = null;
+	private Button buttonChooseKeyFile = null;
+	private Button buttonSendEmail = null;
+	private String fromEmailID = null;
 	
 	private GridPane gridPane = null;
 	private Scene scene = null;
+	public static File publicKeyFile = null;
+	
+	public KeyTransferOverEmailGUI(String fromEmailID)
+	{
+		this.fromEmailID = fromEmailID;
+	}
 	
 	public void start(Stage stage)
 	{
 		labelHeading = new Label();
-		labelHeading.setText("Step 2.1");
+		labelHeading.setText("Step 2.2");
 		labelHeading.setFont( new Font(20.0) );
 		labelContent = new Label();
-		labelContent.setText("Transfer public key to the source over Email");
-		labelEmailID = new Label();
-		labelEmailID.setText("EmailID : ");
-		textFieldEmailID = new TextField();
-		labelPassword = new Label();
-		labelPassword.setText("Password : ");
-		passwordField = new PasswordField();
+		labelContent.setText("Transfer public key over Email");
+		labelToEmailID = new Label();
+		labelToEmailID.setText("Receiver's EmailID : ");
+		textFieldToEmailID = new TextField();
+		buttonChooseKeyFile = new Button();
+		buttonChooseKeyFile.setText("Choose Public Key");
+		buttonChooseKeyFile.setOnAction( new MyFileChooser(stage, "Choose Public Key", MyFileChooser.PUB_KEY) );
 		buttonSendEmail = new Button();
 		buttonSendEmail.setText("Send Email");
+		buttonSendEmail.setOnAction( new MyEmail(fromEmailID, textFieldToEmailID, MyEmail.ATTACHMENT) );
 		
 		gridPane = new GridPane();
 		gridPane.add(labelHeading, 0, 0);
 		gridPane.add(labelContent, 0, 1);
-		gridPane.add(labelEmailID, 0, 2);
-		gridPane.add(textFieldEmailID, 1, 2);
-		gridPane.add(labelPassword, 0, 3);
-		gridPane.add(passwordField, 1, 3);
+		gridPane.add(labelToEmailID, 0, 2);
+		gridPane.add(textFieldToEmailID, 1, 2);
+		gridPane.add(buttonChooseKeyFile, 0, 3);
 		gridPane.add(buttonSendEmail, 0, 4);
 		gridPane.setAlignment(Pos.CENTER);
 		GridPane.setMargin(labelContent, new Insets(20, 0, 0, 0));
-		GridPane.setMargin(labelEmailID, new Insets(60, 0, 0, 0));
-		GridPane.setMargin(textFieldEmailID, new Insets(60, 0, 0, 0));
-		GridPane.setMargin(labelPassword, new Insets(20, 0, 0, 0));
-		GridPane.setMargin(passwordField, new Insets(20, 0, 0, 0));
-		GridPane.setMargin(buttonSendEmail, new Insets(30, 0, 0, 0));
+		GridPane.setMargin(labelToEmailID, new Insets(60, 0, 0, 0));
+		GridPane.setMargin(textFieldToEmailID, new Insets(60, 0, 0, 0));
+		GridPane.setMargin(buttonChooseKeyFile, new Insets(20, 0, 0, 0));
+		GridPane.setMargin(buttonSendEmail, new Insets(60, 0, 0, 0));
 		scene = new Scene(gridPane, 900, 480);
 		stage.setScene(scene);
 		stage.show();

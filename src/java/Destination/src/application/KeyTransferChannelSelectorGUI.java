@@ -59,7 +59,7 @@ class MyHandler implements EventHandler<ActionEvent>
 	private CheckBox checkboxOne;
 	private CheckBox checkboxTwo;
 	
-	private KeyTransferOverEmailGUI keyTransferOverEmailGUI = null;
+	private OTPSenderGUI otpSenderGUI = null;
 	private GetDataGUI getDataGUI;
 	
 	public MyHandler(Stage stage, CheckBox checkboxOne, CheckBox checkboxTwo) 
@@ -75,8 +75,8 @@ class MyHandler implements EventHandler<ActionEvent>
 		if( checkboxOne.isSelected() )
 		{
 			// Transfer keys using this application
-			keyTransferOverEmailGUI = new KeyTransferOverEmailGUI();
-			keyTransferOverEmailGUI.start(stage);
+			otpSenderGUI = new OTPSenderGUI();
+			otpSenderGUI.start(stage);
 		}
 		
 		else if( checkboxTwo.isSelected() )
