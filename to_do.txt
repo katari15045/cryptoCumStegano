@@ -1,6 +1,4 @@
 
 1. Similar to Destination, transfer public key of source
 
-2. Add tutorials.txt explaining how to add mail.jar without eclipse
 
-3. Make a class called Constants

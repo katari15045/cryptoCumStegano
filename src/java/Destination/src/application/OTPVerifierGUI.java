@@ -35,7 +35,7 @@ public class OTPVerifierGUI
 	{
 		labelHeading = new Label();
 		labelHeading.setText("Step 2");
-		labelHeading.setFont( new Font(20.0) );
+		labelHeading.setFont( new Font(Constants.HEAD_SIZE) );
 		labelContent = new Label();
 		labelContent.setText("Verify your Email ID");
 		labelOTP = new Label();
@@ -57,7 +57,7 @@ public class OTPVerifierGUI
 		GridPane.setMargin(textFieldOTP, new Insets(60, 0, 0, 0));
 		GridPane.setMargin(buttonOTP, new Insets(60, 0, 0, 0));
 		
-		scene = new Scene(gridPane, 960, 540);
+		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
 		stage.setScene(scene);
 		stage.show();
 	}

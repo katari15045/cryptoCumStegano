@@ -33,7 +33,7 @@ public class KeyTransferOverEmailGUI
 	{
 		labelHeading = new Label();
 		labelHeading.setText("Step 3");
-		labelHeading.setFont( new Font(20.0) );
+		labelHeading.setFont( new Font(Constants.HEAD_SIZE) );
 		labelContent = new Label();
 		labelContent.setText("Transfer public key over Email");
 		labelToEmailID = new Label();
@@ -54,7 +54,7 @@ public class KeyTransferOverEmailGUI
 		GridPane.setMargin(labelToEmailID, new Insets(60, 0, 0, 0));
 		GridPane.setMargin(textFieldToEmailID, new Insets(60, 0, 0, 0));
 		GridPane.setMargin(buttonSendEmail, new Insets(60, 0, 0, 0));
-		scene = new Scene(gridPane, 960, 540);
+		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
 		stage.setScene(scene);
 		stage.show();
 	}
