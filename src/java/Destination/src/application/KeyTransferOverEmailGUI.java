@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -34,8 +35,10 @@ public class KeyTransferOverEmailGUI
 		labelHeading = new Label();
 		labelHeading.setText("Step 3");
 		labelHeading.setFont( new Font(Constants.HEAD_SIZE) );
+		labelHeading.setTextFill( Color.web(Constants.HEAD_COLOR) );
 		labelContent = new Label();
 		labelContent.setText("Transfer public key over Email");
+		labelContent.setTextFill( Color.web(Constants.HEAD_COLOR) );
 		labelToEmailID = new Label();
 		labelToEmailID.setText("Receiver's EmailID : ");
 		textFieldToEmailID = new TextField();

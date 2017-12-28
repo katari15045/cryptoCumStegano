@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -35,9 +36,11 @@ public class OTPSenderGUI
 	{
 		labelHeading = new Label();
 		labelHeading.setText("Step 1");
+		labelHeading.setTextFill(Color.web(Constants.HEAD_COLOR));
 		labelHeading.setFont( new Font(Constants.HEAD_SIZE) );
 		labelContent = new Label();
 		labelContent.setText("Receive OTP");
+		labelContent.setTextFill(Color.web(Constants.HEAD_COLOR));
 		labelEmailID = new Label();
 		labelEmailID.setText("Your Email ID : ");
 		textFieldEmailID = new TextField();

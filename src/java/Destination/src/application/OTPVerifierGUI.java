@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -36,8 +37,10 @@ public class OTPVerifierGUI
 		labelHeading = new Label();
 		labelHeading.setText("Step 2");
 		labelHeading.setFont( new Font(Constants.HEAD_SIZE) );
+		labelHeading.setTextFill( Color.web(Constants.HEAD_COLOR) );
 		labelContent = new Label();
 		labelContent.setText("Verify your Email ID");
+		labelContent.setTextFill( Color.web(Constants.HEAD_COLOR) );
 		labelOTP = new Label();
 		labelOTP.setText("OTP : ");
 		textFieldOTP = new TextField();
