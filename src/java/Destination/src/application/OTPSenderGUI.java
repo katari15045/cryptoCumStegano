@@ -24,6 +24,12 @@ public class OTPSenderGUI
 	
 	private GridPane gridPane = null;
 	private Scene scene = null;
+	private String publicKeyPath = null;
+	
+	public OTPSenderGUI(String publicKeyPath)
+	{
+		this.publicKeyPath = publicKeyPath;
+	}
 	
 	public void start(Stage stage)
 	{
@@ -38,7 +44,7 @@ public class OTPSenderGUI
 		buttonSendOTP = new Button();
 		buttonSendOTP.setText("Send OTP");
 		otp = getOTP();
-		buttonSendOTP.setOnAction(new MyEmail(textFieldEmailID, otp, MyEmail.OTP, stage) );
+		buttonSendOTP.setOnAction(new MyEmail(textFieldEmailID, otp, publicKeyPath, MyEmail.OTP, stage) );
 		
 		gridPane = new GridPane();
 		gridPane.add(labelHeading, 0, 0);

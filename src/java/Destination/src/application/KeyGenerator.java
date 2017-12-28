@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 public class KeyGenerator implements EventHandler<ActionEvent>
 {	
 	private Stage stage = null;
+	private String publicKeyPath = null;
 	
 	public KeyGenerator(Stage stage) 
 	{
@@ -35,7 +36,7 @@ public class KeyGenerator implements EventHandler<ActionEvent>
 		postSuccess();
 	}
 	
-	private static KeyPair getKeyPair()
+	private KeyPair getKeyPair()
 	{
 		KeyPairGenerator generator = null;
 		KeyPair keyPair = null;
@@ -55,11 +56,13 @@ public class KeyGenerator implements EventHandler<ActionEvent>
 		return keyPair;
 	}
 	
-	private static void storeKeys(KeyPair keyPair)
+	private void storeKeys(KeyPair keyPair)
 	{
 		KeyFactory factory = null;
 		RSAPublicKeySpec pubKeySpec = null;
 		RSAPrivateKeySpec privKeySpec = null;
+		String publicKeyFileName = "destination_public_key.txt";
+		String privateKeyFileName = "destination_private_key.txt";
 		
 		try
 		{
@@ -67,8 +70,10 @@ public class KeyGenerator implements EventHandler<ActionEvent>
 			pubKeySpec = factory.getKeySpec( keyPair.getPublic(), RSAPublicKeySpec.class );
 			privKeySpec = factory.getKeySpec( keyPair.getPrivate(), RSAPrivateKeySpec.class );
 		
-			writeKeyToFile("destination_private_key.txt", pubKeySpec.getModulus(), pubKeySpec.getPublicExponent());
-			writeKeyToFile("destination_public_key.txt", privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
+			writeKeyToFile(publicKeyFileName, pubKeySpec.getModulus(), pubKeySpec.getPublicExponent());
+			writeKeyToFile(privateKeyFileName, privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
+			
+			publicKeyPath = System.getProperty("user.dir") + "/" + privateKeyFileName;
 		}
 		
 		catch(Exception e)
@@ -77,7 +82,7 @@ public class KeyGenerator implements EventHandler<ActionEvent>
 		}
 	}
 
-	private static void writeKeyToFile(String fileName, BigInteger modulus, BigInteger exponent)
+	private void writeKeyToFile(String fileName, BigInteger modulus, BigInteger exponent)
 	{
 		ObjectOutputStream oos = null;
 		
@@ -118,7 +123,7 @@ public class KeyGenerator implements EventHandler<ActionEvent>
 		alert.setContentText("Asymmetric keys have been created!");
 		alert.show();
 		
-		otpSenderGUI = new OTPSenderGUI();
+		otpSenderGUI = new OTPSenderGUI(publicKeyPath);
 		otpSenderGUI.start(stage);
 	}
 }

@@ -49,7 +49,7 @@ public class MyEmail implements EventHandler<ActionEvent>
 	private String body = null;
 	private String host = null;
 	private String port = null;
-	private String fileName = null;
+	private String filePath = null;
 	private Stage stage = null;
 
 	private Properties properties;
@@ -60,18 +60,20 @@ public class MyEmail implements EventHandler<ActionEvent>
 	private DataSource dataSource;
 	private Multipart multiPart;
 	
-	public MyEmail(TextField textFieldToEmail, String otp, int emailType, Stage stage)
+	public MyEmail(TextField textFieldToEmail, String otp, String filePath, int emailType, Stage stage)
 	{
 		this.textFieldToEmail = textFieldToEmail;
 		this.otp = otp;
+		this.filePath = filePath;
 		this.emailType = emailType;
 		this.stage = stage;
 	}
 	
-	public MyEmail(String verifiedEmailID, TextField textFieldToEmail, int emailType, Stage stage)
+	public MyEmail(String verifiedEmailID, TextField textFieldToEmail, String filePath, int emailType, Stage stage)
 	{
 		this.textFieldToEmail =textFieldToEmail;
 		this.verifiedEmailID = verifiedEmailID;
+		this.filePath = filePath;
 		this.emailType = emailType;
 		this.stage = stage;
 	}
@@ -137,7 +139,7 @@ public class MyEmail implements EventHandler<ActionEvent>
         alert.setContentText("OTP sent successfully!");
         alert.show();
         
-        otpVerifierGUI = new OTPVerifierGUI(otp, toEmail);
+        otpVerifierGUI = new OTPVerifierGUI(otp, toEmail, filePath);
         otpVerifierGUI.start(stage);
 	}
 	
@@ -146,7 +148,6 @@ public class MyEmail implements EventHandler<ActionEvent>
 		StringBuilder stringBuilder = null;
 		Alert alert = null;
 		
-		fileName = KeyTransferOverEmailGUI.publicKeyFile.getAbsolutePath();
 		subject = "Steganography cum Cryptography : public key";
 		stringBuilder = new StringBuilder();
 		stringBuilder.append("Hi, \n\n");
@@ -165,7 +166,7 @@ public class MyEmail implements EventHandler<ActionEvent>
 			bodyPartMessage.setText(body);
 
 			bodyPartAttachment = new MimeBodyPart();
-			dataSource = new FileDataSource(fileName);
+			dataSource = new FileDataSource(filePath);
 			bodyPartAttachment.setDataHandler( new DataHandler(dataSource) );
 			bodyPartAttachment.setFileName("destination_public_key.txt");
 

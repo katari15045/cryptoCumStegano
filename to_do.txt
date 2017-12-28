@@ -1,3 +1,1 @@
-1. Public key shouldn't be choosen by the user and should be sent just by taking receivers_email_address
-
-2. While sending email, a dialog box with "sending email..." should appear
+1. While sending email, a dialog box with "sending email..." should appear

@@ -14,13 +14,15 @@ public class OTPVerifier implements EventHandler<ActionEvent>
 	private String otpEntered = null;
 	private Stage stage = null;
 	private String verifyingEmailID = null;
+	private String publicKeyPath = null;
 	
-	public OTPVerifier(TextField textFieldOTP, String actualOTP, String verifyingEmailID, Stage stage)
+	public OTPVerifier(TextField textFieldOTP, String actualOTP, String verifyingEmailID, String publicKeyPath, Stage stage)
 	{
 		this.textFieldOTP = textFieldOTP;
 		this.actualOTP = actualOTP;
 		this.stage = stage;
 		this.verifyingEmailID = verifyingEmailID;
+		this.publicKeyPath = publicKeyPath;
 	}
 	
 	@Override
@@ -39,7 +41,7 @@ public class OTPVerifier implements EventHandler<ActionEvent>
 			alert.setContentText(verifyingEmailID + " Verified!");
 			alert.show();
 			
-			keyTransferOverEmailGUI = new KeyTransferOverEmailGUI(verifyingEmailID);
+			keyTransferOverEmailGUI = new KeyTransferOverEmailGUI(verifyingEmailID, publicKeyPath);
 			keyTransferOverEmailGUI.start(stage);
 		}
 		
@@ -51,7 +53,7 @@ public class OTPVerifier implements EventHandler<ActionEvent>
 			alert.setContentText("OTP Mismatched!");
 			alert.show();
 			
-			otpSenderGUI = new OTPSenderGUI();
+			otpSenderGUI = new OTPSenderGUI(publicKeyPath);
 			otpSenderGUI.start(stage);
 		}
 	}

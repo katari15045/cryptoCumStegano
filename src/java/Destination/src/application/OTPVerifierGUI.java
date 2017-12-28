@@ -19,14 +19,16 @@ public class OTPVerifierGUI
 	private Button buttonOTP = null;
 	private String actualOTP = null;
 	private String verifyingEmailID = null;
+	private String publicKeyPath = null;
 	
 	private GridPane gridPane = null;
 	private Scene scene = null;
 	
-	public OTPVerifierGUI(String actualOTP, String verifyingEmailID)
+	public OTPVerifierGUI(String actualOTP, String verifyingEmailID, String publicKeyPath)
 	{
 		this.actualOTP = actualOTP;
 		this.verifyingEmailID = verifyingEmailID;
+		this.publicKeyPath = publicKeyPath;
 	}
 	
 	public void start(Stage stage)
@@ -41,7 +43,7 @@ public class OTPVerifierGUI
 		textFieldOTP = new TextField();
 		buttonOTP = new Button();
 		buttonOTP.setText("Verify");
-		buttonOTP.setOnAction( new OTPVerifier(textFieldOTP, actualOTP, verifyingEmailID, stage) );
+		buttonOTP.setOnAction( new OTPVerifier(textFieldOTP, actualOTP, verifyingEmailID, publicKeyPath, stage) );
 		
 		gridPane = new GridPane();
 		gridPane.add(labelHeading, 0, 0);
