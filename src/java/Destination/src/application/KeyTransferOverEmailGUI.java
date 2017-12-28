@@ -20,21 +20,21 @@ public class KeyTransferOverEmailGUI
 	private TextField textFieldToEmailID = null;
 	private Button buttonChooseKeyFile = null;
 	private Button buttonSendEmail = null;
-	private String fromEmailID = null;
+	private String verifiedEmailID = null;
 	
 	private GridPane gridPane = null;
 	private Scene scene = null;
 	public static File publicKeyFile = null;
 	
-	public KeyTransferOverEmailGUI(String fromEmailID)
+	public KeyTransferOverEmailGUI(String verifiedEmailID)
 	{
-		this.fromEmailID = fromEmailID;
+		this.verifiedEmailID = verifiedEmailID;
 	}
 	
 	public void start(Stage stage)
 	{
 		labelHeading = new Label();
-		labelHeading.setText("Step 2.2");
+		labelHeading.setText("Step 4");
 		labelHeading.setFont( new Font(20.0) );
 		labelContent = new Label();
 		labelContent.setText("Transfer public key over Email");
@@ -46,7 +46,7 @@ public class KeyTransferOverEmailGUI
 		buttonChooseKeyFile.setOnAction( new MyFileChooser(stage, "Choose Public Key", MyFileChooser.PUB_KEY) );
 		buttonSendEmail = new Button();
 		buttonSendEmail.setText("Send Email");
-		buttonSendEmail.setOnAction( new MyEmail(fromEmailID, textFieldToEmailID, MyEmail.ATTACHMENT) );
+		buttonSendEmail.setOnAction( new MyEmail(verifiedEmailID, textFieldToEmailID, MyEmail.ATTACHMENT, stage) );
 		
 		gridPane = new GridPane();
 		gridPane.add(labelHeading, 0, 0);

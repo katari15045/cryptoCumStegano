@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import javax.mail.Multipart;
 import javax.activation.DataHandler;
@@ -49,6 +50,7 @@ public class MyEmail implements EventHandler<ActionEvent>
 	private String host = null;
 	private String port = null;
 	private String fileName = null;
+	private Stage stage = null;
 
 	private Properties properties;
 	private Session session;
@@ -58,18 +60,20 @@ public class MyEmail implements EventHandler<ActionEvent>
 	private DataSource dataSource;
 	private Multipart multiPart;
 	
-	public MyEmail(TextField textFieldToEmail, String otp, int emailType)
+	public MyEmail(TextField textFieldToEmail, String otp, int emailType, Stage stage)
 	{
 		this.textFieldToEmail = textFieldToEmail;
 		this.otp = otp;
 		this.emailType = emailType;
+		this.stage = stage;
 	}
 	
-	public MyEmail(String verifiedEmailID, TextField textFieldToEmail, int emailType)
+	public MyEmail(String verifiedEmailID, TextField textFieldToEmail, int emailType, Stage stage)
 	{
 		this.textFieldToEmail =textFieldToEmail;
 		this.verifiedEmailID = verifiedEmailID;
 		this.emailType = emailType;
+		this.stage = stage;
 	}
 
 	@Override
@@ -103,6 +107,7 @@ public class MyEmail implements EventHandler<ActionEvent>
 	{
 		StringBuilder stringBuilder = null;
 		Alert alert = null;
+		OTPVerifierGUI otpVerifierGUI = null;
 		
 		subject = "Steganography cum Cryptography : Email Verification";
 		stringBuilder = new StringBuilder();
@@ -127,13 +132,19 @@ public class MyEmail implements EventHandler<ActionEvent>
         }
         
         alert = new Alert( AlertType.INFORMATION );
+        alert.setTitle("Step 2 completed!");
+        alert.setHeaderText("Success!");
         alert.setContentText("OTP sent successfully!");
         alert.show();
+        
+        otpVerifierGUI = new OTPVerifierGUI(otp, toEmail);
+        otpVerifierGUI.start(stage);
 	}
 	
 	private void sendAttachment()
 	{
 		StringBuilder stringBuilder = null;
+		Alert alert = null;
 		
 		fileName = KeyTransferOverEmailGUI.publicKeyFile.getAbsolutePath();
 		subject = "Steganography cum Cryptography : public key";
@@ -171,7 +182,11 @@ public class MyEmail implements EventHandler<ActionEvent>
 			e.printStackTrace();
 		}
 		
-		System.out.println("Public Key Sent!");
+		alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Step 4 Done!");
+		alert.setHeaderText("Success!");
+		alert.setContentText("Public key sent successfully!");
+		alert.show();
 	}
 
 	public void setPassword(String password)

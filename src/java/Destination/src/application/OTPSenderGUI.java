@@ -27,20 +27,18 @@ public class OTPSenderGUI
 	
 	public void start(Stage stage)
 	{
-		
-		
 		labelHeading = new Label();
-		labelHeading.setText("Step 2.1");
+		labelHeading.setText("Step 2");
 		labelHeading.setFont( new Font(20.0) );
 		labelContent = new Label();
-		labelContent.setText("Verify your EmailID");
+		labelContent.setText("Receive OTP");
 		labelEmailID = new Label();
 		labelEmailID.setText("Your Email ID : ");
 		textFieldEmailID = new TextField();
 		buttonSendOTP = new Button();
 		buttonSendOTP.setText("Send OTP");
 		otp = getOTP();
-		buttonSendOTP.setOnAction(new MyEmail(textFieldEmailID, otp, MyEmail.OTP) );
+		buttonSendOTP.setOnAction(new MyEmail(textFieldEmailID, otp, MyEmail.OTP, stage) );
 		
 		gridPane = new GridPane();
 		gridPane.add(labelHeading, 0, 0);

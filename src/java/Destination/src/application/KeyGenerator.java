@@ -110,7 +110,7 @@ public class KeyGenerator implements EventHandler<ActionEvent>
 	private void postSuccess()
 	{
 		Alert alert = null;
-		KeyTransferChannelSelectorGUI keyTransferChannelSelectorGUI = null;
+		OTPSenderGUI otpSenderGUI = null;
 		
 		alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Step 1 completed!");
@@ -118,7 +118,7 @@ public class KeyGenerator implements EventHandler<ActionEvent>
 		alert.setContentText("Asymmetric keys have been created!");
 		alert.show();
 		
-		keyTransferChannelSelectorGUI = new KeyTransferChannelSelectorGUI();
-		keyTransferChannelSelectorGUI.start(stage);
+		otpSenderGUI = new OTPSenderGUI();
+		otpSenderGUI.start(stage);
 	}
 }
