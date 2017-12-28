@@ -1,1 +1,1 @@
-1. While sending email, a dialog box with "sending email..." should appear
+1. Similar to Destination, transfer public key of source

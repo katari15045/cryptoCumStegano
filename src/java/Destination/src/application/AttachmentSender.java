@@ -99,7 +99,7 @@ public class AttachmentSender extends Task<Boolean>
 			Transport.send(mimeMessage);
 			
 			updateProgress(1.0, 1.0);
-			updateMessage("Attachment sent successfully!");
+			updateMessage("Public Key sent successfully!");
 			button.setDisable(false);
 		}
 
