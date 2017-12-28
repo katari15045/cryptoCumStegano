@@ -167,7 +167,7 @@ public class MyEmail implements EventHandler<ActionEvent>
 			bodyPartAttachment = new MimeBodyPart();
 			dataSource = new FileDataSource(fileName);
 			bodyPartAttachment.setDataHandler( new DataHandler(dataSource) );
-			bodyPartAttachment.setFileName(fileName);
+			bodyPartAttachment.setFileName("destination_public_key.txt");
 
 			multiPart = new MimeMultipart();
 			multiPart.addBodyPart(bodyPartMessage);

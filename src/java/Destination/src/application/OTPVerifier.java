@@ -48,7 +48,7 @@ public class OTPVerifier implements EventHandler<ActionEvent>
 			alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Step 3 failed!");
 			alert.setHeaderText("Invalid OTP!");
-			alert.setContentText("OTP sent doesn't match with the otp you've entered!");
+			alert.setContentText("OTP Mismatched!");
 			alert.show();
 			
 			otpSenderGUI = new OTPSenderGUI();
