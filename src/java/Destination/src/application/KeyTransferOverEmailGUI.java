@@ -61,7 +61,7 @@ public class KeyTransferOverEmailGUI
 		GridPane.setMargin(textFieldToEmailID, new Insets(60, 0, 0, 0));
 		GridPane.setMargin(buttonChooseKeyFile, new Insets(20, 0, 0, 0));
 		GridPane.setMargin(buttonSendEmail, new Insets(60, 0, 0, 0));
-		scene = new Scene(gridPane, 900, 480);
+		scene = new Scene(gridPane, 960, 540);
 		stage.setScene(scene);
 		stage.show();
 	}

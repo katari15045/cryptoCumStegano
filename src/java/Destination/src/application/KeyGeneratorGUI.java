@@ -39,7 +39,7 @@ public class KeyGeneratorGUI
 		GridPane.setMargin(labelContent, new Insets(20, 0, 0, 0));
 		GridPane.setMargin(button, new Insets(90, 0, 0, 0));
 		
-		scene = new Scene(gridPane, 900, 480);
+		scene = new Scene(gridPane, 960, 540);
 		stage.setScene(scene);
 		stage.setTitle("Step 1");
 		stage.show();

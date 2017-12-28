@@ -55,7 +55,7 @@ public class OTPVerifierGUI
 		GridPane.setMargin(textFieldOTP, new Insets(60, 0, 0, 0));
 		GridPane.setMargin(buttonOTP, new Insets(60, 0, 0, 0));
 		
-		scene = new Scene(gridPane);
+		scene = new Scene(gridPane, 960, 540);
 		stage.setScene(scene);
 		stage.show();
 	}

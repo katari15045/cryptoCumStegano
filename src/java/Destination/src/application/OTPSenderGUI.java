@@ -52,7 +52,7 @@ public class OTPSenderGUI
 		GridPane.setMargin(textFieldEmailID, new Insets(60, 0, 0, 0));
 		GridPane.setMargin(buttonSendOTP, new Insets(60, 0, 0, 0));
 		
-		scene = new Scene(gridPane, 900, 480);
+		scene = new Scene(gridPane, 960, 540);
 		stage.setScene(scene);
 		stage.show();
 	}
