@@ -67,8 +67,8 @@ public class KeyGenerator implements EventHandler<ActionEvent>
 			pubKeySpec = factory.getKeySpec( keyPair.getPublic(), RSAPublicKeySpec.class );
 			privKeySpec = factory.getKeySpec( keyPair.getPrivate(), RSAPrivateKeySpec.class );
 		
-			writeKeyToFile("private.key", pubKeySpec.getModulus(), pubKeySpec.getPublicExponent());
-			writeKeyToFile("public.key", privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
+			writeKeyToFile("destination_private_key.txt", pubKeySpec.getModulus(), pubKeySpec.getPublicExponent());
+			writeKeyToFile("destination_public_key.txt", privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
 		}
 		
 		catch(Exception e)
