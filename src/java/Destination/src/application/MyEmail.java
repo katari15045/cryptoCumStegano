@@ -75,7 +75,7 @@ public class MyEmail implements EventHandler<ActionEvent>
 		GridPane.setMargin(label, new Insets(20, 0, 0, 0));
 		GridPane.setMargin(button, new Insets(60, 0, 0, 0));
 		
-		scene = new Scene(gridPane, 400, 200);
+		scene = new Scene(gridPane, 960, 540);
 		stage.setScene(scene);
 		stage.show();
 		

@@ -34,7 +34,7 @@ public class OTPVerifierGUI
 	public void start(Stage stage)
 	{
 		labelHeading = new Label();
-		labelHeading.setText("Step 3");
+		labelHeading.setText("Step 2");
 		labelHeading.setFont( new Font(20.0) );
 		labelContent = new Label();
 		labelContent.setText("Verify your Email ID");

@@ -32,7 +32,7 @@ public class KeyTransferOverEmailGUI
 	public void start(Stage stage)
 	{
 		labelHeading = new Label();
-		labelHeading.setText("Step 4");
+		labelHeading.setText("Step 3");
 		labelHeading.setFont( new Font(20.0) );
 		labelContent = new Label();
 		labelContent.setText("Transfer public key over Email");

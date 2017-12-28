@@ -10,30 +10,30 @@ import java.security.KeyPairGenerator;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
+import javafx.concurrent.Task;
+import javafx.scene.control.Button;
 
-public class KeyGenerator implements EventHandler<ActionEvent>
+public class KeyGenerator extends Task<Void>
 {	
-	private Stage stage = null;
-	private String publicKeyPath = null;
+	private static String publicKeyPath = null;
+	private Button button = null;
 	
-	public KeyGenerator(Stage stage) 
+	public KeyGenerator(Button button)
 	{
-		this.stage = stage;
+		this.button = button;
 	}
 	
 	@Override
-	public void handle(ActionEvent event)
+	public Void call()
 	{
 		KeyPair keyPair;
 		
+		updateMessage("Generating keys...");
 		keyPair = getKeyPair();
 		storeKeys(keyPair);
 		postSuccess();
+		
+		return null;
 	}
 	
 	private KeyPair getKeyPair()
@@ -113,17 +113,26 @@ public class KeyGenerator implements EventHandler<ActionEvent>
 	}
 	
 	private void postSuccess()
+	{	
+		updateMessage("Keys Generated Successfully!");
+		button.setDisable(false);
+		updateProgress(1.0, 1.0);
+	}
+	
+	@Override
+	protected void updateProgress(double workDone, double max) 
 	{
-		Alert alert = null;
-		OTPSenderGUI otpSenderGUI = null;
-		
-		alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Step 1 completed!");
-		alert.setHeaderText("Success!");
-		alert.setContentText("Asymmetric keys have been created!");
-		alert.show();
-		
-		otpSenderGUI = new OTPSenderGUI(publicKeyPath);
-		otpSenderGUI.start(stage);
+		super.updateProgress(workDone, max);
+	}
+	
+	@Override
+	protected void updateMessage(String message) 
+	{
+		super.updateMessage(message);
+	}
+	
+	public static String getPublicKeyPath()
+	{
+		return publicKeyPath;
 	}
 }

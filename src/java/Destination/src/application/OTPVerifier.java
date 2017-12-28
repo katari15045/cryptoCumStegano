@@ -36,7 +36,7 @@ public class OTPVerifier implements EventHandler<ActionEvent>
 		if( actualOTP.equals(otpEntered) )
 		{
 			alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Step 3 Done!");
+			alert.setTitle("Step 2 Done!");
 			alert.setHeaderText("Success!");
 			alert.setContentText(verifyingEmailID + " Verified!");
 			alert.show();

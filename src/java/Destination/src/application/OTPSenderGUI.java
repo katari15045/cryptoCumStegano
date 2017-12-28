@@ -34,7 +34,7 @@ public class OTPSenderGUI
 	public void start(Stage stage)
 	{
 		labelHeading = new Label();
-		labelHeading.setText("Step 2");
+		labelHeading.setText("Step 1");
 		labelHeading.setFont( new Font(20.0) );
 		labelContent = new Label();
 		labelContent.setText("Receive OTP");
