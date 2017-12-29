@@ -67,8 +67,8 @@ public class KeyGenerator extends Task<Void>
 		KeyFactory factory = null;
 		RSAPublicKeySpec pubKeySpec = null;
 		RSAPrivateKeySpec privKeySpec = null;
-		String publicKeyFileName = "destination_public_key.txt";
-		String privateKeyFileName = "destination_private_key.txt";
+		String publicKeyFileName = "source_public_key.txt";
+		String privateKeyFileName = "source_private_key.txt";
 		
 		try
 		{

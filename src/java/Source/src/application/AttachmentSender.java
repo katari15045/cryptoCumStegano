@@ -67,7 +67,7 @@ public class AttachmentSender extends Task<Boolean>
 		subject = "Steganography cum Cryptography : public key";
 		stringBuilder = new StringBuilder();
 		stringBuilder.append("Hi, \n\n");
-		stringBuilder.append("If you want to send data to " + EmailCollectorGUI.receiverEmailID);
+		stringBuilder.append("If you want to receive data from " + EmailCollectorGUI.senderEmailID);
 		stringBuilder.append(" then find the attached public key.\n\n");
 		stringBuilder.append("Else, kindly ignore this email.\n\nThank you!");
 		body = stringBuilder.toString();
@@ -84,9 +84,9 @@ public class AttachmentSender extends Task<Boolean>
 
 			bodyPartAttachment = new MimeBodyPart();
 			dataSource = new FileDataSource(filePath);
-			bodyPartAttachment.setDataHandler( new DataHandler(dataSource) );
 			System.out.println("Public Key : " + filePath);
-			bodyPartAttachment.setFileName("destination_public_key.txt");
+			bodyPartAttachment.setDataHandler( new DataHandler(dataSource) );
+			bodyPartAttachment.setFileName("source_public_key.txt");
 
 			multiPart = new MimeMultipart();
 			multiPart.addBodyPart(bodyPartMessage);
@@ -97,7 +97,7 @@ public class AttachmentSender extends Task<Boolean>
 			System.out.println("Public Key Sent!\n");
 			
 			updateProgress(1.0, 1.0);
-			updateMessage("Public Key has been sent to " + EmailCollectorGUI.senderEmailID);
+			updateMessage("Public Key has been sent to " + EmailCollectorGUI.receiverEmailID);
 			button.setDisable(false);
 		}
 
