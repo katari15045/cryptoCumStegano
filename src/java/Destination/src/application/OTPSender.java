@@ -15,7 +15,7 @@ public class OTPSender extends Task<Boolean>
 {
 	private String fromEmail = null;
 	private String password = null;
-	private String emailID = null;
+	private String toEmailID = null;
 	private String subject = null;
 	private String body = null;
 	private String otp = null;
@@ -27,10 +27,10 @@ public class OTPSender extends Task<Boolean>
 	private MimeMessage mimeMessage = null;
 	private Session session = null;
 	
-	public OTPSender(String otp, String emailID, Button button)
+	public OTPSender(String otp, String toEmailID, Button button)
 	{
 		this.otp = otp;
-		this.emailID = emailID;
+		this.toEmailID = toEmailID;
 		this.button = button;
 	}
 	
@@ -62,12 +62,12 @@ public class OTPSender extends Task<Boolean>
         {
         		mimeMessage = new MimeMessage(session);
                 mimeMessage.setFrom( new InternetAddress(fromEmail) );
-                mimeMessage.setRecipients( Message.RecipientType.TO, InternetAddress.parse(emailID) );
+                mimeMessage.setRecipients( Message.RecipientType.TO, InternetAddress.parse(toEmailID) );
                 mimeMessage.setSubject(subject);
                 mimeMessage.setText(body);
 
-                System.out.println("Sending OTP to " + emailID + "...");
                 Transport.send(mimeMessage);
+                System.out.println("OTP Sent!");
         }
 
         catch(Exception e)
@@ -75,7 +75,7 @@ public class OTPSender extends Task<Boolean>
                 e.printStackTrace();
         }
 		
-        updateMessage("OTP Sent successfully!");
+        updateMessage("An OTP has been sent to " + EmailCollectorGUI.receiverEmailID);
         updateProgress(1.0, 1.0);
         button.setDisable(false);
         

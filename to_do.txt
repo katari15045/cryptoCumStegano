@@ -1,4 +1,4 @@
 
 1. Similar to Destination, transfer public key of source
 
-
+2. Manage when wrong OTP is entered - resend OTP, modify email

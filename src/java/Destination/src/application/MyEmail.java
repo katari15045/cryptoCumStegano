@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Random;
+
 /*
  *	Tutorial 	-> 	https://www.javatpoint.com/example-of-sending-attachment-with-email-using-java-mail-api
  *	Download mail.jar from http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-eeplat-419426.html#javamail-1.4.7-oth-JPR
@@ -15,51 +17,66 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class MyEmail implements EventHandler<ActionEvent>
-{
-	public static final int OTP = 1;
-	public static final int ATTACHMENT = 2;
-	
-	private TextField textFieldToEmail = null;
-	private String otp = null;
-	private String verifiedEmailID = null;
-	private Integer emailType = null;
-	private String filePath = null;
+public class MyEmail
+{	
+	private Thread thread = null;
+	private ProgressIndicator progressIndicator = null;
+	private Label label = null;
+	private Button button = null;
+	private GridPane gridPane = null;
+	private Scene scene = null;
 	private Stage stage = null;
-	
-	public MyEmail(TextField textFieldToEmail, String otp, String filePath, int emailType, Stage stage)
-	{
-		this.textFieldToEmail = textFieldToEmail;
-		this.otp = otp;
-		this.filePath = filePath;
-		this.emailType = emailType;
-		this.stage = stage;
-	}
-	
-	public MyEmail(String verifiedEmailID, TextField textFieldToEmail, String filePath, int emailType, Stage stage)
-	{
-		this.textFieldToEmail =textFieldToEmail;
-		this.verifiedEmailID = verifiedEmailID;
-		this.filePath = filePath;
-		this.emailType = emailType;
-		this.stage = stage;
-	}
 
-	@Override
-	public void handle(ActionEvent event)
-	{	
-		Thread thread = null;
-		ProgressIndicator progressIndicator = null;
-		Label label = null;
-		Button button = null;
+	public void sendOTP(String toEmailID, Stage stage)
+	{
+		String otp = null;
+		OTPSender otpSender = null;
 		
-		GridPane gridPane = null;
-		Scene scene = null;
+		this.stage = stage;
+		initialize();
+		otp = getOTP();
 		
+		button.setText("Verify");
+		button.setOnAction( new PostOTPHandler(otp, stage) );
+		otpSender = new OTPSender(otp, toEmailID, button);
+		progressIndicator.progressProperty().bind( otpSender.progressProperty() );
+		label.textProperty().bind( otpSender.messageProperty() );
+		thread = new Thread(otpSender);
+		thread.start();
+	}
+	
+	public void sendAttachment(String toEmailID, Stage stage)
+	{
+		AttachmentSender attachmentSender = null;
+		
+		this.stage = stage;
+		initialize();
+		
+		attachmentSender = new AttachmentSender( toEmailID, KeyGenerator.getPublicKeyPath(), button);
+		progressIndicator.progressProperty().bind( attachmentSender.progressProperty() );
+		label.textProperty().bind( attachmentSender.messageProperty() );
+		thread = new Thread(attachmentSender);
+		thread.start();
+		
+		button.setOnAction( new PostAttachmentHandler() );
+	}
+	
+	private String getOTP()
+	{
+		Random random = null;
+		Integer min = 9999;
+		Integer max = 99999999;
+		
+		random = new Random();
+		return String.valueOf( random.nextInt( (max - min)+1 ) + min );
+		
+	}
+	
+	private void initialize()
+	{
 		progressIndicator = new ProgressIndicator();
 		progressIndicator.setProgress(-1.0);
 		label = new Label();
@@ -78,31 +95,6 @@ public class MyEmail implements EventHandler<ActionEvent>
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
 		stage.setScene(scene);
 		stage.show();
-		
-		if( emailType == ATTACHMENT )
-		{	
-			AttachmentSender attachmentSender = null;
-			
-			attachmentSender = new AttachmentSender(verifiedEmailID, textFieldToEmail, filePath, button);
-			progressIndicator.progressProperty().bind( attachmentSender.progressProperty() );
-			label.textProperty().bind( attachmentSender.messageProperty() );
-			thread = new Thread(attachmentSender);
-			thread.start();
-			
-			button.setOnAction( new PostAttachmentHandler() );
-		}
-		
-		else if( emailType == OTP )
-		{
-			OTPSender otpSender = null;
-			
-			button.setOnAction( new PostOTPHandler(otp, textFieldToEmail.getText(), filePath, stage) );
-			otpSender = new OTPSender(otp, textFieldToEmail.getText(), button);
-			progressIndicator.progressProperty().bind( otpSender.progressProperty() );
-			label.textProperty().bind( otpSender.messageProperty() );
-			thread = new Thread(otpSender);
-			thread.start();
-		}
 	}
 }
 
@@ -117,25 +109,21 @@ class PostAttachmentHandler implements EventHandler<ActionEvent>
 class PostOTPHandler implements EventHandler<ActionEvent>
 {
 	private String otp = null;
-	private String toEmail = null;
-	private String filePath = null;
 	
 	private Stage stage = null;
 	private OTPVerifierGUI otpVerifierGUI = null;
 	
-	public PostOTPHandler(String otp, String toEmail, String filePath, Stage stage)
+	public PostOTPHandler(String otp, Stage stage)
 	{
 		this.otp = otp;
-		this.toEmail = toEmail;
-		this.filePath = filePath;
 		this.stage = stage;
 	}
 	
 	@Override
 	public void handle(ActionEvent event) 
 	{   
-        otpVerifierGUI = new OTPVerifierGUI(otp, toEmail, filePath);
-        otpVerifierGUI.start(stage);
+        otpVerifierGUI = new OTPVerifierGUI();
+        otpVerifierGUI.start(otp, stage);
 	}
 }
 

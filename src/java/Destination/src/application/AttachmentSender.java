@@ -17,16 +17,13 @@ import javax.mail.internet.MimeMultipart;
 
 import javafx.concurrent.Task;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 
 public class AttachmentSender extends Task<Boolean> 
 {
-	private String fromEmail = null;
+	private String fromEmailID = null;
 	private String password = null;
-	private TextField textFieldToEmail = null;
-	private String toEmail = null;
+	private String toEmailID = null;
 	private String subject = null;
-	private String verifiedEmailID = null;
 	private String body = null;
 	private String filePath = null;
 	
@@ -42,10 +39,9 @@ public class AttachmentSender extends Task<Boolean>
 	private DataSource dataSource = null;
 	private Multipart multiPart = null;
 	
-	public AttachmentSender(String verifiedEmailID, TextField textFieldToEmail, String filePath, Button button) 
+	public AttachmentSender(String toEmailID, String filePath, Button button) 
 	{
-		this.verifiedEmailID = verifiedEmailID;
-		this.textFieldToEmail = textFieldToEmail;
+		this.toEmailID = toEmailID;
 		this.filePath = filePath;
 		this.button = button;
 	}
@@ -56,9 +52,8 @@ public class AttachmentSender extends Task<Boolean>
 		StringBuilder stringBuilder = null;
 		
 		updateMessage("Sending public key...");
-		fromEmail = "saketh9977.test@gmail.com";
+		fromEmailID = "saketh9977.test@gmail.com";
 		password = "bear_grylls_9977";
-		toEmail = textFieldToEmail.getText();
 		host = "smtp.gmail.com";
 		port = "587";
 		
@@ -67,20 +62,21 @@ public class AttachmentSender extends Task<Boolean>
 		properties.put("mail.smtp.starttls.enable", "true");
 		properties.put("mail.smtp.host", host);
 		properties.put("mail.smtp.port", port);
-		session = Session.getInstance(properties, new MyAuthenticator(fromEmail, password));
+		session = Session.getInstance(properties, new MyAuthenticator(fromEmailID, password));
 		
 		subject = "Steganography cum Cryptography : public key";
 		stringBuilder = new StringBuilder();
 		stringBuilder.append("Hi, \n\n");
-		stringBuilder.append("If you want to send data to " + verifiedEmailID + " then please find the attached public key\n\n");
-		stringBuilder.append("Else kindly ignore this email.\n\n");
+		stringBuilder.append("If you want to send data to " + EmailCollectorGUI.receiverEmailID);
+		stringBuilder.append(" then find the attached public key.\n\n");
+		stringBuilder.append("Else, kindly ignore this email.\n\nThank you!");
 		body = stringBuilder.toString();
 		
 		try
 		{
 			mimeMessage = new MimeMessage(session);
-			mimeMessage.setFrom( new InternetAddress(fromEmail) );
-			mimeMessage.setRecipients( Message.RecipientType.TO, InternetAddress.parse(toEmail) );
+			mimeMessage.setFrom( new InternetAddress(fromEmailID) );
+			mimeMessage.setRecipients( Message.RecipientType.TO, InternetAddress.parse(toEmailID) );
 			mimeMessage.setSubject(subject);
 			
 			bodyPartMessage = new MimeBodyPart();
@@ -97,6 +93,7 @@ public class AttachmentSender extends Task<Boolean>
 
 			mimeMessage.setContent(multiPart);
 			Transport.send(mimeMessage);
+			System.out.println("Public Key Sent!\n");
 			
 			updateProgress(1.0, 1.0);
 			updateMessage("Public Key sent successfully!");

@@ -28,9 +28,15 @@ public class KeyGenerator extends Task<Void>
 	{
 		KeyPair keyPair;
 		
+		System.out.println("\nGenerating keys...");
 		updateMessage("Generating keys...");
 		keyPair = getKeyPair();
+		
+		System.out.println("Storing keys...");
+		updateMessage("Storing keys...");
 		storeKeys(keyPair);
+		
+		System.out.println("Keys stored!\n");
 		postSuccess();
 		
 		return null;

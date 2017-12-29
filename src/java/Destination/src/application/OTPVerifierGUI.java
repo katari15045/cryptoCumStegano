@@ -18,35 +18,25 @@ public class OTPVerifierGUI
 	private Label labelOTP = null;
 	private TextField textFieldOTP = null;
 	private Button buttonOTP = null;
-	private String actualOTP = null;
-	private String verifyingEmailID = null;
-	private String publicKeyPath = null;
-	
 	private GridPane gridPane = null;
 	private Scene scene = null;
 	
-	public OTPVerifierGUI(String actualOTP, String verifyingEmailID, String publicKeyPath)
+	public void start(String actualOTP, Stage stage)
 	{
-		this.actualOTP = actualOTP;
-		this.verifyingEmailID = verifyingEmailID;
-		this.publicKeyPath = publicKeyPath;
-	}
-	
-	public void start(Stage stage)
-	{
+		
 		labelHeading = new Label();
 		labelHeading.setText("Step 2");
 		labelHeading.setFont( new Font(Constants.HEAD_SIZE) );
 		labelHeading.setTextFill( Color.web(Constants.HEAD_COLOR) );
 		labelContent = new Label();
-		labelContent.setText("Verify your Email ID");
+		labelContent.setText("Enter the OTP sent to " + EmailCollectorGUI.receiverEmailID);
 		labelContent.setTextFill( Color.web(Constants.HEAD_COLOR) );
 		labelOTP = new Label();
 		labelOTP.setText("OTP : ");
 		textFieldOTP = new TextField();
 		buttonOTP = new Button();
 		buttonOTP.setText("Verify");
-		buttonOTP.setOnAction( new OTPVerifier(textFieldOTP, actualOTP, verifyingEmailID, publicKeyPath, stage) );
+		buttonOTP.setOnAction( new OTPVerifier(textFieldOTP, actualOTP, stage) );
 		
 		gridPane = new GridPane();
 		gridPane.add(labelHeading, 0, 0);
