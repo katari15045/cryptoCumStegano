@@ -96,7 +96,7 @@ public class AttachmentSender extends Task<Boolean>
 			System.out.println("Public Key Sent!\n");
 			
 			updateProgress(1.0, 1.0);
-			updateMessage("Public Key sent successfully!");
+			updateMessage("Public Key has been sent to " + EmailCollectorGUI.senderEmailID);
 			button.setDisable(false);
 		}
 
