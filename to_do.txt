@@ -1,2 +1,10 @@
 
 1. Similar to Destination, transfer public key of source
+
+2. Diffie Hellman from https://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/CryptoSpec.html#DH2Ex
+
+3. pub_key_dst( priv_key_src("abc") ) --- try smaller key size for inner encryption
+
+4. Make sure this application has forward secrecy - new Keys are generated at each session
+
+5. Document the approach

@@ -1,0 +1,71 @@
+=======================================================================================================================
+
+1. Drawback of Asymmetric Algo - RSA
+------------------------------------
+
+When your key size is k bits then it can only encrypt a message whose length is <= (k/8)-11 bytes
+i.e if 8192 is your key size then the max size of a message it can encrypt is (1024-11) = 1013 bytes
+
+So, due to this, "encr_pub_dst( encr_priv_src("All is well") )" isn't working even with 8192-bit RSA keys.
+
+source: https://security.stackexchange.com/questions/41205/diffie-hellman-and-its-tls-ssl-usage
+	https://stackoverflow.com/questions/10007147/getting-a-illegalblocksizeexception-data-must-not-be-longer-than-256-bytes-when
+
+=======================================================================================================================
+
+2. Recommended key sizes in bits 
+--------------------------------
+
+RSA
+---
+
+2048	 -	 Safe until 2030
+2048	 -	 Recommended by NIST
+3072	 -	 if security is required beyond 2030
+
+AES
+---
+
+128	-	Safe until quantum computers become available
+256	-	Quantum computing resistsant
+256	-	Recommended by NSA
+
+Diffie Hellman
+--------------
+
+Similar to RSA
+
+Source
+------
+
+https://en.wikipedia.org/wiki/Key_size
+
+=======================================================================================================================
+
+3. Understanding Diffie-Hellman Algo
+------------------------------------
+
+https://www.geeksforgeeks.org/implementation-diffie-hellman-algorithm/
+https://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/CryptoSpec.html#DH2Ex
+
+
+=======================================================================================================================
+
+4. RSA with AES
+---------------
+
+A k-bit RSA key can encrypt upto "(k/8)-11" bytes of data. 
+
+RSA Key size			Max Data in bytes		
+------------			-----------------		
+
+1024					117				
+
+2048					245				
+
+4096					501				
+
+8192					1013				
+
+
+=======================================================================================================================
