@@ -69,3 +69,20 @@ RSA Key size			Max Data in bytes
 
 
 =======================================================================================================================
+
+5. Ensuring security
+--------------------
+
+While transferring the sym_key, first encr_with_src_priv_key( hash(secret) ) to ensure authenticity (signing) and integrity (hashing) and then encr_with_dst_pub_key(sym_key) to ensure confidentiality and to receive actual data (availability) i.e ensuring all 4 properties of information security -
+
+        Confidentiality
+        Integrity
+        Availability
+        Non-repudiation (accountability)
+
+CIA model cum non-repudiation
+
+Source : https://crypto.stackexchange.com/questions/12768/why-hash-the-message-before-signing-it-with-rsa/25953#25953
+
+=======================================================================================================================
+
