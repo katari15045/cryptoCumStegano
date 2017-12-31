@@ -8,13 +8,13 @@ i.e if 8192 is your key size then the max size of a message it can encrypt is (1
 
 So, due to this, "encr_pub_dst( encr_priv_src("All is well") )" isn't working even with 8192-bit RSA keys.
 
-source: https://security.stackexchange.com/questions/41205/diffie-hellman-and-its-tls-ssl-usage
-	https://stackoverflow.com/questions/10007147/getting-a-illegalblocksizeexception-data-must-not-be-longer-than-256-bytes-when
+source: https://security.stackexchange.com/a/41226/167165
+	https://stackoverflow.com/a/10007285/8279892
 
 =======================================================================================================================
 
-2. Recommended key sizes in bits 
---------------------------------
+2. Recommended key sizes in bits & hashing algos 
+------------------------------------------------
 
 RSA
 ---
@@ -35,10 +35,17 @@ Diffie Hellman
 
 Similar to RSA
 
-Source
-------
+Hashing
+-------
 
-https://en.wikipedia.org/wiki/Key_size
+SHA 2	-	Prone to length extension attacks
+SHA 3 	-	recommended to ensure long term security
+
+Source : https://en.wikipedia.org/wiki/Key_size
+	 https://en.wikipedia.org/wiki/Cryptographic_hash_function#Cryptographic_hash_algorithms
+	 https://en.wikipedia.org/wiki/Cryptographic_hash_function#/media/File:Cryptographic_Hash_Function.svg
+	 https://en.wikipedia.org/wiki/SHA-3
+	 https://en.wikipedia.org/wiki/SHA-2
 
 =======================================================================================================================
 
