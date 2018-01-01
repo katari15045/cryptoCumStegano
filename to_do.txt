@@ -1,9 +1,7 @@
 
-1. Diffie Hellman from https://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/CryptoSpec.html#DH2Ex
 
-2. Implement hashes
+1. Make sure this application has forward secrecy - new Keys are generated at each session
 
-3. Make sure this application has forward secrecy - new Keys are generated at each session
+2. Document the approach
 
-4. Document the approach
-
+3. Implement DH with GUI
