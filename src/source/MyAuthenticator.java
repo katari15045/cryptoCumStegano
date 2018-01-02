@@ -1,5 +1,3 @@
-package application;
-
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 

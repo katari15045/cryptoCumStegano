@@ -1,5 +1,3 @@
-package application;
-
 import java.util.Random;
 
 /*
@@ -55,7 +53,7 @@ public class MyEmail
 		this.stage = stage;
 		initialize();
 		
-		attachmentSender = new AttachmentSender( toEmailID, KeyGenerator.getPublicKeyPath(), button);
+		attachmentSender = new AttachmentSender( toEmailID, MyKeyGenerator.getPublicKeyPath(), button);
 		progressIndicator.progressProperty().bind( attachmentSender.progressProperty() );
 		label.textProperty().bind( attachmentSender.messageProperty() );
 		thread = new Thread(attachmentSender);

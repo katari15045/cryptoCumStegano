@@ -1,5 +1,9 @@
-package application;
-	
+/*
+ * Compile with javac -cp .:<path to all external jars> Main.java
+ * Run with java -cp .:<path to all external jars> Main
+*/
+
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,6 +16,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javax.crypto.KeyGenerator;
 
 public class Main extends Application 
 {	
@@ -23,7 +28,7 @@ public class Main extends Application
 	private Scene scene = null;
 	
 	private Thread thread = null;
-	private KeyGenerator keyGenerator = null;
+	private MyKeyGenerator keyGenerator = null;
 	
 	@Override
 	public void start(Stage stage) 
@@ -52,7 +57,7 @@ public class Main extends Application
 		stage.setScene(scene);
 		stage.show();
 		
-		keyGenerator = new KeyGenerator(button);
+		keyGenerator = new MyKeyGenerator(button);
 		progressIndicator.progressProperty().bind( keyGenerator.progressProperty() );
 		labelProgress.textProperty().bind( keyGenerator.messageProperty() );
 		thread = new Thread(keyGenerator);

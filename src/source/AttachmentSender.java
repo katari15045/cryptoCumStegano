@@ -1,5 +1,3 @@
-package application;
-
 import java.util.Properties;
 
 import javax.activation.DataHandler;

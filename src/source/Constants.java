@@ -1,10 +1,9 @@
-package application;
 
 public final class Constants 
 {
 	public static String definition = new StringBuilder()
-										.append("Transfer data securely over internet with 2 layer\nprotection - ")
-										.append("Cryptography and Steganography.").toString();
+						.append("Transfer data securely over internet with 2 layer\nprotection - ")
+						.append("Cryptography and Steganography.").toString();
 	public static int WIND_COLS = 640;
 	public static int WIND_ROWS = 360;
 	public static double HEAD_SIZE = 20.0;

@@ -1,5 +1,3 @@
-package application;
-
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -13,12 +11,12 @@ import java.security.spec.RSAPublicKeySpec;
 import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 
-public class KeyGenerator extends Task<Void>
+public class MyKeyGenerator extends Task<Void>
 {	
 	private static String publicKeyPath = null;
 	private Button button = null;
 	
-	public KeyGenerator(Button button)
+	public MyKeyGenerator(Button button)
 	{
 		this.button = button;
 	}
@@ -67,8 +65,8 @@ public class KeyGenerator extends Task<Void>
 		KeyFactory factory = null;
 		RSAPublicKeySpec pubKeySpec = null;
 		RSAPrivateKeySpec privKeySpec = null;
-		String publicKeyFileName = "destination_public_key.txt";
-		String privateKeyFileName = "destination_private_key.txt";
+		String publicKeyFileName = "source_public_key.txt";
+		String privateKeyFileName = "source_private_key.txt";
 		
 		try
 		{
@@ -77,7 +75,7 @@ public class KeyGenerator extends Task<Void>
 			privKeySpec = factory.getKeySpec( keyPair.getPrivate(), RSAPrivateKeySpec.class );
 		
 			writeKeyToFile(publicKeyFileName, pubKeySpec.getModulus(), pubKeySpec.getPublicExponent());
-			writeKeyToFile(privateKeyFileName, privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
+			//writeKeyToFile(privateKeyFileName, privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
 			
 			publicKeyPath = System.getProperty("user.dir") + "/" + publicKeyFileName;
 		}
