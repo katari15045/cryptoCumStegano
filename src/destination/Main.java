@@ -1,3 +1,9 @@
+/*
+ * Compile with javac -cp .:<path to all external jars> Main.java
+ * Run with java -cp .:<path to all external jars> Main
+*/
+
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -68,7 +74,7 @@ public class Main extends Application
 class Starter implements EventHandler<ActionEvent>
 {
 	private Stage stage = null;
-	private EmailCollectorGUI emailCollectorGUI = null;
+	private EmailCumIPCollectorGUI emailCollectorGUI = null;
 	
 	public Starter(Stage stage)
 	{
@@ -77,7 +83,7 @@ class Starter implements EventHandler<ActionEvent>
 	
 	public void handle(ActionEvent event)
 	{
-		emailCollectorGUI = new EmailCollectorGUI();
+		emailCollectorGUI = new EmailCumIPCollectorGUI();
 		emailCollectorGUI.start(stage);
 	}
 }

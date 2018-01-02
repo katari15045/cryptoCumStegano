@@ -46,9 +46,9 @@ public class PostAttachmentHandler implements EventHandler<ActionEvent>
 		buttonNext.setOnAction( new PostDHHandler(stage) );
 
 		gridPane = new GridPane();
-		gridPane.add(progressIndicator);
-		gridPane.add(labelProgress);
-		gridPane.add(buttonNext);
+		gridPane.add(progressIndicator, 0, 0);
+		gridPane.add(labelProgress, 0, 1);
+		gridPane.add(buttonNext, 0, 2);
 		gridPane.setAlignment(Pos.CENTER);
 		GridPane.setMargin(progressIndicator, new Insets(30, 0, 0, 0));
 		GridPane.setMargin(labelProgress, new Insets(20, 0, 0, 0));

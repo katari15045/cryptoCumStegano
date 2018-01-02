@@ -73,7 +73,7 @@ public class OTPSender extends Task<Boolean>
                 e.printStackTrace();
         }
 		
-        updateMessage("An OTP has been sent to " + EmailCollectorGUI.receiverEmailID);
+        updateMessage("An OTP has been sent to " + EmailCumIPCollectorGUI.receiverEmailID);
         updateProgress(1.0, 1.0);
         button.setDisable(false);
         

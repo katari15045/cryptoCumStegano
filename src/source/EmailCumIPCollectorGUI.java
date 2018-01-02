@@ -25,7 +25,8 @@ public class EmailCumIPCollectorGUI
 	
 	public static String senderEmailID = null;
 	public static String receiverEmailID = null;
-	
+	public static String receiverIP = null;	
+
 	private GridPane gridPane = null;
 	private Scene scene = null;
 	
@@ -45,10 +46,11 @@ public class EmailCumIPCollectorGUI
 		labelReceiverEmailID.setText("Receiver's Email ID : ");
 		textFieldReceiverEmailID = new TextField();
 		labelReceiverIP = new Label();
-		labelReceiver
+		labelReceiverIP.setText("Receiver's IP address (IPv4) : ");
+		textFieldReceiverIP = new TextField();
 		button = new Button();
 		button.setText("Submit");
-		button.setOnAction(new PostEmailInputHandler(textFieldReceiverEmailID, textFieldSenderEmailID, stage) );
+		button.setOnAction(new PostEmailInputHandler(textFieldReceiverEmailID, textFieldSenderEmailID, textFieldReceiverIP, stage) );
 		
 		gridPane = new GridPane();
 		gridPane.add(labelHeading, 0, 0);
@@ -57,13 +59,17 @@ public class EmailCumIPCollectorGUI
 		gridPane.add(textFieldSenderEmailID, 1, 2);
 		gridPane.add(labelReceiverEmailID, 0, 3);
 		gridPane.add(textFieldReceiverEmailID, 1, 3);
-		gridPane.add(button, 0, 4);
+		gridPane.add(labelReceiverIP, 0, 4);
+		gridPane.add(textFieldReceiverIP, 1, 4);
+		gridPane.add(button, 0, 5);
 		gridPane.setAlignment(Pos.CENTER);
 		GridPane.setMargin(labelContent, new Insets(20, 0, 0, 0));
 		GridPane.setMargin(labelSenderEmailID, new Insets(60, 0, 0, 0));
 		GridPane.setMargin(textFieldSenderEmailID, new Insets(60, 0, 0, 0));
 		GridPane.setMargin(labelReceiverEmailID, new Insets(20, 0, 0, 0));
 		GridPane.setMargin(textFieldReceiverEmailID, new Insets(20, 0, 0, 0));
+		GridPane.setMargin(labelReceiverIP, new Insets(20, 0, 0, 0));
+		GridPane.setMargin(textFieldReceiverIP, new Insets(20, 0, 0, 0));
 		GridPane.setMargin(button, new Insets(60, 0, 0, 0));
 		
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
@@ -76,28 +82,32 @@ class PostEmailInputHandler implements EventHandler<ActionEvent>
 {
 	private TextField textFieldSenderEmailID = null;
 	private TextField textFieldReceiverEmailID = null;
+	private TextField textFieldReceiverIP = null;
 	private Stage stage = null;
 	private MyEmail myEmail = null;
 	
-	public PostEmailInputHandler(TextField textFieldReceiverEmailID, TextField textFieldSenderEmailID, Stage stage) 
+	public PostEmailInputHandler(TextField textFieldReceiverEmailID, TextField textFieldSenderEmailID, TextField textFieldReceiverIP, Stage stage) 
 	{
 		this.textFieldSenderEmailID = textFieldSenderEmailID;
 		this.textFieldReceiverEmailID = textFieldReceiverEmailID;
+		this.textFieldReceiverIP = textFieldReceiverIP;
 		this.stage = stage;
 	}
 	
 	@Override
 	public void handle(ActionEvent event) 
 	{
-		EmailCollectorGUI.senderEmailID = textFieldSenderEmailID.getText();
-		EmailCollectorGUI.receiverEmailID = textFieldReceiverEmailID.getText();
-		
-		System.out.println("Sender : " + EmailCollectorGUI.senderEmailID);
-		System.out.println("Receiver : " + EmailCollectorGUI.receiverEmailID + "\n");
+		EmailCumIPCollectorGUI.senderEmailID = textFieldSenderEmailID.getText();
+		EmailCumIPCollectorGUI.receiverEmailID = textFieldReceiverEmailID.getText();
+		EmailCumIPCollectorGUI.receiverIP = textFieldReceiverIP.getText();
+	
+		System.out.println("Sender : " + EmailCumIPCollectorGUI.senderEmailID);
+		System.out.println("Receiver : " + EmailCumIPCollectorGUI.receiverEmailID);
+		System.out.println("Receiver's IP address : " + EmailCumIPCollectorGUI.receiverIP + "\n");
 		
 		myEmail = new MyEmail();
-		System.out.println("Sending OTP to " + EmailCollectorGUI.senderEmailID + "...");
-		myEmail.sendOTP(EmailCollectorGUI.senderEmailID, stage);
+		System.out.println("Sending OTP to " + EmailCumIPCollectorGUI.senderEmailID + "...");
+		myEmail.sendOTP(EmailCumIPCollectorGUI.senderEmailID, stage);
 	}
 }
 

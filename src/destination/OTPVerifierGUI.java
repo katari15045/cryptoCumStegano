@@ -27,7 +27,7 @@ public class OTPVerifierGUI
 		labelHeading.setFont( new Font(Constants.HEAD_SIZE) );
 		labelHeading.setTextFill( Color.web(Constants.HEAD_COLOR) );
 		labelContent = new Label();
-		labelContent.setText("Enter the OTP sent to " + EmailCollectorGUI.receiverEmailID);
+		labelContent.setText("Enter the OTP sent to " + EmailCumIPCollectorGUI.receiverEmailID);
 		labelContent.setTextFill( Color.web(Constants.HEAD_COLOR) );
 		labelOTP = new Label();
 		labelOTP.setText("OTP : ");

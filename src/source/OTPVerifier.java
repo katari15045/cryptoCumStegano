@@ -39,12 +39,12 @@ public class OTPVerifier implements EventHandler<ActionEvent>
 			alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Step 2 Done!");
 			alert.setHeaderText("Success!");
-			alert.setContentText(EmailCollectorGUI.senderEmailID + " Verified!");
+			alert.setContentText(EmailCumIPCollectorGUI.senderEmailID + " Verified!");
 			alert.show();
 			
 			myEmail = new MyEmail();
-			System.out.println("Sending Public Key to " + EmailCollectorGUI.receiverEmailID + "...");
-			myEmail.sendAttachment( EmailCollectorGUI.receiverEmailID, stage );
+			System.out.println("Sending Public Key to " + EmailCumIPCollectorGUI.receiverEmailID + "...");
+			myEmail.sendAttachment( EmailCumIPCollectorGUI.receiverEmailID, stage );
 		}
 		
 		else
@@ -98,15 +98,15 @@ class OTPResender implements EventHandler<ActionEvent>
 	public void handle(ActionEvent event) 
 	{
 		myEmail = new MyEmail();
-		System.out.println("Sending OTP to " + EmailCollectorGUI.senderEmailID + "...");
-		myEmail.sendOTP(EmailCollectorGUI.senderEmailID, stage);
+		System.out.println("Sending OTP to " + EmailCumIPCollectorGUI.senderEmailID + "...");
+		myEmail.sendOTP(EmailCumIPCollectorGUI.senderEmailID, stage);
 	}
 }
 
 class EmailChanger implements EventHandler<ActionEvent>
 {
 	private Stage stage = null;
-	private EmailCollectorGUI emailCollectorGUI = null;
+	private EmailCumIPCollectorGUI emailCollectorGUI = null;
 	
 	public EmailChanger(Stage stage) 
 	{
@@ -116,7 +116,7 @@ class EmailChanger implements EventHandler<ActionEvent>
 	@Override
 	public void handle(ActionEvent event) 
 	{
-		emailCollectorGUI = new EmailCollectorGUI();
+		emailCollectorGUI = new EmailCumIPCollectorGUI();
 		emailCollectorGUI.start(stage);
 	}
 }

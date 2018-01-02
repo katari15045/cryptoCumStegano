@@ -29,12 +29,12 @@ public class DiffieHellman
 		return pubKeyStr;
 	}
 
-	byte[] end(byte[] dstPubKeyBytes)
+	byte[] end(String dstPubKeyStr)
 	{
 		PublicKey pubKey = null;
 		byte[] secret = null;
 
-		pubKey = getPubKeyFromBytes(dstPubKeyBytes);	
+		pubKey = getPubKeyFromBytes( Base64.getDecoder().decode( dstPubKeyStr.getBytes() ) );	
 
 		try
 		{
