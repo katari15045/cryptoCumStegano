@@ -35,6 +35,7 @@ public class Main extends Application
 		button = new Button();
 		button.setText("Start!");
 		button.setOnAction( new Starter(stage) );
+		button.setDisable(true);
 		
 		gridPane = new GridPane();
 		gridPane.add(progressIndicator, 0, 0);

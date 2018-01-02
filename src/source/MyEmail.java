@@ -59,7 +59,7 @@ public class MyEmail
 		thread = new Thread(attachmentSender);
 		thread.start();
 		
-		button.setOnAction( new PostAttachmentHandler() );
+		button.setOnAction( new PostAttachmentHandler(stage) );
 	}
 	
 	private String getOTP()
@@ -93,14 +93,6 @@ public class MyEmail
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
 		stage.setScene(scene);
 		stage.show();
-	}
-}
-
-class PostAttachmentHandler implements EventHandler<ActionEvent>
-{	
-	public void handle(ActionEvent event)
-	{
-		System.out.println("Need to implement it.");
 	}
 }
 

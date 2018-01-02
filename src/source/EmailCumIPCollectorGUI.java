@@ -11,14 +11,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class EmailCollectorGUI 
+public class EmailCumIPCollectorGUI 
 {
 	private Label labelHeading = null;
 	private Label labelContent = null;
 	private Label labelSenderEmailID = null;
 	private Label labelReceiverEmailID = null;
+	private Label labelReceiverIP = null;
 	private TextField textFieldReceiverEmailID = null;
 	private TextField textFieldSenderEmailID = null;
+	private TextField textFieldReceiverIP = null;
 	private Button button = null;
 	
 	public static String senderEmailID = null;
@@ -42,6 +44,8 @@ public class EmailCollectorGUI
 		labelReceiverEmailID = new Label();
 		labelReceiverEmailID.setText("Receiver's Email ID : ");
 		textFieldReceiverEmailID = new TextField();
+		labelReceiverIP = new Label();
+		labelReceiver
 		button = new Button();
 		button.setText("Submit");
 		button.setOnAction(new PostEmailInputHandler(textFieldReceiverEmailID, textFieldSenderEmailID, stage) );

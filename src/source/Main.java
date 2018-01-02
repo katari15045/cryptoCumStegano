@@ -42,7 +42,8 @@ public class Main extends Application
 		button = new Button();
 		button.setText("Start!");
 		button.setOnAction( new Starter(stage) );
-		
+		button.setDisable(true);
+				
 		gridPane = new GridPane();
 		gridPane.add(progressIndicator, 0, 0);
 		gridPane.add(labelProgress, 0, 1);
@@ -74,7 +75,7 @@ public class Main extends Application
 class Starter implements EventHandler<ActionEvent>
 {
 	private Stage stage = null;
-	private EmailCollectorGUI emailCollectorGUI = null;
+	private EmailCumIPCollectorGUI emailCumIPCollectorGUI = null;
 	
 	public Starter(Stage stage)
 	{
@@ -83,8 +84,8 @@ class Starter implements EventHandler<ActionEvent>
 	
 	public void handle(ActionEvent event)
 	{
-		emailCollectorGUI = new EmailCollectorGUI();
-		emailCollectorGUI.start(stage);
+		emailCumIPCollectorGUI = new EmailCumIPCollectorGUI();
+		emailCumIPCollectorGUI.start(stage);
 	}
 }
 

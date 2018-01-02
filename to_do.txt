@@ -5,3 +5,5 @@
 2. Document the approach
 
 3. Implement DH with GUI
+
+4. Need to share the ip addresses of src & dst to transfer DH public keys

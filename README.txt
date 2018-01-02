@@ -1,15 +1,35 @@
 =======================================================================================================================
 
-1. Drawback of Asymmetric Algo - RSA
-------------------------------------
+1. Super Computers vs time
+--------------------------
 
-When your key size is k bits then it can only encrypt a message whose length is <= (k/8)-11 bytes
-i.e if 8192 is your key size then the max size of a message it can encrypt is (1024-11) = 1013 bytes
+(approximated to next multiple of 10)
 
-So, due to this, "encr_pub_dst( encr_priv_src("All is well") )" isn't working even with 8192-bit RSA keys.
+2^10		10^3
+2^20		10^6
+2^30		10^9
+2^32		10^12
+2^64		10^21
+2^128		10^39
+2^256		10^78
+2^512		10^156
+2^1024		10^309
 
-source: https://security.stackexchange.com/a/41226/167165
-	https://stackoverflow.com/a/10007285/8279892
+i.e if 2^x = 10^y, 
+    y ~ 3*(x/10)
+
+Worlds fastest super computer ~ 10^18 FlOPS (As on 2nd Jan, 2018)
+
+(approximation : a year ~ 10^8 seconds)
+
+key_size_in_bits		approx_time_for_the_fastest_super_computer_to_get_all_combinations
+----------------		------------------------------------------------------------------
+32				< 1 second
+64				17 minutes
+128				10^13 years (10^21 seconds)
+256				10^52 years (10^60 seconds)
+
+source : https://en.wikipedia.org/wiki/TOP500#Top_10_ranking
 
 =======================================================================================================================
 
@@ -47,21 +67,15 @@ Source : https://en.wikipedia.org/wiki/Key_size
 	 https://en.wikipedia.org/wiki/SHA-3
 	 https://en.wikipedia.org/wiki/SHA-2
 
+
+
 =======================================================================================================================
 
-3. Understanding Diffie-Hellman Algo
+3. Drawback of Asymmetric Algo - RSA
 ------------------------------------
 
-https://www.geeksforgeeks.org/implementation-diffie-hellman-algorithm/
-https://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/CryptoSpec.html#DH2Ex
-
-
-=======================================================================================================================
-
-4. RSA with AES
----------------
-
-A k-bit RSA key can encrypt upto "(k/8)-11" bytes of data. 
+When your key size is k bits then it can only encrypt a message whose length is <= (k/8)-11 bytes
+i.e if 8192 is your key size then the max size of a message it can encrypt is (1024-11) = 1013 bytes
 
 RSA Key size			Max Data in bytes		
 ------------			-----------------		
@@ -74,10 +88,12 @@ RSA Key size			Max Data in bytes
 
 8192					1013				
 
+source: https://security.stackexchange.com/a/41226/167165
+	https://stackoverflow.com/a/10007285/8279892
 
 =======================================================================================================================
 
-5. Ensuring security
+4. Ensuring security
 --------------------
 
 While transferring the sym_key, first encr_with_src_priv_key( hash(secret) ) to ensure authenticity (signing) and integrity (hashing) and then encr_with_dst_pub_key(sym_key) to ensure confidentiality and to receive actual data (availability) i.e ensuring all 4 properties of information security -
@@ -92,4 +108,13 @@ CIA model cum non-repudiation
 Source : https://crypto.stackexchange.com/questions/12768/why-hash-the-message-before-signing-it-with-rsa/25953#25953
 
 =======================================================================================================================
+
+5. Understanding Diffie-Hellman Algo
+------------------------------------
+
+https://www.geeksforgeeks.org/implementation-diffie-hellman-algorithm/
+https://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/CryptoSpec.html#DH2Ex
+
+=======================================================================================================================
+
 
