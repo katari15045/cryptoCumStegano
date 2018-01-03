@@ -43,7 +43,6 @@ public class OTPVerifier implements EventHandler<ActionEvent>
 			alert.show();
 			
 			myEmail = new MyEmail();
-			System.out.println("Sending Public Key to " + EmailCumIPCollectorGUI.senderEmailID + "...");
 			myEmail.sendAttachment( EmailCumIPCollectorGUI.senderEmailID, stage );
 		}
 		

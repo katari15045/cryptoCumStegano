@@ -16,20 +16,16 @@ public class OTPSender extends Task<Boolean>
 	private String toEmailID = null;
 	private String subject = null;
 	private String body = null;
-	private String otp = null;
 	private String host = null;
 	private String port = null;
 	
-	private Button button = null;
 	private Properties properties = null;
 	private MimeMessage mimeMessage = null;
 	private Session session = null;
 	
-	public OTPSender(String otp, String toEmailID, Button button)
+	public OTPSender(String toEmailID)
 	{
-		this.otp = otp;
 		this.toEmailID = toEmailID;
-		this.button = button;
 	}
 	
 	@Override
@@ -37,7 +33,6 @@ public class OTPSender extends Task<Boolean>
 	{
 		StringBuilder stringBuilder = null;
 		
-		updateMessage("Sending OTP...");
 		fromEmail = "saketh9977.test@gmail.com";
 		password = "bear_grylls_9977";	
 		host = "smtp.gmail.com";
@@ -53,42 +48,26 @@ public class OTPSender extends Task<Boolean>
 		subject = "Steganography cum Cryptography : Email Verification";
 		stringBuilder = new StringBuilder();
 		stringBuilder.append("Hi, \n\n");
-		stringBuilder.append("OTP to verify your email is " + otp + ".\n\n");
+		stringBuilder.append("OTP to verify your email is " + MyEmail.otp + ".\n\n");
 		body = stringBuilder.toString();
 		
-        try
-        {
-        		mimeMessage = new MimeMessage(session);
-                mimeMessage.setFrom( new InternetAddress(fromEmail) );
-                mimeMessage.setRecipients( Message.RecipientType.TO, InternetAddress.parse(toEmailID) );
-                mimeMessage.setSubject(subject);
-                mimeMessage.setText(body);
+        	try
+	        {
+       			mimeMessage = new MimeMessage(session);
+        	        mimeMessage.setFrom( new InternetAddress(fromEmail) );
+                	mimeMessage.setRecipients( Message.RecipientType.TO, InternetAddress.parse(toEmailID) );
+	                mimeMessage.setSubject(subject);
+        	        mimeMessage.setText(body);
 
-                Transport.send(mimeMessage);
-                System.out.println("OTP Sent!");
-        }
+                	Transport.send(mimeMessage);
+	                System.out.println("OTP Sent!");
+        	}
 
-        catch(Exception e)
-        {
-                e.printStackTrace();
-        }
-		
-        updateMessage("An OTP has been sent to " + EmailCumIPCollectorGUI.receiverEmailID);
-        updateProgress(1.0, 1.0);
-        button.setDisable(false);
+	        catch(Exception e)
+        	{
+                	e.printStackTrace();
+	        }
         
 		return true;
-	}
-	
-	@Override
-	protected void updateProgress(double workDone, double max) 
-	{
-		super.updateProgress(workDone, max);
-	}
-	
-	@Override
-	protected void updateMessage(String message)
-	{
-		super.updateMessage(message);
 	}
 }

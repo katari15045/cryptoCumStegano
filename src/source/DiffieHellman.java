@@ -51,12 +51,14 @@ public class DiffieHellman extends Task<Void>
 			System.out.println("Sending DH public key to " + EmailCumIPCollectorGUI.receiverIP + "...");
 			socket.setData(dataToSend);
 			socket.setMode( MySocket.WRITE );
+			socketThread = new Thread(socket);
 			socketThread.start();
 			socketThread.join();
 	
 			updateMessage("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.receiverIP + "...");
 			System.out.println("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.receiverIP + "...");
 			socket.setMode( MySocket.READ );
+			socketThread = new Thread(socket);
 			socketThread.start();
 			socketThread.join();
 

@@ -7,4 +7,6 @@ public final class Constants
 	public static int WIND_ROWS = 360;
 	public static double HEAD_SIZE = 20.0;
 	public static String HEAD_COLOR = "#ad1f13";
+	public static int SERVER_PORT = 7132;
+	public static String SYM_ALGO = "AES";
 }

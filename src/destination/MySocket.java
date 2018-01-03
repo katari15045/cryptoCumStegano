@@ -1,4 +1,3 @@
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
 import java.io.DataInputStream;
@@ -7,7 +6,8 @@ import javafx.concurrent.Task;
 
 public class MySocket extends Task<Void>
 {
-	private ServerSocket serverSocket = null;
+	private String serverIPAddress;
+
 	private Socket socket = null;
 	private String data = null;
 	private String dataHash = null;
@@ -29,17 +29,17 @@ public class MySocket extends Task<Void>
 	{
 		if(mode == MySocket.CONNECT)
 		{
-			connectToClient();
+			connectToServer();
 		}
 
 		else if(mode == MySocket.READ)
 		{
-			receiveDataFromClient();
+			receiveDataFromServer();
 		}
 
 		else if(mode == MySocket.WRITE)
 		{
-			sendDataToClient();
+			sendDataToServer();
 		}
 
 		else if(mode == MySocket.DISCONNECT)
@@ -55,14 +55,14 @@ public class MySocket extends Task<Void>
 		return null;
 	}
 
-	private void connectToClient()
+	private void connectToServer()
 	{
 		try
 		{
-			serverSocket = new ServerSocket(Constants.SOCK_PORT);
-			System.out.printf("Waiting for client on port " + serverSocket.getLocalPort() + "...");
-			socket = serverSocket.accept();
-			System.out.println("Client -> " + socket.getInetAddress() + ":" + socket.getPort() +  " Connected\n");
+		
+			System.out.println("\nWaiting for server - " + EmailCumIPCollectorGUI.senderIP + " on port " + Constants.SERVER_PORT + "...");
+			socket = new Socket(EmailCumIPCollectorGUI.senderIP, Constants.SERVER_PORT);
+			System.out.println("Connected to server on port " + socket.getPort());
 		}
 
 		catch(Exception e)
@@ -72,7 +72,7 @@ public class MySocket extends Task<Void>
 
 	}
 
-	private void receiveDataFromClient()
+	private void receiveDataFromServer()
 	{
 		String encrDataWithPubKey = null;
                 String hashedData = null;
@@ -89,14 +89,15 @@ public class MySocket extends Task<Void>
 			signedHash = dataInputStream.readUTF();
 
 			decrData = SecureTunnelCreator.rsa.decryptWithPrivKey(encrDataWithPubKey);
-			decrHash = SecureTunnelCreator.rsa.decryptWithPubKey(signedHash, PublicKeyCollectorGUI.dstPubKey);
+			decrHash = SecureTunnelCreator.rsa.decryptWithPubKey(signedHash, PublicKeyCollectorGUI.srcPubKey);
 			decrDataHash = hash.hash(decrData);
 
-			if( decrHash.equals(decrDataHash) )			
-			{
-				System.out.println("Hash matched!");
-				data = decrData;
-			}
+                        if( decrHash.equals(decrDataHash) )
+                        {
+                                System.out.println("Hash matched!");
+                                data = decrData;
+                        }
+
 		}
 
 		catch(Exception e)
@@ -105,7 +106,7 @@ public class MySocket extends Task<Void>
 		}
 	}
 
-	private void sendDataToClient()
+	private void sendDataToServer()
 	{
 		String encrDataWithDstPubKey = null;
 		String hashedData = null;
@@ -115,7 +116,7 @@ public class MySocket extends Task<Void>
 		{
 			dataOutputStream = new DataOutputStream( socket.getOutputStream() );
 
-			encrDataWithDstPubKey = SecureTunnelCreator.rsa.encryptWithPubKey(data, PublicKeyCollectorGUI.dstPubKey);
+			encrDataWithDstPubKey = SecureTunnelCreator.rsa.encryptWithPubKey(data, PublicKeyCollectorGUI.srcPubKey);
 			hashedData = SecureTunnelCreator.hash.hash(data);
 			signedHash = SecureTunnelCreator.rsa.encryptWithPrivKey(hashedData);
 
@@ -136,7 +137,6 @@ public class MySocket extends Task<Void>
 			dataInputStream.close();
 			dataOutputStream.close();
 			socket.close();
-			serverSocket.close();
 			System.out.println("Client Disconnected!");
 		}
 
