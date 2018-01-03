@@ -13,7 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javafx.concurrent.Task;
 import java.lang.Exception;
 
-public class PostAttachmentHandler implements EventHandler<ActionEvent>
+public class SecureTunnelCreator
 {
 	private Stage stage = null;
 	private ProgressIndicator progressIndicator = null;
@@ -26,15 +26,20 @@ public class PostAttachmentHandler implements EventHandler<ActionEvent>
 	private Thread backGroundThread = null;
 	static SecretKeySpec symKey = null;
 
-	public PostAttachmentHandler(Stage stage)
-	{
-		this.stage = stage;
-	}
-	
-	@Override
-	public void handle(ActionEvent event)
+	private DiffieHellman dh = null;
+	private Thread dhThread = null;
+	private MySocket socket = null;
+	private Thread socketThread = null;
+
+	static MyAES aes = null;
+        static MyRSA rsa = null;
+        static MyHash hash = null;	
+
+	public void start(Stage stage)
 	{
 		String dataToSend = null;
+
+		this.stage = stage;
 		initialize();
 		backGroundThread.start();
 	}
@@ -61,49 +66,57 @@ public class PostAttachmentHandler implements EventHandler<ActionEvent>
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
 		stage.setScene(scene);
 		stage.show();
+		
+		socket = new MySocket();
+		socketThread = new Thread(socket);
+		dh = new DiffieHellman(socketThread, socket);
+		dhThread = new Thread(dh);
 
-		backGroundTask = new BackGroundTask(buttonNext, labelProgress);
+		backGroundTask = new BackGroundTask(buttonNext, labelProgress, dh, dhThread);
 		progressIndicator.progressProperty().bind( backGroundTask.progressProperty() );
 		backGroundThread = new Thread(backGroundTask);
+
+		labelProgress.textProperty().bind( dh.messageProperty() );
+
+		aes = new MyAES();
+                rsa = new MyRSA();
+                hash = new MyHash();
+
+                dh.updateMessage("Generating RSA Keys...");
+                System.out.println("Generating RSA Keys...");
+                rsa.start();
 	}
 }
 
 class BackGroundTask extends Task<Void>
-{
+{	
 	private DiffieHellman dh = null;
 	private Thread dhThread = null;
-	private MySocket socket = null;
-	private Thread socketThread = null;
-
 	private Button buttonNext = null;
 	private Label labelProgress = null;
 
-	public BackGroundTask(Button buttonNext, Label labelProgress)
+	public BackGroundTask(Button buttonNext, Label labelProgress, DiffieHellman dh, Thread dhThread)
 	{
 		this.buttonNext = buttonNext;
 		this.labelProgress = labelProgress;
+		this.dh = dh;
+		this.dhThread = dhThread;
 	}
 
 	@Override
 	public Void call()
 	{
 		byte[] secretBytes = null;		
-
-		socket = new MySocket();
-		socketThread = new Thread(socket);
-		dh = new DiffieHellman(socketThread, socket);
-		dhThread = new Thread(dh);
 		
 		try
 		{
-			labelProgress.textProperty().bind( dh.messageProperty() );
 			dhThread.start();
 			dhThread.join();
 
 			secretBytes = dh.getSecret();
 			dh.updateMessage("Generating Symmetric Key...");
 			System.out.println("Generating Symmetric Key...");
-			PostAttachmentHandler.symKey = new SecretKeySpec(secretBytes, 0, 32, Constants.SYM_ALGO);
+			SecureTunnelCreator.symKey = new SecretKeySpec(secretBytes, 0, 32, Constants.SYM_ALGO);
 			buttonNext.setDisable(false);
 			dh.updateMessage("Symmetric Key Generated!");	
 			System.out.println("Symmetric Key generated!\n");

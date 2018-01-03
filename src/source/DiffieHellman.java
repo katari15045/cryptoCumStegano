@@ -38,7 +38,7 @@ public class DiffieHellman extends Task<Void>
 		try
 		{
 			updateMessage("Connecting to " + EmailCumIPCollectorGUI.receiverIP + " on port " + Constants.SOCK_PORT + "...");
-			System.out.println("\n connecting to " + EmailCumIPCollectorGUI.receiverIP + "...");
+			System.out.println("connecting to " + EmailCumIPCollectorGUI.receiverIP + "...");
 			socket.setMode( MySocket.CONNECT );		
 			socketThread.start();
 			socketThread.join();

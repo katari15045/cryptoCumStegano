@@ -11,3 +11,9 @@
 5. Sender - get the public key of receiver from the user
 
 6. In DH, while sending DH's pub_key, make sure the 4 properties of security hold
+
+7. Change the access modifiers to private or make it default, but don't make it public!
+
+8. Handle timeout wihle sending email - may be due to no internet
+
+9. Make sure you start progress indicator right before printing "Generating RSA keys..."

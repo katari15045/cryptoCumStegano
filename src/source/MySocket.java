@@ -10,9 +10,13 @@ public class MySocket extends Task<Void>
 	private ServerSocket serverSocket = null;
 	private Socket socket = null;
 	private String data = null;
+	private String dataHash = null;
 
 	private DataInputStream dataInputStream = null;
 	private DataOutputStream dataOutputStream = null;
+
+	private MyRSA rsa = null;
+	private MyHash hash = null;
 
 	private int mode = 0;
 	static final int CONNECT = 1;
@@ -56,7 +60,7 @@ public class MySocket extends Task<Void>
 		try
 		{
 			serverSocket = new ServerSocket(Constants.SOCK_PORT);
-			System.out.printf("\nWaiting for client on port " + serverSocket.getLocalPort() + "...");
+			System.out.printf("Waiting for client on port " + serverSocket.getLocalPort() + "...");
 			socket = serverSocket.accept();
 			System.out.println("Client -> " + socket.getInetAddress() + ":" + socket.getPort() +  " Connected\n");
 		}
@@ -70,10 +74,21 @@ public class MySocket extends Task<Void>
 
 	private void receiveDataFromClient()
 	{
+		String encrDataWithPubKey = null;
+                String hashedData = null;
+                String signedHash = null;
+		String decrData = null;
+		String decrHash = null;
+
 		try
 		{	
 			dataInputStream = new DataInputStream( socket.getInputStream() );
-			data = dataInputStream.readUTF();
+
+			encrDataWithPubKey = dataInputStream.readUTF();
+			signedHash = dataInputStream.readUTF();
+
+			decrData = SecureTunnelCreator.rsa.decryptWithPrivKey(encrDataWithPubKey);
+			decrHash = SecureTunnelCreator.rsa.decryptWithPubKey(signedHash, PublicKeyCollectorGUI.dstPubKey);
 		}
 
 		catch(Exception e)
@@ -84,10 +99,20 @@ public class MySocket extends Task<Void>
 
 	private void sendDataToClient()
 	{
+		String encrDataWithDstPubKey = null;
+		String hashedData = null;
+		String signedHash = null;
+
 		try
 		{
 			dataOutputStream = new DataOutputStream( socket.getOutputStream() );
-			dataOutputStream.writeUTF(data);
+
+			encrDataWithDstPubKey = SecureTunnelCreator.rsa.encryptWithPubKey(data, PublicKeyCollectorGUI.dstPubKey);
+			hashedData = SecureTunnelCreator.hash.hash(data);
+			signedHash = SecureTunnelCreator.rsa.encryptWithPrivKey(hashedData);
+
+			dataOutputStream.writeUTF(encrDataWithDstPubKey);
+			dataOutputStream.writeUTF(signedHash);
 		}
 
 		catch(Exception e)
@@ -102,7 +127,7 @@ public class MySocket extends Task<Void>
 		{
 			dataInputStream.close();
 			socket.close();
-		serverSocket.close();
+			serverSocket.close();
 			System.out.println("Client Disconnected!");
 		}
 

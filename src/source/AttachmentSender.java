@@ -27,7 +27,6 @@ public class AttachmentSender extends Task<Boolean>
 	
 	private String host = null;
 	private String port = null;
-	private Button button = null;
 	
 	private Properties properties = null;
 	private MimeMessage mimeMessage = null;
@@ -37,11 +36,10 @@ public class AttachmentSender extends Task<Boolean>
 	private DataSource dataSource = null;
 	private Multipart multiPart = null;
 	
-	public AttachmentSender(String toEmailID, String filePath, Button button) 
+	public AttachmentSender(String toEmailID, String filePath) 
 	{
 		this.toEmailID = toEmailID;
 		this.filePath = filePath;
-		this.button = button;
 	}
 	
 	@Override
@@ -49,7 +47,6 @@ public class AttachmentSender extends Task<Boolean>
 	{
 		StringBuilder stringBuilder = null;
 		
-		updateMessage("Sending public key...");
 		fromEmailID = "saketh9977.test@gmail.com";
 		password = "bear_grylls_9977";
 		host = "smtp.gmail.com";
@@ -92,11 +89,6 @@ public class AttachmentSender extends Task<Boolean>
 
 			mimeMessage.setContent(multiPart);
 			Transport.send(mimeMessage);
-			System.out.println("Public Key Sent!\n");
-			
-			updateProgress(1.0, 1.0);
-			updateMessage("Public Key has been sent to " + EmailCumIPCollectorGUI.receiverEmailID);
-			button.setDisable(false);
 		}
 
 		catch(Exception e)
@@ -107,15 +99,4 @@ public class AttachmentSender extends Task<Boolean>
 		return true;
 	}
 	
-	@Override
-	protected void updateProgress(long workDone, long max) 
-	{
-		super.updateProgress(workDone, max);
-	}
-	
-	@Override
-	protected void updateMessage(String message) 
-	{
-		super.updateMessage(message);
-	}
 }
