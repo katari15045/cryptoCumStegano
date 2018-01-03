@@ -1,3 +1,4 @@
+import java.lang.Thread;
 import javafx.stage.Stage;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Label;
@@ -8,6 +9,9 @@ import javafx.scene.layout.GridPane;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javax.crypto.spec.SecretKeySpec;
+import javafx.concurrent.Task;
+import java.lang.Exception;
 
 public class PostAttachmentHandler implements EventHandler<ActionEvent>
 {
@@ -18,8 +22,9 @@ public class PostAttachmentHandler implements EventHandler<ActionEvent>
 	private GridPane gridPane = null;
 	private Scene scene = null;
 
-	private DiffieHellman dh = null;
-	private String dhPubKeySrc = null;
+	private BackGroundTask backGroundTask = null;
+	private Thread backGroundThread = null;
+	static SecretKeySpec symKey = null;
 
 	public PostAttachmentHandler(Stage stage)
 	{
@@ -29,10 +34,9 @@ public class PostAttachmentHandler implements EventHandler<ActionEvent>
 	@Override
 	public void handle(ActionEvent event)
 	{
+		String dataToSend = null;
 		initialize();
-
-		dh = new DiffieHellman();
-		
+		backGroundThread.start();
 	}
 
 	private void initialize()
@@ -57,7 +61,68 @@ public class PostAttachmentHandler implements EventHandler<ActionEvent>
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
 		stage.setScene(scene);
 		stage.show();
+
+		backGroundTask = new BackGroundTask(buttonNext, labelProgress);
+		progressIndicator.progressProperty().bind( backGroundTask.progressProperty() );
+		backGroundThread = new Thread(backGroundTask);
 	}
+}
+
+class BackGroundTask extends Task<Void>
+{
+	private DiffieHellman dh = null;
+	private Thread dhThread = null;
+	private MySocket socket = null;
+	private Thread socketThread = null;
+
+	private Button buttonNext = null;
+	private Label labelProgress = null;
+
+	public BackGroundTask(Button buttonNext, Label labelProgress)
+	{
+		this.buttonNext = buttonNext;
+		this.labelProgress = labelProgress;
+	}
+
+	@Override
+	public Void call()
+	{
+		byte[] secretBytes = null;		
+
+		socket = new MySocket();
+		socketThread = new Thread(socket);
+		dh = new DiffieHellman(socketThread, socket);
+		dhThread = new Thread(dh);
+		
+		try
+		{
+			labelProgress.textProperty().bind( dh.messageProperty() );
+			dhThread.start();
+			dhThread.join();
+
+			secretBytes = dh.getSecret();
+			dh.updateMessage("Generating Symmetric Key...");
+			System.out.println("Generating Symmetric Key...");
+			PostAttachmentHandler.symKey = new SecretKeySpec(secretBytes, 0, 32, Constants.SYM_ALGO);
+			buttonNext.setDisable(false);
+			dh.updateMessage("Symmetric Key Generated!");	
+			System.out.println("Symmetric Key generated!\n");
+			updateProgress(1.0, 1.0);	
+		}
+
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+        protected void updateProgress(double workDone, double max)
+        {
+                super.updateProgress(workDone, max);
+        }
 }
 
 class PostDHHandler implements EventHandler<ActionEvent>

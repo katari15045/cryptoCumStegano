@@ -8,8 +8,10 @@ import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.security.KeyFactory;
 import java.lang.Exception;
+import java.lang.Thread;
+import javafx.concurrent.Task;
 
-public class DiffieHellman
+public class DiffieHellman extends Task<Void>
 {
 	private KeyPairGenerator generator = null;
 	private String algo = "DH";
@@ -17,6 +19,61 @@ public class DiffieHellman
 	private KeyPair keyPair = null;
 
 	private KeyAgreement keyAgreement = null;
+	private Thread socketThread = null;
+	private MySocket socket = null;
+	private byte[] secret = null;
+
+	public DiffieHellman(Thread socketThread, MySocket socket)
+	{
+		this.socketThread = socketThread;
+		this.socket = socket;
+	}
+
+	@Override
+	public Void call()
+	{	
+		String dataToSend = null;
+		String dataReceived = null;
+
+		try
+		{
+			updateMessage("Connecting to " + EmailCumIPCollectorGUI.receiverIP + " on port " + Constants.SOCK_PORT + "...");
+			System.out.println("\n connecting to " + EmailCumIPCollectorGUI.receiverIP + "...");
+			socket.setMode( MySocket.CONNECT );		
+			socketThread.start();
+			socketThread.join();
+
+			updateMessage("Generating Diffie Hellman keys...");
+			System.out.println("Generating Diffie Hellman keys...");
+			dataToSend = start();
+
+			updateMessage("Sending Diffie Hellman's public key to " + EmailCumIPCollectorGUI.receiverIP + "...");
+			System.out.println("Sending DH public key to " + EmailCumIPCollectorGUI.receiverIP + "...");
+			socket.setData(dataToSend);
+			socket.setMode( MySocket.WRITE );
+			socketThread.start();
+			socketThread.join();
+	
+			updateMessage("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.receiverIP + "...");
+			System.out.println("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.receiverIP + "...");
+			socket.setMode( MySocket.READ );
+			socketThread.start();
+			socketThread.join();
+
+			dataReceived = socket.getData();
+			updateMessage("Extracting secret using Diffie Hellman...");
+			System.out.println("Extracting secret using Diffie Hellman...");
+			secret = end(dataReceived);
+			System.out.println("Secret extracted!\n");		
+		}
+
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;		
+	}
 
 	String start()
 	{
@@ -109,4 +166,18 @@ public class DiffieHellman
 		pubKeyBytes = keyPair.getPublic().getEncoded();
 		return Base64.getEncoder().encodeToString(pubKeyBytes);
 	}
+
+	@Override
+        protected void updateMessage(String message)
+        {
+                super.updateMessage(message);
+        }
+
+	byte[] getSecret()
+	{
+		return secret;
+	}
 }
+
+
+

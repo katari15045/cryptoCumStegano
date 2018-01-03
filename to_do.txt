@@ -7,3 +7,7 @@
 3. Implement DH with GUI
 
 4. Need to share the ip addresses of src & dst to transfer DH public keys
+
+5. Sender - get the public key of receiver from the user
+
+6. In DH, while sending DH's pub_key, make sure the 4 properties of security hold
