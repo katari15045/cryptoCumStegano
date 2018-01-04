@@ -15,18 +15,27 @@ public class MySocket extends Task<Void>
 	private DataInputStream dataInputStream = null;
 	private DataOutputStream dataOutputStream = null;
 
-	private MyRSA rsa = null;
-	private MyHash hash = null;
-
 	private int mode = 0;
 	static final int CONNECT = 1;
 	static final int READ = 2;
 	static final int WRITE = 3;
 	static final int DISCONNECT = 4;
 
+	public MySocket()
+	{
+
+	}
+
+	public MySocket(Socket socket)
+	{
+		this.socket = socket;
+	}
+
 	@Override
 	public Void call()
 	{
+		System.out.println("MySocket call()");
+
 		if(mode == MySocket.CONNECT)
 		{
 			connectToClient();
@@ -60,9 +69,9 @@ public class MySocket extends Task<Void>
 		try
 		{
 			serverSocket = new ServerSocket(Constants.SOCK_PORT);
-			System.out.printf("Waiting for client on port " + serverSocket.getLocalPort() + "...");
+			System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
 			socket = serverSocket.accept();
-			System.out.println("Client -> " + socket.getInetAddress() + ":" + socket.getPort() +  " Connected\n");
+			System.out.println("Client " + socket.getInetAddress() + ":" + socket.getPort() +  " Connected\n");
 		}
 
 		catch(Exception e)
@@ -88,9 +97,9 @@ public class MySocket extends Task<Void>
 			encrDataWithPubKey = dataInputStream.readUTF();
 			signedHash = dataInputStream.readUTF();
 
-			decrData = SecureTunnelCreator.rsa.decryptWithPrivKey(encrDataWithPubKey);
-			decrHash = SecureTunnelCreator.rsa.decryptWithPubKey(signedHash, PublicKeyCollectorGUI.dstPubKey);
-			decrDataHash = hash.hash(decrData);
+			decrData = MyRSA.decryptWithPrivKey(encrDataWithPubKey);
+			decrHash = MyRSA.decryptWithPubKey(signedHash, PublicKeyCollectorGUI.dstPubKey);
+			decrDataHash = MyHash.hash(decrData);
 
 			if( decrHash.equals(decrDataHash) )			
 			{
@@ -115,12 +124,18 @@ public class MySocket extends Task<Void>
 		{
 			dataOutputStream = new DataOutputStream( socket.getOutputStream() );
 
-			encrDataWithDstPubKey = SecureTunnelCreator.rsa.encryptWithPubKey(data, PublicKeyCollectorGUI.dstPubKey);
-			hashedData = SecureTunnelCreator.hash.hash(data);
-			signedHash = SecureTunnelCreator.rsa.encryptWithPrivKey(hashedData);
+			encrDataWithDstPubKey = MyRSA.encryptWithPubKey(data, PublicKeyCollectorGUI.dstPubKey);
+			hashedData = MyHash.hash(data);
+			signedHash = MyRSA.encryptWithPrivKey(hashedData);
 
 			dataOutputStream.writeUTF(encrDataWithDstPubKey);
 			dataOutputStream.writeUTF(signedHash);
+
+			System.out.println("dstPubKey : " + PublicKeyCollectorGUI.dstPubKey + "\n");
+			System.out.println("Data : " + data + "\n");
+			System.out.println("HashedData : " + hashedData + "\n");
+			System.out.println("encrDataWithDstPubKey ; " + encrDataWithDstPubKey + "\n");	
+			System.out.println("signedHash : " + signedHash + "\n");
 		}
 
 		catch(Exception e)
@@ -160,6 +175,11 @@ public class MySocket extends Task<Void>
 	{
 		this.mode = mode;
 	}
+		
+	Socket getSocket()
+	{
+		return socket;
+	}	
 }
 
 

@@ -7,6 +7,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import javax.crypto.SecretKey;
 
 import javafx.concurrent.Task;
 import javafx.scene.control.Button;
@@ -24,96 +25,26 @@ public class MyKeyGenerator extends Task<Void>
 	@Override
 	public Void call()
 	{
-		KeyPair keyPair;
+		KeyPair keyPair = null;
+		SecretKey secretKey = null;
 		
 		System.out.println("\nGenerating keys...");
 		updateMessage("Generating keys...");
-		keyPair = getKeyPair();
+		keyPair = MyRSA.generateKeyPair();
+                secretKey = MyAES.generateKey();
+                MyRSA.setPrivKey( keyPair.getPrivate() );
+                MyRSA.setPubKey( keyPair.getPublic() );
+                MyAES.setSymKey(secretKey);
+
 		
 		System.out.println("Storing keys...");
 		updateMessage("Storing keys...");
-		storeKeys(keyPair);
-		
+		MyRSA.storeKeys(keyPair);	
+	
 		System.out.println("Keys stored!\n");
 		postSuccess();
 		
 		return null;
-	}
-	
-	private KeyPair getKeyPair()
-	{
-		KeyPairGenerator generator = null;
-		KeyPair keyPair = null;
-		
-		try
-		{
-			generator = KeyPairGenerator.getInstance("RSA");
-			generator.initialize(2048);
-			keyPair = generator.genKeyPair();
-		}
-		
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		return keyPair;
-	}
-	
-	private void storeKeys(KeyPair keyPair)
-	{
-		KeyFactory factory = null;
-		RSAPublicKeySpec pubKeySpec = null;
-		RSAPrivateKeySpec privKeySpec = null;
-		String publicKeyFileName = "destination_public_key.txt";
-		String privateKeyFileName = "destination_private_key.txt";
-		
-		try
-		{
-			factory = KeyFactory.getInstance("RSA");
-			pubKeySpec = factory.getKeySpec( keyPair.getPublic(), RSAPublicKeySpec.class );
-			privKeySpec = factory.getKeySpec( keyPair.getPrivate(), RSAPrivateKeySpec.class );
-		
-			writeKeyToFile(publicKeyFileName, pubKeySpec.getModulus(), pubKeySpec.getPublicExponent());
-			//writeKeyToFile(privateKeyFileName, privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
-			
-			publicKeyPath = System.getProperty("user.dir") + "/" + publicKeyFileName;
-		}
-		
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	private void writeKeyToFile(String fileName, BigInteger modulus, BigInteger exponent)
-	{
-		ObjectOutputStream oos = null;
-		
-		try
-		{
-			oos = new ObjectOutputStream (new BufferedOutputStream( new FileOutputStream(fileName) ));
-			oos.writeObject(modulus);
-			oos.writeObject(exponent);
-		}
-		
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		finally
-		{
-			try
-			{
-				oos.close();
-			}
-		
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	private void postSuccess()
@@ -135,8 +66,14 @@ public class MyKeyGenerator extends Task<Void>
 		super.updateMessage(message);
 	}
 	
-	public static String getPublicKeyPath()
+	static String getPublicKeyPath()
 	{
 		return publicKeyPath;
 	}
+
+	static void setPublicKeyPath(String publicKeyPath)
+        {
+                MyKeyGenerator.publicKeyPath = publicKeyPath;
+        }
+
 }

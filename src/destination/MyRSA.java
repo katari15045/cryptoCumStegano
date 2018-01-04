@@ -25,31 +25,23 @@ import java.io.ObjectOutputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.lang.Exception;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 public class MyRSA
 {
-	private KeyPair keyPair;
+	private static PrivateKey privKey = null;
+	private static PublicKey pubKey = null;
 	
-	private static String algo = "RSA";
-	private int keySize = 3072;
-
-	void start()
-	{
-		
-		keyPair = generateKeyPair();
-		//storeKeys(keyPair);
-		//getPublicKey("public.key");
-	}
-	
-	String encryptWithPubKey(String plainText)
+	static String encryptWithPubKey(String plainText)
 	{
 		Cipher cipher = null;
 		byte[] encryptedText = null;
 		
 		try
 		{
-			cipher = Cipher.getInstance(algo);
-			cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
+			cipher = Cipher.getInstance(Constants.ASYM_ALGO);
+			cipher.init(Cipher.ENCRYPT_MODE, pubKey);
 			
 			encryptedText = cipher.doFinal( plainText.getBytes() );
 		}
@@ -62,14 +54,14 @@ public class MyRSA
 		return Base64.getEncoder().encodeToString(encryptedText);
 	}
 
-	String encryptWithPubKey(String plainText, PublicKey inpPubKey)
+	static String encryptWithPubKey(String plainText, PublicKey inpPubKey)
         {
                 Cipher cipher = null;
                 byte[] encryptedText = null;
 
                 try
                 {
-                        cipher = Cipher.getInstance(algo);
+                        cipher = Cipher.getInstance(Constants.ASYM_ALGO);
                         cipher.init(Cipher.ENCRYPT_MODE, inpPubKey);
 
                         encryptedText = cipher.doFinal( plainText.getBytes() );
@@ -83,15 +75,15 @@ public class MyRSA
                 return Base64.getEncoder().encodeToString(encryptedText);
         }
 	
-	String encryptWithPrivKey(String plainText)
+	static String encryptWithPrivKey(String plainText)
 	{
 		Cipher cipher = null;
 		byte[] encryptedBytes = null;
 		
 		try
 		{
-			cipher = Cipher.getInstance(algo);
-			cipher.init( Cipher.ENCRYPT_MODE, keyPair.getPrivate() );
+			cipher = Cipher.getInstance(Constants.ASYM_ALGO);
+			cipher.init( Cipher.ENCRYPT_MODE, privKey );
 			encryptedBytes = cipher.doFinal( plainText.getBytes() );
 		}
 		
@@ -103,15 +95,15 @@ public class MyRSA
 		return Base64.getEncoder().encodeToString(encryptedBytes);
 	}
 	
-	String decryptWithPrivKey(String encryptedData)
+	static String decryptWithPrivKey(String encryptedData)
 	{
 		Cipher cipher = null;
 		byte[] decryptedText = null;
 		
 		try
 		{
-			cipher = Cipher.getInstance(algo);
-			cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
+			cipher = Cipher.getInstance(Constants.ASYM_ALGO);
+			cipher.init(Cipher.DECRYPT_MODE, privKey);
 			decryptedText = cipher.doFinal( Base64.getDecoder().decode( encryptedData.getBytes() ) );
 		}
 		
@@ -120,18 +112,18 @@ public class MyRSA
 			e.printStackTrace();
 		}
 		
-		return Base64.getEncoder().encodeToString(decryptedText);
+		return new String(decryptedText);
 	}
 	
-	String decryptWithPubKey(String encryptedData)
+	static String decryptWithPubKey(String encryptedData)
 	{
 		Cipher cipher = null;
 		byte[] decryptedText = null;
 		
 		try
 		{
-			cipher = Cipher.getInstance(algo);
-			cipher.init(Cipher.DECRYPT_MODE, keyPair.getPublic());
+			cipher = Cipher.getInstance(Constants.ASYM_ALGO);
+			cipher.init(Cipher.DECRYPT_MODE, pubKey);
 			decryptedText = cipher.doFinal( Base64.getDecoder().decode( encryptedData.getBytes() ) );
 		}
 		
@@ -143,14 +135,14 @@ public class MyRSA
 		return new String(decryptedText);
 	}
 
-	String decryptWithPubKey(String encryptedData, PublicKey pubKey)
+	static String decryptWithPubKey(String encryptedData, PublicKey pubKey)
         {
                 Cipher cipher = null;
                 byte[] decryptedText = null;
 
                 try
                 {
-                        cipher = Cipher.getInstance(algo);
+                        cipher = Cipher.getInstance(Constants.ASYM_ALGO);
                         cipher.init(Cipher.DECRYPT_MODE, pubKey);
                         decryptedText = cipher.doFinal( Base64.getDecoder().decode( encryptedData.getBytes() ) );
                 }
@@ -163,7 +155,7 @@ public class MyRSA
                 return new String(decryptedText);
         }
 	
-	SecretKey decryptSymKeyWithPrivKey(String encryptedSymKey)
+	static SecretKey decryptSymKeyWithPrivKey(String encryptedSymKey)
 	{
 		String decryptedkeyStr = null;
 		byte[] keyBytes = null;
@@ -171,10 +163,10 @@ public class MyRSA
 		decryptedkeyStr = decryptWithPrivKey(encryptedSymKey);
 		keyBytes = Base64.getDecoder().decode(decryptedkeyStr);
 		
-		return new SecretKeySpec(keyBytes, 0, keyBytes.length, "AES");
+		return new SecretKeySpec(keyBytes, 0, keyBytes.length, Constants.SYM_ALGO);
 	}
 	
-	SecretKey decryptSymKeyWithPubKey(String encryptedSymKey)
+	static SecretKey decryptSymKeyWithPubKey(String encryptedSymKey)
 	{
 		String decryptedkeyStr = null;
 		byte[] keyBytes = null;
@@ -182,18 +174,18 @@ public class MyRSA
 		decryptedkeyStr = decryptWithPubKey(encryptedSymKey);
 		keyBytes = Base64.getDecoder().decode(decryptedkeyStr);
 		
-		return new SecretKeySpec(keyBytes, 0, keyBytes.length, "AES");
+		return new SecretKeySpec(keyBytes, 0, keyBytes.length, Constants.SYM_ALGO);
 	}
 	
-	private KeyPair generateKeyPair()
+	static KeyPair generateKeyPair()
 	{
 		KeyPairGenerator generator = null;
 		KeyPair keyPair = null;
 
 		try
 		{
-			generator = KeyPairGenerator.getInstance(algo);
-			generator.initialize(keySize);
+			generator = KeyPairGenerator.getInstance(Constants.ASYM_ALGO);
+			generator.initialize(Constants.ASYM_KEY_SIZE);
 			keyPair = generator.genKeyPair();
 		}
 
@@ -205,7 +197,7 @@ public class MyRSA
 		return keyPair;
 	}
 
-	private void storeKeys(KeyPair keyPair)
+	static void storeKeys(KeyPair keyPair)
 	{
 		KeyFactory factory = null;
 		RSAPublicKeySpec pubKeySpec = null;
@@ -213,12 +205,14 @@ public class MyRSA
 
 		try
 		{
-			factory = KeyFactory.getInstance(algo);
-			pubKeySpec = factory.getKeySpec( keyPair.getPublic(), RSAPublicKeySpec.class );
-			privKeySpec = factory.getKeySpec( keyPair.getPrivate(), RSAPrivateKeySpec.class );
+			factory = KeyFactory.getInstance(Constants.ASYM_ALGO);
+			pubKeySpec = factory.getKeySpec( pubKey, RSAPublicKeySpec.class );
+			privKeySpec = factory.getKeySpec( privKey, RSAPrivateKeySpec.class );
 
-			writeKeyToFile("private.key", pubKeySpec.getModulus(), pubKeySpec.getPublicExponent());
-			writeKeyToFile("public.key", privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
+			writeKeyToFile("public.key", pubKeySpec.getModulus(), pubKeySpec.getPublicExponent());
+			writeKeyToFile("private.key", privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
+
+			MyKeyGenerator.setPublicKeyPath( System.getProperty("user.dir") + "/public.key" );
 		}
 
 		catch(Exception e)
@@ -227,7 +221,7 @@ public class MyRSA
 		}
 	}
 
-	private void writeKeyToFile(String fileName, BigInteger modulus, BigInteger exponent)
+	private static void writeKeyToFile(String fileName, BigInteger modulus, BigInteger exponent)
 	{
 		ObjectOutputStream oos = null;
 
@@ -273,7 +267,7 @@ public class MyRSA
 					
 			modulus = (BigInteger)oin.readObject();
 			exponent = (BigInteger)oin.readObject();
-			factory = KeyFactory.getInstance(algo);
+			factory = KeyFactory.getInstance(Constants.ASYM_ALGO);
 			publicKey = factory.generatePublic( new RSAPublicKeySpec(modulus, exponent) );
 		}
 
@@ -298,28 +292,33 @@ public class MyRSA
 		return publicKey;
 	}
 	
-	PublicKey getPublicKey()
+	static PublicKey getPublicKey()
 	{
-		return keyPair.getPublic();
+		return pubKey;
 	}
 
-	String getPublicKeyInStr()
+	static String getPublicKeyInStr()
 	{
-		return Base64.getEncoder().encodeToString( keyPair.getPublic().getEncoded() );
+		return Base64.getEncoder().encodeToString( pubKey.getEncoded() );
 	}
 	
-	PrivateKey getPrivateKey()
+	static PrivateKey getPrivateKey()
 	{
-		return keyPair.getPrivate();
+		return privKey;
 	}
 
-	String getPrivateKeyInStr()
+	static String getPrivateKeyInStr()
 	{
-		return Base64.getEncoder().encodeToString( keyPair.getPrivate().getEncoded() );
+		return Base64.getEncoder().encodeToString( privKey.getEncoded() );
 	}
-	
-	void setKeySize(int keySize)
+
+	static void setPrivKey(PrivateKey privKey)	
 	{
-		this.keySize = keySize;
+		MyRSA.privKey = privKey;
+	}
+
+	static void setPubKey(PublicKey pubKey)
+	{
+		MyRSA.pubKey = pubKey;
 	}
 }

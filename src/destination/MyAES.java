@@ -11,29 +11,16 @@ import javax.crypto.SecretKey;
 
 public class MyAES
 {
-	private String algo = null;
-	private int keySize = 0;
-	private SecretKey key;
-
-	MyAES()
-	{
-		algo = "AES";
-		keySize = 256;
-	}
+	private static SecretKey key;
 	
-	void start()
-	{
-		key = generateKey();
-	}
-
-	String decrypt(String cipherText)
+	static String decrypt(String cipherText)
 	{
 		Cipher cipher = null;
 		byte[] decryptedTextBytes = null;
 
 		try
 		{
-			cipher = Cipher.getInstance(algo);
+			cipher = Cipher.getInstance(Constants.SYM_ALGO);
 			cipher.init(Cipher.DECRYPT_MODE, key);
 			decryptedTextBytes = cipher.doFinal( Base64.getDecoder().decode( cipherText.getBytes() ) );
 		}
@@ -46,14 +33,14 @@ public class MyAES
 		return new String(decryptedTextBytes);
 	}
 	
-	String decrypt(String cipherText, SecretKey symKey)
+	static String decrypt(String cipherText, SecretKey symKey)
 	{
 		Cipher cipher = null;
 		byte[] decryptedTextBytes = null;
 
 		try
 		{
-			cipher = Cipher.getInstance(algo);
+			cipher = Cipher.getInstance(Constants.SYM_ALGO);
 			cipher.init(Cipher.DECRYPT_MODE, symKey);
 			decryptedTextBytes = cipher.doFinal( Base64.getDecoder().decode( cipherText.getBytes() ) );
 		}
@@ -66,14 +53,14 @@ public class MyAES
 		return new String(decryptedTextBytes);
 	}
 	
-	String encryptSymKeyWithPubKey(PublicKey publicKey)
+	static String encryptSymKeyWithPubKey(PublicKey publicKey)
 	{
 		Cipher cipher = null;
 		byte[] encryptedBytes = null;
 		
 		try
 		{
-			cipher = Cipher.getInstance("RSA");
+			cipher = Cipher.getInstance(Constants.ASYM_ALGO);
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 			encryptedBytes = cipher.doFinal( key.getEncoded() );
 		}
@@ -86,14 +73,14 @@ public class MyAES
 		return Base64.getEncoder().encodeToString(encryptedBytes);
 	}
 	
-	String encryptSymKeyWithPrivKey(PrivateKey privKey)
+	static String encryptSymKeyWithPrivKey(PrivateKey privKey)
 	{
 		Cipher cipher = null;
 		byte[] encryptedBytes = null;
 		
 		try
 		{
-			cipher = Cipher.getInstance("RSA");
+			cipher = Cipher.getInstance(Constants.ASYM_ALGO);
 			cipher.init(Cipher.ENCRYPT_MODE, privKey);
 			encryptedBytes = cipher.doFinal( key.getEncoded() );
 		}
@@ -106,14 +93,14 @@ public class MyAES
 		return Base64.getEncoder().encodeToString(encryptedBytes);
 	}
 	
-	String encrypt(String plainText)
+	static String encrypt(String plainText)
 	{
 		Cipher cipher = null;
 		byte[] cipherTextBytes = null;
 
 		try
 		{
-			cipher = Cipher.getInstance(algo);
+			cipher = Cipher.getInstance(Constants.SYM_ALGO);
 			cipher.init(Cipher.ENCRYPT_MODE, key);
 			cipherTextBytes = cipher.doFinal( plainText.getBytes() );
 		}
@@ -126,15 +113,15 @@ public class MyAES
 		return Base64.getEncoder().encodeToString(cipherTextBytes);
 	}
 
-	private SecretKey generateKey()
+	static SecretKey generateKey()
 	{
 		KeyGenerator generator = null;
 		SecretKey key = null;
 
 		try
 		{
-			generator = KeyGenerator.getInstance(algo);
-			generator.init(keySize);
+			generator = KeyGenerator.getInstance(Constants.SYM_ALGO);
+			generator.init(Constants.SYM_KEY_SIZE);
 			key = generator.generateKey();
 		}
 
@@ -146,17 +133,17 @@ public class MyAES
 		return key;
 	}
 	
-	void setKeySize(int keySize)
-	{
-		this.keySize = keySize;
-	}
-	
-	SecretKey getSymKey()
+	static SecretKey getSymKey()
 	{
 		return key;
 	}	
+
+	static void setSymKey(SecretKey key)
+	{
+		MyAES.key = key;
+	}
 	
-	String getSymKeyInStr()
+	static String getSymKeyInStr()
 	{
 		return Base64.getEncoder().encodeToString( key.getEncoded() );
 	}

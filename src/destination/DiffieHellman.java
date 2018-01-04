@@ -45,14 +45,14 @@ public class DiffieHellman extends Task<Void>
 			socketThread.join();
 
 			updateMessage("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.senderIP + "...");
-			System.out.println("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.senderIP + "...");
-			socket.setMode( MySocket.READ );
-			socketThread = new Thread(socket);
+			System.out.println("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.senderIP + "...");	
+			MySocket socketRead = new MySocket( socket.getSocket() );
+			socketRead.setMode( MySocket.READ );
+			socketThread = new Thread(socketRead);
 			socketThread.start();
 			socketThread.join();
 
-			dataReceived = socket.getData();
-
+			dataReceived = socketRead.getData();
 
 			updateMessage("Generating Diffie Hellman keys...");
 			System.out.println("Generating Diffie Hellman keys...");
@@ -60,9 +60,10 @@ public class DiffieHellman extends Task<Void>
 
 			updateMessage("Sending Diffie Hellman's public key to " + EmailCumIPCollectorGUI.senderIP + "...");
 			System.out.println("Sending DH public key to " + EmailCumIPCollectorGUI.senderIP + "...");
-			socket.setData(dataToSend);
-			socket.setMode( MySocket.WRITE );
-			socketThread = new Thread(socket);
+			MySocket socketWrite = new MySocket( socketRead.getSocket() );
+			socketWrite.setData(dataToSend);
+			socketWrite.setMode( MySocket.WRITE );
+			socketThread = new Thread(socketWrite);
 			socketThread.start();
 			socketThread.join();
 	
@@ -84,7 +85,7 @@ public class DiffieHellman extends Task<Void>
         {
                 String pubKeyStr = null;
                 DHParameterSpec dhSpec = null;
-	
+		
                 srcPubKey = getPubKey(srcPubKeyStr);
                 dhSpec = ((DHPublicKey) srcPubKey).getParams();
                 generateKeys(dhSpec);

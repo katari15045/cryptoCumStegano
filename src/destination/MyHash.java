@@ -5,16 +5,15 @@ import javax.crypto.SecretKey;
 
 public class MyHash
 {
-        private MessageDigest messageDigest = null;
-        private String algo = "SHA3-384";
+        private static MessageDigest messageDigest = null;
 
-        public String hash(String plainText)
+        static String hash(String plainText)
         {
 		byte[] hashBytes = null;
 
 		try
 		{
-			messageDigest = MessageDigest.getInstance(algo);
+			messageDigest = MessageDigest.getInstance(Constants.HASH_ALGO);
 			messageDigest.update( plainText.getBytes() );
 			hashBytes = messageDigest.digest();
 		}
@@ -27,7 +26,7 @@ public class MyHash
 		return Base64.getEncoder().encodeToString(hashBytes);
 	}
 
-	public String hash(SecretKey key)
+	static String hash(SecretKey key)
 	{
 		return hash( Base64.getEncoder().encodeToString( key.getEncoded() ) );
 	}

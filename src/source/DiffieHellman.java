@@ -15,7 +15,6 @@ public class DiffieHellman extends Task<Void>
 {
 	private KeyPairGenerator generator = null;
 	private String algo = "DH";
-	private int keySize = 3072;
 	private KeyPair keyPair = null;
 
 	private KeyAgreement keyAgreement = null;
@@ -49,20 +48,22 @@ public class DiffieHellman extends Task<Void>
 
 			updateMessage("Sending Diffie Hellman's public key to " + EmailCumIPCollectorGUI.receiverIP + "...");
 			System.out.println("Sending DH public key to " + EmailCumIPCollectorGUI.receiverIP + "...");
-			socket.setData(dataToSend);
-			socket.setMode( MySocket.WRITE );
-			socketThread = new Thread(socket);
+			MySocket socketWrite = new MySocket( socket.getSocket() );
+			socketWrite.setData(dataToSend);
+			socketWrite.setMode( MySocket.WRITE );
+			socketThread = new Thread(socketWrite);
 			socketThread.start();
 			socketThread.join();
 	
 			updateMessage("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.receiverIP + "...");
 			System.out.println("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.receiverIP + "...");
-			socket.setMode( MySocket.READ );
-			socketThread = new Thread(socket);
+			MySocket socketRead = new MySocket( socketWrite.getSocket() );
+			socketRead.setMode( MySocket.READ );
+			socketThread = new Thread(socketRead);
 			socketThread.start();
 			socketThread.join();
 
-			dataReceived = socket.getData();
+			dataReceived = socketRead.getData();
 			updateMessage("Extracting secret using Diffie Hellman...");
 			System.out.println("Extracting secret using Diffie Hellman...");
 			secret = end(dataReceived);
@@ -151,7 +152,7 @@ public class DiffieHellman extends Task<Void>
 		try
 		{
 			generator = KeyPairGenerator.getInstance(algo);
-			generator.initialize(keySize);
+			generator.initialize(Constants.DH_KEY_SIZE);
 			keyPair = generator.generateKeyPair();
 		}
 
@@ -166,6 +167,8 @@ public class DiffieHellman extends Task<Void>
 		byte[] pubKeyBytes = null;
 		
 		pubKeyBytes = keyPair.getPublic().getEncoded();
+		System.out.println("dh_pub_key : " + pubKeyBytes.length + " bytes!");
+		System.out.println("after encoding : " + Base64.getEncoder().encodeToString(pubKeyBytes).getBytes().length + " bytes");
 		return Base64.getEncoder().encodeToString(pubKeyBytes);
 	}
 

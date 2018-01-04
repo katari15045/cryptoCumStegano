@@ -31,10 +31,6 @@ public class SecureTunnelCreator
 	private MySocket socket = null;
 	private Thread socketThread = null;
 
-	static MyAES aes = null;
-        static MyRSA rsa = null;
-        static MyHash hash = null;	
-
 	public void start(Stage stage)
 	{
 		String dataToSend = null;
@@ -77,14 +73,6 @@ public class SecureTunnelCreator
 		backGroundThread = new Thread(backGroundTask);
 
 		labelProgress.textProperty().bind( dh.messageProperty() );
-
-		aes = new MyAES();
-                rsa = new MyRSA();
-                hash = new MyHash();
-
-                dh.updateMessage("Generating RSA Keys...");
-                System.out.println("Generating RSA Keys...");
-                rsa.start();
 	}
 }
 
