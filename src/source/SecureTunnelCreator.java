@@ -24,7 +24,6 @@ public class SecureTunnelCreator
 
 	private BackGroundTask backGroundTask = null;
 	private Thread backGroundThread = null;
-	static SecretKeySpec symKey = null;
 
 	private DiffieHellman dh = null;
 	private Thread dhThread = null;
@@ -104,7 +103,7 @@ class BackGroundTask extends Task<Void>
 			secretBytes = dh.getSecret();
 			dh.updateMessage("Generating Symmetric Key...");
 			System.out.println("Generating Symmetric Key...");
-			SecureTunnelCreator.symKey = new SecretKeySpec(secretBytes, 0, 32, Constants.SYM_ALGO);
+			MyAES.setSymKey( new SecretKeySpec(secretBytes, 0, 32, Constants.SYM_ALGO) );
 			buttonNext.setDisable(false);
 			dh.updateMessage("Symmetric Key Generated!");	
 			System.out.println("Symmetric Key generated!\n");
@@ -129,6 +128,7 @@ class BackGroundTask extends Task<Void>
 class PostDHHandler implements EventHandler<ActionEvent>
 {
 	private Stage stage = null;
+	private MessageCumImageCollectorGUI messageCumImageCollectorGUI = null;
 
 	public PostDHHandler(Stage stage)	
 	{
@@ -138,9 +138,11 @@ class PostDHHandler implements EventHandler<ActionEvent>
 	@Override
 	public void handle(ActionEvent event)
 	{
-		System.out.println("Yet to implement it!");
+		messageCumImageCollectorGUI = new MessageCumImageCollectorGUI();
+		messageCumImageCollectorGUI.start(stage);
 	}
 }
+
 
 
 

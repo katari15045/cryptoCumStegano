@@ -11,6 +11,7 @@ public class MySocket extends Task<Void>
 	private Socket socket = null;
 	private String data = null;
 	private String dataHash = null;
+	private String imageString = null;
 
 	private DataInputStream dataInputStream = null;
 	private DataOutputStream dataOutputStream = null;
@@ -19,7 +20,7 @@ public class MySocket extends Task<Void>
 	static final int CONNECT = 1;
 	static final int READ = 2;
 	static final int WRITE = 3;
-	static final int DISCONNECT = 4;
+	static final int POST_SYM_KEY = 4;
 
 	public MySocket()
 	{
@@ -51,8 +52,9 @@ public class MySocket extends Task<Void>
 			sendDataToClient();
 		}
 
-		else if(mode == MySocket.DISCONNECT)
+		else if(mode == MySocket.POST_SYM_KEY)
 		{
+			sendDataWithSymKey();
 			closeConnection();
 		}
 
@@ -130,18 +132,46 @@ public class MySocket extends Task<Void>
 
 			dataOutputStream.writeUTF(encrDataWithDstPubKey);
 			dataOutputStream.writeUTF(signedHash);
-
-			System.out.println("dstPubKey : " + PublicKeyCollectorGUI.dstPubKey + "\n");
-			System.out.println("Data : " + data + "\n");
-			System.out.println("HashedData : " + hashedData + "\n");
-			System.out.println("encrDataWithDstPubKey ; " + encrDataWithDstPubKey + "\n");	
-			System.out.println("signedHash : " + signedHash + "\n");
 		}
 
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+	}
+
+	private void sendDataWithSymKey()
+	{
+		String encrWithSymLocStr = null;
+		String hashedLocStr = null;
+		String signedHashLocStr = null;
+		
+		String encrWithSymImage = null;
+		String hashedImage = null;
+		String signedHashImage = null;
+		
+		try
+		{
+			dataOutputStream = new DataOutputStream( socket.getOutputStream() );
+			
+			encrWithSymLocStr = MyAES.encrypt(data);
+			hashedLocStr = MyHash.hash(data);	
+			signedHashLocStr = MyRSA.encryptWithPrivKey(hashedLocStr);
+
+			encrWithSymImage = MyAES.encrypt(imageString);
+			hashedImage = MyHash.hash(imageString);
+			signedHashImage = MyRSA.encryptWithPrivKey(hashedImage);
+
+			dataOutputStream.writeUTF(encrWithSymLocStr);
+			dataOutputStream.writeUTF(signedHashLocStr);
+			dataOutputStream.writeUTF(encrWithSymImage);
+			dataOutputStream.writeUTF(signedHashImage);
+		}
+
+		catch(Exception e)
+                {
+                        e.printStackTrace();
+                }
 	}
 
 	private void closeConnection()
@@ -180,6 +210,11 @@ public class MySocket extends Task<Void>
 	{
 		return socket;
 	}	
+
+	void setImageString(String imageString)
+	{
+		this.imageString = imageString;
+	}
 }
 
 

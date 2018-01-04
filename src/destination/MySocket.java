@@ -96,17 +96,9 @@ public class MySocket extends Task<Void>
 	
 			encrDataWithPubKey = dataInputStream.readUTF();
 			signedHash = dataInputStream.readUTF();
-
-			System.out.println("dstPubKey : " + MyRSA.getPublicKey() + "\n");
-			System.out.println("encrDataWithPubKey : " + encrDataWithPubKey + "\n");
-			System.out.println("signedHash : " + signedHash + "\n");
-		
 			decrData = MyRSA.decryptWithPrivKey(encrDataWithPubKey);
-			System.out.println("decrData : " + decrData + "\n");
 			decrHash = MyRSA.decryptWithPubKey(signedHash, PublicKeyCollectorGUI.srcPubKey);
-			System.out.println("decrHash : " + decrHash + "\n");
 			decrDataHash = MyHash.hash(decrData);
-			System.out.println("decrDataHash : " + decrDataHash + "\n");
 
                         if( decrHash.equals(decrDataHash) )
                         {
