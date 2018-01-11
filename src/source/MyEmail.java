@@ -26,6 +26,7 @@ public class MyEmail
 	private static ProgressIndicator progressIndicator = null;
 	private static Label labelProgress = null;
 	private static Button buttonNext = null;
+	private static Button buttonModifyEmail = null;
 	private static GridPane gridPane = null;
 	private static Scene scene = null;
 	static Stage stage = null;
@@ -40,7 +41,7 @@ public class MyEmail
 	{
 		MyEmail.stage = stage;
 		initialize();
-		backGroundEmail = new BackGroundEmail(toEmailID, stage, BackGroundEmail.OTP, buttonNext);
+		backGroundEmail = new BackGroundEmail(toEmailID, stage, BackGroundEmail.OTP, buttonNext, buttonModifyEmail);
 		otpSender = new OTPSender(toEmailID);
 		buttonNext.textProperty().bind( otpSender.messageProperty() );
 		otpSender.updateMessage("Next");
@@ -51,7 +52,7 @@ public class MyEmail
 	{
 		MyEmail.stage = stage;
 		initialize();
-		backGroundEmail = new BackGroundEmail(toEmailID, stage, BackGroundEmail.ATTACHMENT, buttonNext);
+		backGroundEmail = new BackGroundEmail(toEmailID, stage, BackGroundEmail.ATTACHMENT, buttonNext, buttonModifyEmail);
 		attachmentSender = new AttachmentSender( toEmailID, MyKeyGenerator.getPublicKeyPath());
 		buttonNext.textProperty().bind( attachmentSender.messageProperty() );
 		attachmentSender.updateMessage("Next");
@@ -74,14 +75,20 @@ public class MyEmail
 		buttonNext = new Button();
 		buttonNext.setDisable(true);
 		buttonNext.setOnAction( new PostEmailHandler(stage) );
+		buttonModifyEmail = new Button();
+		buttonModifyEmail.setText("Change Email");
+		buttonModifyEmail.setOnAction( new EmailModifier(stage) );
+		buttonModifyEmail.setDisable(true);
 
 		gridPane = new GridPane();
 		gridPane.add(progressIndicator, 0,  0);
 		gridPane.add(labelProgress, 0, 1);
 		gridPane.add(buttonNext, 0, 2);
+		gridPane.add(buttonModifyEmail, 0, 3);
 		gridPane.setAlignment(Pos.CENTER);
 		GridPane.setMargin(labelProgress, new Insets(20, 0, 0, 0));
 		GridPane.setMargin(buttonNext, new Insets(60, 0, 0, 0));
+		GridPane.setMargin(buttonModifyEmail, new Insets(20, 0, 0, 0));
 		
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
 		stage.setScene(scene);
@@ -96,16 +103,18 @@ class BackGroundEmail extends Task<Void>
 	static int mode = -1;
 	private Thread thread = null;
 	private Button buttonNext = null;
+	private Button buttonModifyEmail = null;
 
 	static int OTP = 0;
 	static int ATTACHMENT = 1;
 
-	public BackGroundEmail(String toEmailID, Stage stage, int mode, Button buttonNext)
+	public BackGroundEmail(String toEmailID, Stage stage, int mode, Button buttonNext, Button buttonModifyEmail)
 	{
 		this.toEmailID = toEmailID;
 		this.stage = stage;
 		BackGroundEmail.mode = mode;
 		this.buttonNext = buttonNext;
+		this.buttonModifyEmail = buttonModifyEmail;
 	}
 
 	@Override
@@ -141,6 +150,7 @@ class BackGroundEmail extends Task<Void>
 				updateMessage("Error in sending OTP; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
 				System.out.println("Error in sending OTP; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
 				updateProgress(0.0, 1.0);
+				buttonModifyEmail.setDisable(false);
 			}
 
 			else
@@ -176,6 +186,7 @@ class BackGroundEmail extends Task<Void>
 				updateMessage("Error in sending the public key; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
 				System.out.println("Error in sending the public key; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
 				updateProgress(0.0, 1.0);
+				buttonModifyEmail.setDisable(false);
 			}
 
 			else
@@ -266,7 +277,23 @@ class PostEmailHandler implements EventHandler<ActionEvent>
 }
 
 
+class EmailModifier implements EventHandler<ActionEvent>
+{
+	Stage stage = null;
+	EmailCumIPCollectorGUI emailCumIPCollectorGUI = null;
 
+	public EmailModifier(Stage stage)
+	{
+		this.stage = stage;
+	}
+
+	@Override
+	public void handle(ActionEvent event)
+	{
+		emailCumIPCollectorGUI = new EmailCumIPCollectorGUI();
+		emailCumIPCollectorGUI.start(stage);
+	}
+}
 
 
 

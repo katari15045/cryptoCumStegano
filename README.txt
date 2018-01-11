@@ -18,9 +18,9 @@
 i.e if 2^x = 10^y, 
     y ~ 3*(x/10)
 
-Worlds fastest super computer ~ 10^18 FlOPS (As on 2nd Jan, 2018)
+Worlds fastest super computer ~ 10^18 FlOPS (As of 2nd Jan, 2018)
 
-(approximation : a year ~ 10^8 seconds)
+(approximation : 1 year = 10^8 seconds)
 
 key_size_in_bits		approx_time_for_the_fastest_super_computer_to_get_all_combinations
 ----------------		------------------------------------------------------------------

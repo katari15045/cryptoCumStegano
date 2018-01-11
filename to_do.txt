@@ -12,7 +12,6 @@
 
 6. In socket to socket communication, handle the case when user enters wrong IP address
 
-7. If entered email ID is incorrect, provide user a button to change the email ID - similar to the one used during invalid OTP
 
 Notes for documentation
 -----------------------
