@@ -33,10 +33,16 @@ class MyFileChooser implements EventHandler<ActionEvent>
 		
 		if( MyFileChooser.file == null )
 		{
-			PublicKeyCollectorGUI pubKeyCollector = new PublicKeyCollectorGUI();
+			if( isImage )
+			{
+				String message = MessageCumImageCollectorGUI.getMessage();
+				MessageCumImageCollectorGUI.start(stage);
+				MessageCumImageCollectorGUI.setMessage(message);
+				return;
+			}
 
-			System.out.println("Unable to open the file!");
-			pubKeyCollector.start(stage);
+			PublicKeyCollectorGUI.start(stage);
+			return;
 		}
 
 		if( isImage )

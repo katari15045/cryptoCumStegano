@@ -11,20 +11,20 @@ import java.security.PublicKey;
 
 public class PublicKeyCollectorGUI
 {
-	private Stage stage = null;
-	private Label labelHeading = null;
-	private Label labelContent = null;
-	private Label labelProspectus = null;
-	private Button buttonUpload = null;
-	private GridPane gridPane = null;
-	private Scene scene = null;
+	private static Stage stage = null;
+	private static Label labelHeading = null;
+	private static Label labelContent = null;
+	private static Label labelProspectus = null;
+	private static Button buttonUpload = null;
+	private static GridPane gridPane = null;
+	private static Scene scene = null;
 
-	private MyFileChooser keyChooser;
+	private static MyFileChooser keyChooser;
 	static PublicKey dstPubKey = null;	
 
-	void start(Stage stage)
+	static void start(Stage stage)
 	{
-		this.stage = stage;
+		PublicKeyCollectorGUI.stage = stage;
 		keyChooser = new MyFileChooser(stage, "Choose destination's public key");
 
 		labelHeading = new Label();
@@ -51,8 +51,8 @@ public class PublicKeyCollectorGUI
 		GridPane.setMargin(buttonUpload, new Insets(20, 0, 0, 0));
 		
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
-                stage.setScene(scene);
-                stage.show();
+        stage.setScene(scene);
+        stage.show();
 	}
 }
 

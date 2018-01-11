@@ -11,24 +11,24 @@ import javafx.scene.paint.Color;
 
 public class MessageCumImageCollectorGUI
 {
-	private Stage stage = null;
-	private Label labelHeading = null;
-	private Label labelContent = null;
-	private Label labelMessage = null;
-	private TextField textFieldMessage = null;
-	private Button buttonChooseImage = null;
-	private Button buttonEmbed = null;
-	private GridPane gridPane = null;
-	private Scene scene = null;
+	private static Stage stage = null;
+	private static Label labelHeading = null;
+	private static Label labelContent = null;
+	private static Label labelMessage = null;
+	private static TextField textFieldMessage = null;
+	private static Button buttonChooseImage = null;
+	private static Button buttonEmbed = null;
+	private static GridPane gridPane = null;
+	private static Scene scene = null;
 
-	void start(Stage stage)
+	static void start(Stage stage)
 	{
-		this.stage = stage;
+		MessageCumImageCollectorGUI.stage = stage;
 	
 		labelHeading = new Label();
 		labelHeading.setText("Step 4");
 		labelHeading.setFont( new Font(Constants.HEAD_SIZE) );
-                labelHeading.setTextFill( Color.web(Constants.HEAD_COLOR) );
+        labelHeading.setTextFill( Color.web(Constants.HEAD_COLOR) );
 		labelContent = new Label();
 		labelContent.setText("Embed a message in an image");
 		labelContent.setTextFill( Color.web(Constants.HEAD_COLOR) );
@@ -58,8 +58,18 @@ public class MessageCumImageCollectorGUI
 		GridPane.setMargin(buttonEmbed, new Insets(40, 0, 0, 0));
 		
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
-                stage.setScene(scene);
-                stage.show();
+        stage.setScene(scene);
+        stage.show();
+	}
+
+	static void setMessage(String inpMessage)
+	{
+		textFieldMessage.setText(inpMessage);
+	}
+
+	static String getMessage()
+	{
+		return textFieldMessage.getText();
 	}
 }
 

@@ -32,8 +32,9 @@ class MyFileChooser implements EventHandler<ActionEvent>
 		{
 			PublicKeyCollectorGUI pubKeyCollector = new PublicKeyCollectorGUI();
 
-			System.out.println("Unable to open the file!");
 			pubKeyCollector.start(stage);
+
+			return;
 		}
 
 		createSecureTunnel();
@@ -42,7 +43,7 @@ class MyFileChooser implements EventHandler<ActionEvent>
 	static void createSecureTunnel()
 	{
 		SecureTunnelCreator secureTunnelCreator = null;
-		
+
 		PublicKeyCollectorGUI.srcPubKey = MyRSA.getPublicKey( file.getAbsolutePath() );
 		secureTunnelCreator = new SecureTunnelCreator();
 		secureTunnelCreator.start(stage);

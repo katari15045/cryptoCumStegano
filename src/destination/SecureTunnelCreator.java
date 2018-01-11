@@ -143,7 +143,6 @@ class BackGroundTask extends Task<Void>
 			extractorThread.join();
 
 			buttonNext.setDisable(false);
-			buttonNext.setText("Finish");
 			dh.updateMessage("Data extracted : " + MessageExtractor.extractedMessage);
 			System.out.println("Extracted message : " + MessageExtractor.extractedMessage);
 			updateProgress(1.0, 1.0);	

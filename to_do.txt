@@ -6,11 +6,9 @@
 
 3. Handle timeout wihle sending email - may be due to no internet
 
-4. In FileChooser.java if you exit the chooser GUI, it'll throw Null pointer Exception
+4. Demo video
 
-5. Demo video
-
-6. Titles in all screens
+5. Titles in all screens
 
 Notes for documentation
 -----------------------

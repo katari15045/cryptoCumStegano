@@ -213,7 +213,6 @@ class PostEmailHandler implements EventHandler<ActionEvent>
 	public void handle(ActionEvent event)
 	{
 		OTPVerifierGUI otpVerifierGUI = null;
-		PublicKeyCollectorGUI publicKeyCollectorGUI = null;
 
 		if(BackGroundEmail.mode == BackGroundEmail.OTP)
 		{
@@ -223,8 +222,7 @@ class PostEmailHandler implements EventHandler<ActionEvent>
 
 		else if(BackGroundEmail.mode == BackGroundEmail.ATTACHMENT)
 		{
-			publicKeyCollectorGUI = new PublicKeyCollectorGUI();
-			publicKeyCollectorGUI.start(stage);	
+			PublicKeyCollectorGUI.start(stage);	
 		}
 	}
 }

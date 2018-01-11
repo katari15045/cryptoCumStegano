@@ -128,7 +128,6 @@ class BackGroundTask extends Task<Void>
 class PostDHHandler implements EventHandler<ActionEvent>
 {
 	private Stage stage = null;
-	private MessageCumImageCollectorGUI messageCumImageCollectorGUI = null;
 
 	public PostDHHandler(Stage stage)	
 	{
@@ -138,8 +137,7 @@ class PostDHHandler implements EventHandler<ActionEvent>
 	@Override
 	public void handle(ActionEvent event)
 	{
-		messageCumImageCollectorGUI = new MessageCumImageCollectorGUI();
-		messageCumImageCollectorGUI.start(stage);
+		MessageCumImageCollectorGUI.start(stage);
 	}
 }
 
