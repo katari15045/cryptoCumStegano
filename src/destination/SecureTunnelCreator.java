@@ -47,7 +47,6 @@ public class SecureTunnelCreator
 		progressIndicator.setProgress(-1.0);
 		labelProgress = new Label();
 		buttonNext = new Button();
-		buttonNext.setText("Next");
 		buttonNext.setDisable(true);
 		buttonNext.setOnAction( new Finisher(stage) );
 
@@ -70,9 +69,11 @@ public class SecureTunnelCreator
 		dhThread = new Thread(dh);
 
 		backGroundTask = new BackGroundTask(buttonNext, labelProgress, dh, dhThread);
+		backGroundTask.updateMessage("Next");
 		progressIndicator.progressProperty().bind( backGroundTask.progressProperty() );
 		backGroundThread = new Thread(backGroundTask);
 
+		buttonNext.textProperty().bind( backGroundTask.messageProperty() );
 		labelProgress.textProperty().bind( dh.messageProperty() );
 	}
 
@@ -122,8 +123,8 @@ class BackGroundTask extends Task<Void>
 			{
 				dh.updateMessage("Make sure the sender has uploaded the public key you've sent!");
 				updateProgress(0.0, 1.0);
-				buttonNext.setText("Retry");
 				buttonNext.setDisable(false);
+				updateMessage("Retry");
 				return null;
 			}
 
@@ -131,7 +132,6 @@ class BackGroundTask extends Task<Void>
 			dh.updateMessage("Generating Symmetric Key...");
 			System.out.println("Generating Symmetric Key...");
 			SecureTunnelCreator.symKey = new SecretKeySpec(secretBytes, 0, 32, Constants.SYM_ALGO);
-			buttonNext.setDisable(false);
 			dh.updateMessage("Symmetric Key Generated!");	
 			System.out.println("Symmetric Key generated!\n");
 			receiveData();
@@ -142,9 +142,9 @@ class BackGroundTask extends Task<Void>
 			extractorThread.start();
 			extractorThread.join();
 
-			buttonNext.setDisable(false);
 			dh.updateMessage("Data extracted : " + MessageExtractor.extractedMessage);
 			System.out.println("Extracted message : " + MessageExtractor.extractedMessage);
+			buttonNext.setDisable(false);
 			updateProgress(1.0, 1.0);	
 		}
 
@@ -178,10 +178,16 @@ class BackGroundTask extends Task<Void>
 	}
 
 	@Override
-        protected void updateProgress(double workDone, double max)
-        {
-                super.updateProgress(workDone, max);
-        }
+    protected void updateProgress(double workDone, double max)
+    {
+    	super.updateProgress(workDone, max);
+    }
+
+   	@Override
+    protected void updateMessage(String message)
+    {
+    	super.updateMessage(message);
+    }
 }
 
 class Finisher implements EventHandler<ActionEvent>

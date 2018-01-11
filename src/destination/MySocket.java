@@ -80,7 +80,7 @@ public class MySocket extends Task<Void>
 
 		catch(Exception e)
 		{	
-			e.printStackTrace();
+			System.out.println("Source unavailable!");
 			MySocket.status = MySocket.SERVER_UNAVAILABLE;
 		}		
 
