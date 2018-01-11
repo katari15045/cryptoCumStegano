@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import java.lang.Thread;
 import javafx.stage.Stage;
 import javafx.scene.control.ProgressIndicator;
@@ -48,7 +49,7 @@ public class SecureTunnelCreator
 		buttonNext = new Button();
 		buttonNext.setText("Next");
 		buttonNext.setDisable(true);
-		buttonNext.setOnAction( new PostDHHandler(stage) );
+		buttonNext.setOnAction( new Finisher(stage) );
 
 		gridPane = new GridPane();
 		gridPane.add(progressIndicator, 0, 0);
@@ -74,6 +75,16 @@ public class SecureTunnelCreator
 
 		labelProgress.textProperty().bind( dh.messageProperty() );
 	}
+
+	void updateMessage(String message)
+	{
+		dh.updateMessage(message);
+	}
+
+	void updateProgress(double workDone, double max)
+	{
+		backGroundTask.updateProgress(workDone, max);
+	}
 }
 
 class BackGroundTask extends Task<Void>
@@ -82,6 +93,12 @@ class BackGroundTask extends Task<Void>
 	private Thread dhThread = null;
 	private Button buttonNext = null;
 	private Label labelProgress = null;
+	private MessageExtractor messageExtractor = null;
+	private Thread extractorThread = null;
+
+	private MySocket socket = null;
+	private Thread socketThread = null;
+	private String locationStr = null, imgStr = null;
 
 	public BackGroundTask(Button buttonNext, Label labelProgress, DiffieHellman dh, Thread dhThread)
 	{
@@ -108,6 +125,17 @@ class BackGroundTask extends Task<Void>
 			buttonNext.setDisable(false);
 			dh.updateMessage("Symmetric Key Generated!");	
 			System.out.println("Symmetric Key generated!\n");
+			receiveData();
+
+			messageExtractor = new MessageExtractor(locationStr, imgStr);
+			extractorThread = new Thread(messageExtractor);
+			dh.updateMessage("Extracting data...");
+			extractorThread.start();
+			extractorThread.join();
+
+			buttonNext.setDisable(false);
+			dh.updateMessage("Data extracted : " + MessageExtractor.extractedMessage);
+			System.out.println("Extracted message : " + MessageExtractor.extractedMessage);
 			updateProgress(1.0, 1.0);	
 		}
 
@@ -119,6 +147,27 @@ class BackGroundTask extends Task<Void>
 		return null;
 	}
 
+	private void receiveData()
+	{
+		try
+		{
+			socket = new MySocket( DiffieHellman.getActiveSocket() );
+			socket.setMode( MySocket.POST_SYM_KEY );
+			socketThread = new Thread(socket);
+			socketThread.start();
+			socketThread.join();
+
+			locationStr = socket.getData();
+			imgStr = socket.getImageString();
+
+		}
+
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 	@Override
         protected void updateProgress(double workDone, double max)
         {
@@ -126,11 +175,11 @@ class BackGroundTask extends Task<Void>
         }
 }
 
-class PostDHHandler implements EventHandler<ActionEvent>
+class Finisher implements EventHandler<ActionEvent>
 {
 	private Stage stage = null;
 
-	public PostDHHandler(Stage stage)	
+	public Finisher(Stage stage)	
 	{
 		this.stage = stage;
 	}
@@ -138,7 +187,9 @@ class PostDHHandler implements EventHandler<ActionEvent>
 	@Override
 	public void handle(ActionEvent event)
 	{
-		System.out.println("Yet to implement it!");
+		System.out.println("\nSee you!\n");
+		Platform.exit();
+		System.exit(0);
 	}
 }
 

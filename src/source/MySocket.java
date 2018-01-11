@@ -162,10 +162,10 @@ public class MySocket extends Task<Void>
 			hashedImage = MyHash.hash(imageString);
 			signedHashImage = MyRSA.encryptWithPrivKey(hashedImage);
 
-			dataOutputStream.writeUTF(encrWithSymLocStr);
-			dataOutputStream.writeUTF(signedHashLocStr);
-			dataOutputStream.writeUTF(encrWithSymImage);
-			dataOutputStream.writeUTF(signedHashImage);
+			write(dataOutputStream, encrWithSymLocStr);
+			write(dataOutputStream, signedHashLocStr);
+			write(dataOutputStream, encrWithSymImage);
+			write(dataOutputStream, signedHashImage);
 		}
 
 		catch(Exception e)
@@ -174,14 +174,28 @@ public class MySocket extends Task<Void>
                 }
 	}
 
+	private void write(DataOutputStream os, String data)
+	{
+		byte[] bytes = null;
+
+		try
+		{
+			bytes = data.getBytes("UTF-8");
+			os.writeInt( bytes.length );
+			os.write(bytes);
+		}
+
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 	private void closeConnection()
 	{
 		try
 		{
-			dataInputStream.close();
-			dataOutputStream.close();
 			socket.close();
-			serverSocket.close();
 			System.out.println("Client Disconnected!");
 		}
 

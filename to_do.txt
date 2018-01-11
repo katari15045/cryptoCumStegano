@@ -19,3 +19,7 @@
 9. Make sure you start progress indicator right before printing "Generating RSA keys..."
 
 10. In SecureTunnelCreator.java, don't create RSA keys, because they've already been generated during startup by MyKeyGenerator.java
+
+11. In FileChooser.java if you exit the chooser GUI, it'll throw Null pointer Exception
+
+12. dataOutputStream.writeUTF() has a size limit of 64KB. Even encrypted "Saketh" takes far more than 277KB. Solve this issue.

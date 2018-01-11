@@ -13,6 +13,7 @@ class MyFileChooser implements EventHandler<ActionEvent>
 	private FileChooser fileChooser = null;
 	static File file = null;
 	private String title = null;
+	static boolean isImage = false;
 	
 	private SecureTunnelCreator secureTunnelCreator = null;
 
@@ -36,6 +37,12 @@ class MyFileChooser implements EventHandler<ActionEvent>
 
 			System.out.println("Unable to open the file!");
 			pubKeyCollector.start(stage);
+		}
+
+		if( isImage )
+		{
+			isImage = false;
+			return;
 		}
 
 		PublicKeyCollectorGUI.dstPubKey = MyRSA.getPublicKey( file.getAbsolutePath() );

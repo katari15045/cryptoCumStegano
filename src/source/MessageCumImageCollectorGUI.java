@@ -38,6 +38,7 @@ public class MessageCumImageCollectorGUI
 		buttonChooseImage = new Button();
 		buttonChooseImage.setText("Choose an image");
 		buttonChooseImage.setOnAction( new MyFileChooser(stage, "Choose an image") );
+		MyFileChooser.isImage = true;
 		buttonEmbed = new Button();
 		buttonEmbed.setText("Embed");
 		buttonEmbed.setOnAction( new MessageEmbedder(stage, textFieldMessage) );

@@ -1,5 +1,6 @@
 // Tutorial -> https://docs.oracle.com/javase/9/security/java-cryptography-architecture-jca-reference-guide.htm#JSSEC-GUID-98B5A57E-E5BA-46F2-BE35-2056F43C58A4
 
+import java.net.Socket;
 import javax.crypto.spec.DHParameterSpec;
 import java.security.KeyPairGenerator;
 import java.security.KeyPair;
@@ -23,6 +24,7 @@ public class DiffieHellman extends Task<Void>
 	private MySocket socket = null;
 	private PublicKey srcPubKey = null;
 	private byte[] secret = null;
+        private static Socket activeSocket = null;
 
 	public DiffieHellman(Thread socketThread, MySocket socket)
 	{
@@ -67,6 +69,7 @@ public class DiffieHellman extends Task<Void>
 			socketThread.start();
 			socketThread.join();
 	
+                        DiffieHellman.activeSocket = socketWrite.getSocket();
 			updateMessage("Extracting secret using Diffie Hellman...");
 			System.out.println("Extracting secret using Diffie Hellman...");
 			end();
@@ -180,6 +183,11 @@ public class DiffieHellman extends Task<Void>
 	{
 		return secret;
 	}
+
+        static Socket getActiveSocket()
+        {
+                return DiffieHellman.activeSocket;
+        }
 }
 
 

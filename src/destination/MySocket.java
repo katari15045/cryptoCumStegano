@@ -11,6 +11,7 @@ public class MySocket extends Task<Void>
 	private Socket socket = null;
 	private String data = null;
 	private String dataHash = null;
+	private String imageString = null;
 
 	private DataInputStream dataInputStream = null;
 	private DataOutputStream dataOutputStream = null;
@@ -19,7 +20,7 @@ public class MySocket extends Task<Void>
 	static final int CONNECT = 1;
 	static final int READ = 2;
 	static final int WRITE = 3;
-	static final int DISCONNECT = 4;
+	static final int POST_SYM_KEY = 4;
 	
 	public MySocket()
 	{
@@ -34,8 +35,6 @@ public class MySocket extends Task<Void>
 	@Override
 	public Void call()
 	{
-		System.out.println("MySocket call()");
-
 		if(mode == MySocket.CONNECT)
 		{
 			connectToServer();
@@ -51,8 +50,9 @@ public class MySocket extends Task<Void>
 			sendDataToServer();
 		}
 
-		else if(mode == MySocket.DISCONNECT)
+		else if(mode == MySocket.POST_SYM_KEY)
 		{
+			receiveDataWithSymKey();
 			closeConnection();
 		}
 
@@ -113,6 +113,68 @@ public class MySocket extends Task<Void>
 		}
 	}
 
+	private void receiveDataWithSymKey()
+	{
+		String encrLocStr = null, encrImgStr = null;
+		String signedHashLocStr = null, signedHashImgStr = null;
+		String hashedLocStr = null, hashedImgStr = null;
+		String decrLocStr = null, decrImgStr = null;
+		String decrHashLocStr = null, decrHashImgStr = null;
+		String hashLocStr = null, hashImgStr = null;
+
+		try
+		{
+			dataInputStream = new DataInputStream( socket.getInputStream() );
+
+			encrLocStr = read(dataInputStream);
+			signedHashLocStr = read(dataInputStream);
+			encrImgStr = read(dataInputStream);
+			signedHashImgStr = read(dataInputStream);
+
+			decrLocStr = MyAES.decrypt(encrLocStr, SecureTunnelCreator.symKey);
+			decrHashLocStr = MyRSA.decryptWithPubKey(signedHashLocStr, PublicKeyCollectorGUI.srcPubKey);
+			hashLocStr = MyHash.hash(decrLocStr);
+
+			decrImgStr = MyAES.decrypt(encrImgStr, SecureTunnelCreator.symKey);
+			decrHashImgStr = MyRSA.decryptWithPubKey(signedHashImgStr, PublicKeyCollectorGUI.srcPubKey);
+			hashImgStr = MyHash.hash(decrImgStr);
+
+			if( decrHashLocStr.equals(hashLocStr) && decrHashImgStr.equals(hashImgStr) )
+			{
+				System.out.println("Hashes matched!");
+				data = decrLocStr;
+				imageString = decrImgStr;
+			}
+		}
+
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private String read(DataInputStream dis)
+	{
+		int len;
+		byte[] bytes = null;
+		String str = null;
+
+		try
+		{
+			len = dis.readInt();
+			bytes = new byte[len];
+			dis.readFully(bytes);
+			str = new String(bytes, "UTF-8");
+		}
+
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return str;
+	}
+
 	private void sendDataToServer()
 	{
 		String encrDataWithDstPubKey = null;
@@ -142,7 +204,6 @@ public class MySocket extends Task<Void>
 		try
 		{
 			dataInputStream.close();
-			dataOutputStream.close();
 			socket.close();
 			System.out.println("Client Disconnected!");
 		}
@@ -161,6 +222,11 @@ public class MySocket extends Task<Void>
 	void setData(String data)
 	{
 		this.data = data;
+	}
+
+	String getImageString()
+	{
+		return imageString;
 	}
 
 	void setMode(int mode)
