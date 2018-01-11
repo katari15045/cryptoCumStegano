@@ -138,8 +138,8 @@ class BackGroundEmail extends Task<Void>
 
 			if( !OTPSender.status )
 			{
-				updateMessage("Can't access the internet!");
-				System.out.println("Can't access the internet!");
+				updateMessage("Error in sending OTP; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
+				System.out.println("Error in sending OTP; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
 				updateProgress(0.0, 1.0);
 			}
 
@@ -173,8 +173,8 @@ class BackGroundEmail extends Task<Void>
 
 			if( !AttachmentSender.status )
 			{
-				updateMessage("Can't access the internet!");
-				System.out.println("Can't access the internet!");
+				updateMessage("Error in sending the public key; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
+				System.out.println("Error in sending the public key; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
 				updateProgress(0.0, 1.0);
 			}
 

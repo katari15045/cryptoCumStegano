@@ -138,8 +138,8 @@ class BackGroundEmail extends Task<Void>
 
 			if( !OTPSender.status )
 			{
-				updateMessage("Can't connect to the internet!");
-				System.out.println("Can't connect to the internet!");
+				updateMessage("Error in sending OTP; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
+				System.out.println("Error in sending OTP; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
 				updateProgress(0.0, 1.0);
 			}
 
@@ -160,23 +160,19 @@ class BackGroundEmail extends Task<Void>
 	}
 
 	public void sendAttachment()
-	{
-		AttachmentSender attachmentSender = null;		
-		this.stage = stage;
-
+	{	
 		try
 		{	
 			updateMessage("Sending public key to " + toEmailID + "...");	
 			System.out.println("Sending public key to " + toEmailID + "...");
-			attachmentSender = new AttachmentSender( toEmailID, MyKeyGenerator.getPublicKeyPath());
-			thread = new Thread(attachmentSender);
+			thread = new Thread(MyEmail.attachmentSender);
 			thread.start();
 			thread.join();
 
 			if( !AttachmentSender.status )
 			{
-				updateMessage("Can't connect to the internet!");
-				System.out.println("Can't connect to the internet!");
+				updateMessage("Error in sending the public key; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
+				System.out.println("Error in sending the public key; may be due to -\n\n1. No Internet (or)\n2. Invalid Email ID");
 				updateProgress(0.0, 1.0);
 			}
 

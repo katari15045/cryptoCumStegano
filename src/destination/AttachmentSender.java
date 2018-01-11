@@ -99,7 +99,7 @@ public class AttachmentSender extends Task<Boolean>
 			AttachmentSender.status = false;
 			updateMessage("Retry");
 		}
-		
+
 		return true;
 	}
 
