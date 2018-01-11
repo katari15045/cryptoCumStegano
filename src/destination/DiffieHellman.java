@@ -43,8 +43,14 @@ public class DiffieHellman extends Task<Void>
 			updateMessage("Connecting to " + EmailCumIPCollectorGUI.senderIP + " on port " + Constants.SERVER_PORT + "...");
 			System.out.println("connecting to " + EmailCumIPCollectorGUI.senderIP + "...");
 			socket.setMode( MySocket.CONNECT );		
+                        MySocket.status = MySocket.FINE;
 			socketThread.start();
 			socketThread.join();
+
+                        if( MySocket.status == MySocket.SERVER_UNAVAILABLE )
+                        {
+                                return null;
+                        }
 
 			updateMessage("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.senderIP + "...");
 			System.out.println("Receiving Diffie Hellman's public Key from " + EmailCumIPCollectorGUI.senderIP + "...");	

@@ -8,17 +8,15 @@ import javafx.stage.Stage;
 
 class MyFileChooser implements EventHandler<ActionEvent>
 {
-	private Stage stage = null;
+	static Stage stage = null;
 	private TextField textField = null;
 	private FileChooser fileChooser = null;
 	static File file = null;
 	private String title = null;
-	
-	private SecureTunnelCreator secureTunnelCreator = null;
 
 	public MyFileChooser(Stage stage, String title) 
 	{
-		this.stage = stage;
+		MyFileChooser.stage = stage;
 		this.title = title;
 	}
 	
@@ -38,6 +36,13 @@ class MyFileChooser implements EventHandler<ActionEvent>
 			pubKeyCollector.start(stage);
 		}
 
+		createSecureTunnel();
+	}
+
+	static void createSecureTunnel()
+	{
+		SecureTunnelCreator secureTunnelCreator = null;
+		
 		PublicKeyCollectorGUI.srcPubKey = MyRSA.getPublicKey( file.getAbsolutePath() );
 		secureTunnelCreator = new SecureTunnelCreator();
 		secureTunnelCreator.start(stage);

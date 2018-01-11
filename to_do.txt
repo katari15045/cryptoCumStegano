@@ -1,25 +1,23 @@
 
 
-1. Make sure this application has forward secrecy - new Keys are generated at each session
+1. Document the approach
 
-2. Document the approach
+2. Change the access modifiers to private or make it default, but don't make it public!
 
-3. Implement DH with GUI
+3. Handle timeout wihle sending email - may be due to no internet
 
-4. Need to share the ip addresses of src & dst to transfer DH public keys
+4. In FileChooser.java if you exit the chooser GUI, it'll throw Null pointer Exception
 
-5. Sender - get the public key of receiver from the user
+5. Demo video
 
-6. In DH, while sending DH's pub_key, make sure the 4 properties of security hold
+6. Titles in all screens
 
-7. Change the access modifiers to private or make it default, but don't make it public!
+Notes for documentation
+-----------------------
 
-8. Handle timeout wihle sending email - may be due to no internet
+1. Forward secrecy; new keys are generates at each session; future compromizes don't affect past sessions' security
 
-9. Make sure you start progress indicator right before printing "Generating RSA keys..."
+2. Four properties of security hold - CIA + non-repudiation
 
-10. In SecureTunnelCreator.java, don't create RSA keys, because they've already been generated during startup by MyKeyGenerator.java
 
-11. In FileChooser.java if you exit the chooser GUI, it'll throw Null pointer Exception
 
-12. dataOutputStream.writeUTF() has a size limit of 64KB. Even encrypted "Saketh" takes far more than 277KB. Solve this issue.

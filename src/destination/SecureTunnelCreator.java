@@ -118,6 +118,15 @@ class BackGroundTask extends Task<Void>
 			dhThread.start();
 			dhThread.join();
 
+			if( MySocket.status == MySocket.SERVER_UNAVAILABLE )
+			{
+				dh.updateMessage("Make sure the sender has uploaded the public key you've sent!");
+				updateProgress(0.0, 1.0);
+				buttonNext.setText("Retry");
+				buttonNext.setDisable(false);
+				return null;
+			}
+
 			secretBytes = dh.getSecret();
 			dh.updateMessage("Generating Symmetric Key...");
 			System.out.println("Generating Symmetric Key...");
@@ -134,6 +143,7 @@ class BackGroundTask extends Task<Void>
 			extractorThread.join();
 
 			buttonNext.setDisable(false);
+			buttonNext.setText("Finish");
 			dh.updateMessage("Data extracted : " + MessageExtractor.extractedMessage);
 			System.out.println("Extracted message : " + MessageExtractor.extractedMessage);
 			updateProgress(1.0, 1.0);	
@@ -187,6 +197,13 @@ class Finisher implements EventHandler<ActionEvent>
 	@Override
 	public void handle(ActionEvent event)
 	{
+
+		if( MySocket.status == MySocket.SERVER_UNAVAILABLE )
+		{
+			MyFileChooser.createSecureTunnel();
+			return;
+		}
+
 		System.out.println("\nSee you!\n");
 		Platform.exit();
 		System.exit(0);

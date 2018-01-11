@@ -21,6 +21,10 @@ public class MySocket extends Task<Void>
 	static final int READ = 2;
 	static final int WRITE = 3;
 	static final int POST_SYM_KEY = 4;
+
+	static int status;
+	static final int FINE = 0;
+	static final int SERVER_UNAVAILABLE = 1;
 	
 	public MySocket()
 	{
@@ -77,6 +81,7 @@ public class MySocket extends Task<Void>
 		catch(Exception e)
 		{	
 			e.printStackTrace();
+			MySocket.status = MySocket.SERVER_UNAVAILABLE;
 		}		
 
 	}
