@@ -132,13 +132,15 @@ class BackGroundTask extends Task<Void>
 			dh.updateMessage("Generating Symmetric Key...");
 			System.out.println("Generating Symmetric Key...");
 			SecureTunnelCreator.symKey = new SecretKeySpec(secretBytes, 0, 32, Constants.SYM_ALGO);
-			dh.updateMessage("Symmetric Key Generated!");	
+			dh.updateMessage("Receiving data from sender...");	
 			System.out.println("Symmetric Key generated!\n");
+			System.out.println("Receiving data from sender...");
 			receiveData();
 
 			messageExtractor = new MessageExtractor(locationStr, imgStr);
 			extractorThread = new Thread(messageExtractor);
 			dh.updateMessage("Extracting data...");
+			System.out.println("Extracting data...");
 			extractorThread.start();
 			extractorThread.join();
 

@@ -34,10 +34,8 @@ public class MessageExtractor extends Task<Void>
 		
 		try 
 		{
-			System.out.println("image str length : " + imgStr.getBytes().length + " bytes");
 			inputStream = new ByteArrayInputStream( Base64.getDecoder().decode( imgStr.getBytes() ) );
 			bufferedImage = ImageIO.read(inputStream);
-			System.out.println("\nBufferedImage : " + bufferedImage + "\n");
 		}
 		
 		catch (Exception e) 
@@ -45,12 +43,8 @@ public class MessageExtractor extends Task<Void>
 			e.printStackTrace();
 		}
 		
-		System.out.println("Extracting binary message...");
 		extractedBinaryMessage = extractBinaryMessage(locationString, bufferedImage);
-
-		System.out.println("Extracting actual message...");
 		extractedMessage = extractMessage(extractedBinaryMessage);
-		System.out.println("Extracted Message : " + extractedMessage);
 
 		return null;
 	}

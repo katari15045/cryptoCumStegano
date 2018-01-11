@@ -22,35 +22,43 @@ import java.lang.Exception;
 
 public class MyEmail
 {
-	private Thread thread = null;
-	private ProgressIndicator progressIndicator = null;
-	private Label labelProgress = null;
-	private Button buttonNext = null;
-	private GridPane gridPane = null;
-	private Scene scene = null;
-	private Stage stage = null;
+	private static Thread thread = null;
+	private static ProgressIndicator progressIndicator = null;
+	private static Label labelProgress = null;
+	private static Button buttonNext = null;
+	private static GridPane gridPane = null;
+	private static Scene scene = null;
+	static Stage stage = null;
 	
-	private BackGroundEmail backGroundEmail = null;
-	private Thread backGroundThread = null;
+	private static BackGroundEmail backGroundEmail = null;
+	private static Thread backGroundThread = null;
 	static String otp = null;
+	static OTPSender otpSender = null;
+	static AttachmentSender attachmentSender = null;
 
-	void sendOTP(String toEmailID, Stage stage)
+	static void sendOTP(String toEmailID, Stage stage)
 	{
-		this.stage = stage;
+		MyEmail.stage = stage;
 		initialize();
 		backGroundEmail = new BackGroundEmail(toEmailID, stage, BackGroundEmail.OTP, buttonNext);
+		otpSender = new OTPSender(toEmailID);
+		buttonNext.textProperty().bind( otpSender.messageProperty() );
+		otpSender.updateMessage("Next");
 		startBackGroundThread();
 	}
 
-	void sendAttachment(String toEmailID, Stage stage)
+	static void sendAttachment(String toEmailID, Stage stage)
 	{
-		this.stage = stage;
+		MyEmail.stage = stage;
 		initialize();
 		backGroundEmail = new BackGroundEmail(toEmailID, stage, BackGroundEmail.ATTACHMENT, buttonNext);
+		attachmentSender = new AttachmentSender(toEmailID, MyKeyGenerator.getPublicKeyPath());
+		buttonNext.textProperty().bind( attachmentSender.messageProperty() );
+		attachmentSender.updateMessage("Next");
 		startBackGroundThread();
 	}
 
-	private void startBackGroundThread()
+	private static void startBackGroundThread()
 	{
 		backGroundThread = new Thread(backGroundEmail);
 		progressIndicator.progressProperty().bind( backGroundEmail.progressProperty() );
@@ -58,13 +66,12 @@ public class MyEmail
 		backGroundThread.start();
 	}
 
-	private void initialize()
+	private static void initialize()
 	{
 		progressIndicator = new ProgressIndicator();
 		progressIndicator.setProgress(-1.0);
 		labelProgress = new Label();
 		buttonNext = new Button();
-		buttonNext.setText("Next");
 		buttonNext.setDisable(true);
 		buttonNext.setOnAction( new PostEmailHandler(stage) );
 
@@ -118,22 +125,31 @@ class BackGroundEmail extends Task<Void>
 	}	
 	
 	public void sendOTP()
-	{
-		OTPSender otpSender = null;
-				
+	{		
 		try
 		{
 			updateMessage("Sending OTP to " + toEmailID + "...");	
 			this.stage = stage;
 			MyEmail.otp = getOTP();
 		
-			otpSender = new OTPSender(toEmailID);
-			thread = new Thread(otpSender);
+			thread = new Thread(MyEmail.otpSender);
 			thread.start();
 			thread.join();
 
-			updateMessage("OTP sent!");
-			updateProgress(1.0, 1.0);
+			if( !OTPSender.status )
+			{
+				updateMessage("Can't connect to the internet!");
+				System.out.println("Can't connect to the internet!");
+				updateProgress(0.0, 1.0);
+			}
+
+			else
+			{
+				updateMessage("OTP sent!");
+				System.out.println("OTP Sent!");
+				updateProgress(1.0, 1.0);
+			}
+
 			buttonNext.setDisable(false);		
 		}
 		
@@ -156,9 +172,21 @@ class BackGroundEmail extends Task<Void>
 			thread = new Thread(attachmentSender);
 			thread.start();
 			thread.join();
-			updateMessage("Public Key sent!");
-			System.out.println("Public Key sent!\n");
-			updateProgress(1.0, 1.0);
+
+			if( !AttachmentSender.status )
+			{
+				updateMessage("Can't connect to the internet!");
+				System.out.println("Can't connect to the internet!");
+				updateProgress(0.0, 1.0);
+			}
+
+			else
+			{
+				updateMessage("Public Key sent!");
+				System.out.println("Public Key sent!\n");
+				updateProgress(1.0, 1.0);
+			}
+
 			buttonNext.setDisable(false);		
 		}
 
@@ -217,12 +245,24 @@ class PostEmailHandler implements EventHandler<ActionEvent>
 
 		if(BackGroundEmail.mode == BackGroundEmail.OTP)
 		{
+			if( !OTPSender.status )
+			{
+				MyEmail.sendOTP(EmailCumIPCollectorGUI.receiverEmailID, MyEmail.stage);
+				return;
+			}
+
 			otpVerifierGUI = new OTPVerifierGUI();
-	                otpVerifierGUI.start(MyEmail.otp, stage);
+	        otpVerifierGUI.start(MyEmail.otp, stage);
 		}
 
 		else if(BackGroundEmail.mode == BackGroundEmail.ATTACHMENT)
 		{
+			if( !AttachmentSender.status )
+			{
+				MyEmail.sendAttachment( EmailCumIPCollectorGUI.senderEmailID, MyEmail.stage );
+				return;
+			}
+
 			publicKeyCollectorGUI = new PublicKeyCollectorGUI();
 			publicKeyCollectorGUI.start(stage);	
 		}

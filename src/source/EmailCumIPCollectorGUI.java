@@ -84,7 +84,6 @@ class PostEmailInputHandler implements EventHandler<ActionEvent>
 	private TextField textFieldReceiverEmailID = null;
 	private TextField textFieldReceiverIP = null;
 	private Stage stage = null;
-	private MyEmail myEmail = null;
 	
 	public PostEmailInputHandler(TextField textFieldReceiverEmailID, TextField textFieldSenderEmailID, TextField textFieldReceiverIP, Stage stage) 
 	{
@@ -105,9 +104,8 @@ class PostEmailInputHandler implements EventHandler<ActionEvent>
 		System.out.println("Receiver : " + EmailCumIPCollectorGUI.receiverEmailID);
 		System.out.println("Receiver's IP address : " + EmailCumIPCollectorGUI.receiverIP + "\n");
 		
-		myEmail = new MyEmail();
 		System.out.println("Sending OTP to " + EmailCumIPCollectorGUI.senderEmailID + "...");
-		myEmail.sendOTP(EmailCumIPCollectorGUI.senderEmailID, stage);
+		MyEmail.sendOTP(EmailCumIPCollectorGUI.senderEmailID, stage);
 	}
 }
 

@@ -29,7 +29,6 @@ public class OTPVerifier implements EventHandler<ActionEvent>
 	public void handle(ActionEvent event)
 	{
 		Alert alert = null;
-		MyEmail myEmail = null;
 		
 		otpEntered = textFieldOTP.getText();
 		
@@ -42,8 +41,7 @@ public class OTPVerifier implements EventHandler<ActionEvent>
 			alert.setContentText(EmailCumIPCollectorGUI.senderEmailID + " Verified!");
 			alert.show();
 			
-			myEmail = new MyEmail();
-			myEmail.sendAttachment( EmailCumIPCollectorGUI.receiverEmailID, stage );
+			MyEmail.sendAttachment( EmailCumIPCollectorGUI.receiverEmailID, stage );
 		}
 		
 		else

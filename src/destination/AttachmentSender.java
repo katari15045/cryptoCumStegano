@@ -35,11 +35,14 @@ public class AttachmentSender extends Task<Boolean>
 	private MimeBodyPart bodyPartAttachment = null;
 	private DataSource dataSource = null;
 	private Multipart multiPart = null;
+
+	static boolean status;
 	
 	public AttachmentSender(String toEmailID, String filePath) 
 	{
 		this.toEmailID = toEmailID;
 		this.filePath = filePath;
+		AttachmentSender.status = true;
 	}
 	
 	@Override
@@ -93,10 +96,16 @@ public class AttachmentSender extends Task<Boolean>
 
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			AttachmentSender.status = false;
+			updateMessage("Retry");
 		}
 		
 		return true;
 	}
-	
+
+	@Override
+    protected void updateMessage(String message)
+    {
+            super.updateMessage(message);
+    }
 }

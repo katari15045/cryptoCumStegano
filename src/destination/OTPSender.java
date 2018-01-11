@@ -22,10 +22,12 @@ public class OTPSender extends Task<Boolean>
 	private Properties properties = null;
 	private MimeMessage mimeMessage = null;
 	private Session session = null;
+	static boolean status;
 	
 	public OTPSender(String toEmailID)
 	{
 		this.toEmailID = toEmailID;
+		OTPSender.status = true;
 	}
 	
 	@Override
@@ -54,20 +56,26 @@ public class OTPSender extends Task<Boolean>
         	try
 	        {
        			mimeMessage = new MimeMessage(session);
-        	        mimeMessage.setFrom( new InternetAddress(fromEmail) );
-                	mimeMessage.setRecipients( Message.RecipientType.TO, InternetAddress.parse(toEmailID) );
-	                mimeMessage.setSubject(subject);
-        	        mimeMessage.setText(body);
+    	        mimeMessage.setFrom( new InternetAddress(fromEmail) );
+            	mimeMessage.setRecipients( Message.RecipientType.TO, InternetAddress.parse(toEmailID) );
+                mimeMessage.setSubject(subject);
+    	        mimeMessage.setText(body);
 
-                	Transport.send(mimeMessage);
-	                System.out.println("OTP Sent!");
+            	Transport.send(mimeMessage);	
         	}
 
 	        catch(Exception e)
         	{
-                	e.printStackTrace();
+                	OTPSender.status = false;
+                	updateMessage("Retry");
 	        }
         
 		return true;
 	}
+
+	@Override
+    protected void updateMessage(String message)
+    {
+            super.updateMessage(message);
+    }
 }
