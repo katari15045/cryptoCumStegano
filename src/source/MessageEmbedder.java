@@ -1,3 +1,4 @@
+import java.util.Base64;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -143,7 +144,7 @@ class BackGroundEmbedder extends Task<Void>
 	                socket = new MySocket( DiffieHellman.getActiveSocket() );
         	        socket.setData( MessageEmbedder.getLocationString() );
 			fileBytes = Files.readAllBytes( file.toPath() );
-			socket.setImageString( new String(fileBytes) );
+			socket.setImageString( Base64.getEncoder().encodeToString(fileBytes) );
         	        socket.setMode( MySocket.POST_SYM_KEY );
 			socketThread = new Thread(socket);
 			socketThread.start();

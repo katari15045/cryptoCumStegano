@@ -1,3 +1,4 @@
+import java.util.Base64;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.Exception;
@@ -34,7 +35,7 @@ public class MessageExtractor extends Task<Void>
 		try 
 		{
 			System.out.println("image str length : " + imgStr.getBytes().length + " bytes");
-			inputStream = new ByteArrayInputStream(imgStr.getBytes());
+			inputStream = new ByteArrayInputStream( Base64.getDecoder().decode( imgStr.getBytes() ) );
 			bufferedImage = ImageIO.read(inputStream);
 			System.out.println("\nBufferedImage : " + bufferedImage + "\n");
 		}
