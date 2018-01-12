@@ -60,12 +60,13 @@ class MessageEmbedder implements EventHandler<ActionEvent>
 		gridPane.add(labelProgress, 0, 1);
 		gridPane.add(buttonFinish, 0, 2);
 		gridPane.setAlignment(Pos.CENTER);
-                GridPane.setMargin(labelProgress, new Insets(20, 0, 0, 0));
-                GridPane.setMargin(buttonFinish, new Insets(60, 0, 0, 0));
+        GridPane.setMargin(labelProgress, new Insets(20, 0, 0, 0));
+        GridPane.setMargin(buttonFinish, new Insets(60, 0, 0, 0));
 
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
-                stage.setScene(scene);
-                stage.show();
+        stage.setScene(scene);
+        stage.setTitle(Constants.APP_NAME + " - Source - MessageEmbedder");
+        stage.show();
 
 		backGroundEmbedder = new BackGroundEmbedder( textField.getText(), buttonFinish );
 		progressIndicator.progressProperty().bind( backGroundEmbedder.progressProperty() );

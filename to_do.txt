@@ -4,8 +4,6 @@
 
 2. Demo video
 
-3. Titles in all screens
-
 
 Notes for documentation
 -----------------------

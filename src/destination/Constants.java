@@ -3,6 +3,7 @@ final class Constants
 	static final String definition = new StringBuilder()
 						.append("Transfer data securely over internet with 2 layer\nprotection - ")
 						.append("Cryptography and Steganography.").toString();
+
 	static final int WIND_COLS = 640;
 	static final int WIND_ROWS = 360;
 	static final double HEAD_SIZE = 20.0;
@@ -14,4 +15,6 @@ final class Constants
 	static final String ASYM_ALGO = "RSA";
 	static final int ASYM_KEY_SIZE = 9216;
 	static final String HASH_ALGO = "SHA3-384";
+
+	static final String APP_NAME = "CryptoCumStegano";
 }

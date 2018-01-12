@@ -59,6 +59,7 @@ class SecureTunnelCreator
 		GridPane.setMargin(buttonNext, new Insets(60, 0, 0, 0));
 
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
+		stage.setTitle(Constants.APP_NAME + " - Source - SecureTunnelCreator");
 		stage.setScene(scene);
 		stage.show();
 		

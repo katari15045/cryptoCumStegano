@@ -51,8 +51,9 @@ class PublicKeyCollectorGUI
 		GridPane.setMargin(buttonUpload, new Insets(20, 0, 0, 0));
 		
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
-                stage.setScene(scene);
-                stage.show();
+        stage.setScene(scene);
+        stage.setTitle(Constants.APP_NAME + " - Destination - PublicKeyCollectorGUI");
+        stage.show();
 	}
 }
 

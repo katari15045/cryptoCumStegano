@@ -77,6 +77,7 @@ class OTPVerifier implements EventHandler<ActionEvent>
 		GridPane.setMargin(buttonModifyEmail, new Insets(30, 0, 0, 30));
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
 		stage.setScene(scene);
+		stage.setTitle(Constants.APP_NAME + " - Source - OTPVerifier");
 		stage.show();
 	}
 }

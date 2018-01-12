@@ -56,6 +56,7 @@ public class Main extends Application
 		GridPane.setMargin(button, new Insets(20, 0, 60, 0));
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
 		stage.setScene(scene);
+		stage.setTitle(Constants.APP_NAME + " - Source - Main");
 		stage.show();
 		
 		keyGenerator = new MyKeyGenerator(button);

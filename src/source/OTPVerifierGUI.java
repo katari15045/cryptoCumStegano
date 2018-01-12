@@ -50,6 +50,7 @@ class OTPVerifierGUI
 		
 		scene = new Scene(gridPane, Constants.WIND_COLS, Constants.WIND_ROWS);
 		stage.setScene(scene);
+		stage.setTitle(Constants.APP_NAME + " - Source - OTPVerifierGUI");
 		stage.show();
 	}
 }
