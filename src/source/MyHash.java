@@ -3,7 +3,7 @@ import java.lang.Exception;
 import java.util.Base64;
 import javax.crypto.SecretKey;
 
-public class MyHash
+class MyHash
 {
         private static MessageDigest messageDigest = null;
 

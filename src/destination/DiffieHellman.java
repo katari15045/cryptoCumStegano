@@ -14,7 +14,7 @@ import java.lang.Thread;
 import javafx.concurrent.Task;
 import javax.crypto.interfaces.DHPublicKey;
 
-public class DiffieHellman extends Task<Void>
+class DiffieHellman extends Task<Void>
 {
 	private String algo = "DH";
 	private KeyPair keyPair = null;
@@ -26,7 +26,7 @@ public class DiffieHellman extends Task<Void>
 	private byte[] secret = null;
         private static Socket activeSocket = null;
 
-	public DiffieHellman(Thread socketThread, MySocket socket)
+	DiffieHellman(Thread socketThread, MySocket socket)
 	{
 		this.socketThread = socketThread;
 		this.socket = socket;

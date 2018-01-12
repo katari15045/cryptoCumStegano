@@ -16,7 +16,7 @@ import javax.mail.internet.MimeMultipart;
 import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 
-public class AttachmentSender extends Task<Boolean> 
+class AttachmentSender extends Task<Boolean> 
 {
 	private String fromEmailID = null;
 	private String password = null;
@@ -38,7 +38,7 @@ public class AttachmentSender extends Task<Boolean>
 
 	static boolean status;
 	
-	public AttachmentSender(String toEmailID, String filePath) 
+	AttachmentSender(String toEmailID, String filePath) 
 	{
 		this.toEmailID = toEmailID;
 		this.filePath = filePath;

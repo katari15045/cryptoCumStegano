@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class OTPVerifierGUI 
+class OTPVerifierGUI 
 {
 	private Label labelHeading = null;
 	private Label labelContent = null;
@@ -19,7 +19,7 @@ public class OTPVerifierGUI
 	private GridPane gridPane = null;
 	private Scene scene = null;
 	
-	public void start(String actualOTP, Stage stage)
+	void start(String actualOTP, Stage stage)
 	{
 		
 		labelHeading = new Label();

@@ -17,7 +17,7 @@ class MyFileChooser implements EventHandler<ActionEvent>
 	
 	private SecureTunnelCreator secureTunnelCreator = null;
 
-	public MyFileChooser(Stage stage, String title) 
+	MyFileChooser(Stage stage, String title) 
 	{
 		this.stage = stage;
 		this.title = title;

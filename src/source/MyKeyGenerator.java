@@ -12,12 +12,12 @@ import javax.crypto.SecretKey;
 import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 
-public class MyKeyGenerator extends Task<Void>
+class MyKeyGenerator extends Task<Void>
 {	
 	private static String publicKeyPath = null;
 	private Button button = null;
 	
-	public MyKeyGenerator(Button button)
+	MyKeyGenerator(Button button)
 	{
 		this.button = button;
 	}
@@ -26,15 +26,12 @@ public class MyKeyGenerator extends Task<Void>
 	public Void call()
 	{
 		KeyPair keyPair = null;
-		SecretKey secretKey = null;
 		
 		System.out.println("\nGenerating keys...");
 		updateMessage("Generating keys...");
 		keyPair = MyRSA.generateKeyPair();
-		secretKey = MyAES.generateKey();
 		MyRSA.setPrivKey( keyPair.getPrivate() );
 		MyRSA.setPubKey( keyPair.getPublic() );
-		MyAES.setSymKey(secretKey);
 		
 		System.out.println("Storing keys...");
 		updateMessage("Storing keys...");

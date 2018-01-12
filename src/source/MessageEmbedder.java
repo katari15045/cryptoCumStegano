@@ -23,7 +23,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 
-public class MessageEmbedder implements EventHandler<ActionEvent>
+class MessageEmbedder implements EventHandler<ActionEvent>
 {
 	private Stage stage = null;
 	private TextField textField = null;
@@ -38,7 +38,7 @@ public class MessageEmbedder implements EventHandler<ActionEvent>
 	private BackGroundEmbedder backGroundEmbedder = null;
 	private Thread backGroundThread = null;
 
-	public MessageEmbedder(Stage stage, TextField textField) 
+	MessageEmbedder(Stage stage, TextField textField) 
 	{
 		this.stage = stage;
 		this.textField = textField;
@@ -93,7 +93,7 @@ class BackGroundEmbedder extends Task<Void>
 	private int rows, cols;
 	private Button buttonFinish = null;
 
-	public BackGroundEmbedder(String originalMessage, Button buttonFinish)
+	BackGroundEmbedder(String originalMessage, Button buttonFinish)
 	{
 		this.originalMessage = originalMessage;
 		this.buttonFinish = buttonFinish;

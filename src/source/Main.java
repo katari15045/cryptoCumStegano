@@ -77,7 +77,7 @@ class Starter implements EventHandler<ActionEvent>
 	private Stage stage = null;
 	private EmailCumIPCollectorGUI emailCumIPCollectorGUI = null;
 	
-	public Starter(Stage stage)
+	Starter(Stage stage)
 	{
 		this.stage = stage;
 	}

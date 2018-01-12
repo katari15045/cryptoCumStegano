@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class MessageExtractor extends Task<Void>
+class MessageExtractor extends Task<Void>
 {
 	
 	private String locationString = null, imgStr = null;
@@ -21,7 +21,7 @@ public class MessageExtractor extends Task<Void>
 	private String extractedBinaryMessage = null;
 	static String extractedMessage = null;
 	
-	public MessageExtractor(String locationString, String imgStr)
+	MessageExtractor(String locationString, String imgStr)
 	{
 		this.locationString = locationString;
 		this.imgStr = imgStr;

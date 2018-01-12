@@ -9,7 +9,7 @@ import javax.mail.internet.MimeMessage;
 import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 
-public class OTPSender extends Task<Boolean> 
+class OTPSender extends Task<Boolean> 
 {
 	private String fromEmail = null;
 	private String password = null;
@@ -24,7 +24,7 @@ public class OTPSender extends Task<Boolean>
 	private Session session = null;
 	static boolean status;
 	
-	public OTPSender(String toEmailID)
+	OTPSender(String toEmailID)
 	{
 		this.toEmailID = toEmailID;
 		OTPSender.status = true;

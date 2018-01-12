@@ -9,7 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import java.security.PublicKey;
 
-public class PublicKeyCollectorGUI
+class PublicKeyCollectorGUI
 {
 	private static Stage stage = null;
 	private static Label labelHeading = null;

@@ -28,7 +28,7 @@ import java.lang.Exception;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-public class MyRSA
+class MyRSA
 {
 	private static PrivateKey privKey = null;
 	private static PublicKey pubKey = null;

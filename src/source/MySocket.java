@@ -5,7 +5,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import javafx.concurrent.Task;
 
-public class MySocket extends Task<Void>
+class MySocket extends Task<Void>
 {
 	private ServerSocket serverSocket = null;
 	private Socket socket = null;
@@ -22,12 +22,12 @@ public class MySocket extends Task<Void>
 	static final int WRITE = 3;
 	static final int POST_SYM_KEY = 4;
 
-	public MySocket()
+	MySocket()
 	{
 
 	}
 
-	public MySocket(Socket socket)
+	MySocket(Socket socket)
 	{
 		this.socket = socket;
 	}

@@ -11,14 +11,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class OTPVerifier implements EventHandler<ActionEvent>
+class OTPVerifier implements EventHandler<ActionEvent>
 {
 	private TextField textFieldOTP = null;
 	private String actualOTP = null;
 	private String otpEntered = null;
 	private Stage stage = null;
 	
-	public OTPVerifier(TextField textFieldOTP, String actualOTP, Stage stage)
+	OTPVerifier(TextField textFieldOTP, String actualOTP, Stage stage)
 	{
 		this.textFieldOTP = textFieldOTP;
 		this.actualOTP = actualOTP;
@@ -86,7 +86,7 @@ class OTPResender implements EventHandler<ActionEvent>
 	private Stage stage = null;
 	private MyEmail myEmail = null;
 	
-	public OTPResender(Stage stage) 
+	OTPResender(Stage stage) 
 	{
 		this.stage = stage;
 	}
@@ -105,7 +105,7 @@ class EmailChanger implements EventHandler<ActionEvent>
 	private Stage stage = null;
 	private EmailCumIPCollectorGUI emailCollectorGUI = null;
 	
-	public EmailChanger(Stage stage) 
+	EmailChanger(Stage stage) 
 	{
 		this.stage = stage;
 	}

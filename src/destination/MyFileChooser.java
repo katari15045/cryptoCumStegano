@@ -14,7 +14,7 @@ class MyFileChooser implements EventHandler<ActionEvent>
 	static File file = null;
 	private String title = null;
 
-	public MyFileChooser(Stage stage, String title) 
+	MyFileChooser(Stage stage, String title) 
 	{
 		MyFileChooser.stage = stage;
 		this.title = title;

@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class EmailCumIPCollectorGUI 
+class EmailCumIPCollectorGUI 
 {
 	private Label labelHeading = null;
 	private Label labelContent = null;
@@ -23,14 +23,14 @@ public class EmailCumIPCollectorGUI
 	private TextField textFieldReceiverIP = null;
 	private Button button = null;
 	
-	public static String senderEmailID = null;
-	public static String receiverEmailID = null;
-	public static String receiverIP = null;	
+	static String senderEmailID = null;
+	static String receiverEmailID = null;
+	static String receiverIP = null;	
 
 	private GridPane gridPane = null;
 	private Scene scene = null;
 	
-	public void start(Stage stage)
+	void start(Stage stage)
 	{
 		labelHeading = new Label();
 		labelHeading.setText("Step 1");
@@ -85,7 +85,7 @@ class PostEmailInputHandler implements EventHandler<ActionEvent>
 	private TextField textFieldReceiverIP = null;
 	private Stage stage = null;
 	
-	public PostEmailInputHandler(TextField textFieldReceiverEmailID, TextField textFieldSenderEmailID, TextField textFieldReceiverIP, Stage stage) 
+	PostEmailInputHandler(TextField textFieldReceiverEmailID, TextField textFieldSenderEmailID, TextField textFieldReceiverIP, Stage stage) 
 	{
 		this.textFieldSenderEmailID = textFieldSenderEmailID;
 		this.textFieldReceiverEmailID = textFieldReceiverEmailID;

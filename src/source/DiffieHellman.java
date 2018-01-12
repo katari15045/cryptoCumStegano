@@ -12,7 +12,7 @@ import java.lang.Exception;
 import java.lang.Thread;
 import javafx.concurrent.Task;
 
-public class DiffieHellman extends Task<Void>
+class DiffieHellman extends Task<Void>
 {
 	private KeyPairGenerator generator = null;
 	private String algo = "DH";
@@ -24,7 +24,7 @@ public class DiffieHellman extends Task<Void>
 	private static Socket activeSocket = null;
 	private byte[] secret = null;
 
-	public DiffieHellman(Thread socketThread, MySocket socket)
+	DiffieHellman(Thread socketThread, MySocket socket)
 	{
 		this.socketThread = socketThread;
 		this.socket = socket;

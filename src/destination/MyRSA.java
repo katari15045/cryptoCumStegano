@@ -28,7 +28,7 @@ import java.lang.Exception;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-public class MyRSA
+class MyRSA
 {
 	private static PrivateKey privKey = null;
 	private static PublicKey pubKey = null;
@@ -210,7 +210,7 @@ public class MyRSA
 			privKeySpec = factory.getKeySpec( privKey, RSAPrivateKeySpec.class );
 
 			writeKeyToFile("public.key", pubKeySpec.getModulus(), pubKeySpec.getPublicExponent());
-			writeKeyToFile("private.key", privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
+			//writeKeyToFile("private.key", privKeySpec.getModulus(), privKeySpec.getPrivateExponent());
 
 			MyKeyGenerator.setPublicKeyPath( System.getProperty("user.dir") + "/public.key" );
 		}

@@ -20,7 +20,7 @@ import javafx.concurrent.Task;
 import java.lang.Thread;
 import java.lang.Exception;
 
-public class MyEmail
+class MyEmail
 {
 	private static Thread thread = null;
 	private static ProgressIndicator progressIndicator = null;
@@ -108,7 +108,7 @@ class BackGroundEmail extends Task<Void>
 	static int OTP = 0;
 	static int ATTACHMENT = 1;
 
-	public BackGroundEmail(String toEmailID, Stage stage, int mode, Button buttonNext, Button buttonModifyEmail)
+	BackGroundEmail(String toEmailID, Stage stage, int mode, Button buttonNext, Button buttonModifyEmail)
 	{
 		this.toEmailID = toEmailID;
 		this.stage = stage;
@@ -133,7 +133,7 @@ class BackGroundEmail extends Task<Void>
 		return null;
 	}	
 	
-	public void sendOTP()
+	void sendOTP()
 	{			
 		try
 		{
@@ -169,7 +169,7 @@ class BackGroundEmail extends Task<Void>
 		}
 	}
 
-	public void sendAttachment()
+	void sendAttachment()
 	{
 		this.stage = stage;
 
@@ -235,13 +235,13 @@ class PostEmailHandler implements EventHandler<ActionEvent>
 	private Stage stage = null;
 	private String otp = null;
 
-	public PostEmailHandler(Stage stage, String otp)
+	PostEmailHandler(Stage stage, String otp)
 	{
 		this.stage = stage;
 		this.otp = otp;
 	}
 
-	public PostEmailHandler(Stage stage)
+	PostEmailHandler(Stage stage)
 	{
 		this.stage = stage;
 	}
@@ -282,7 +282,7 @@ class EmailModifier implements EventHandler<ActionEvent>
 	Stage stage = null;
 	EmailCumIPCollectorGUI emailCumIPCollectorGUI = null;
 
-	public EmailModifier(Stage stage)
+	EmailModifier(Stage stage)
 	{
 		this.stage = stage;
 	}

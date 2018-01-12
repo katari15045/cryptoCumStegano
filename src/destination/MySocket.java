@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import javafx.concurrent.Task;
 
-public class MySocket extends Task<Void>
+class MySocket extends Task<Void>
 {
 	private String serverIPAddress;
 
@@ -26,12 +26,12 @@ public class MySocket extends Task<Void>
 	static final int FINE = 0;
 	static final int SERVER_UNAVAILABLE = 1;
 	
-	public MySocket()
+	MySocket()
 	{
 	
 	}
 
-	public MySocket(Socket socket)
+	MySocket(Socket socket)
 	{
 		this.socket = socket;
 	}

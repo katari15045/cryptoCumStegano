@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 
-public class MessageCumImageCollectorGUI
+class MessageCumImageCollectorGUI
 {
 	private static Stage stage = null;
 	private static Label labelHeading = null;

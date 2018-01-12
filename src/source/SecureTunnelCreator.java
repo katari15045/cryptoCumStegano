@@ -13,7 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javafx.concurrent.Task;
 import java.lang.Exception;
 
-public class SecureTunnelCreator
+class SecureTunnelCreator
 {
 	private Stage stage = null;
 	private ProgressIndicator progressIndicator = null;
@@ -30,7 +30,7 @@ public class SecureTunnelCreator
 	private MySocket socket = null;
 	private Thread socketThread = null;
 
-	public void start(Stage stage)
+	void start(Stage stage)
 	{
 		String dataToSend = null;
 
@@ -82,7 +82,7 @@ class BackGroundTask extends Task<Void>
 	private Button buttonNext = null;
 	private Label labelProgress = null;
 
-	public BackGroundTask(Button buttonNext, Label labelProgress, DiffieHellman dh, Thread dhThread)
+	BackGroundTask(Button buttonNext, Label labelProgress, DiffieHellman dh, Thread dhThread)
 	{
 		this.buttonNext = buttonNext;
 		this.labelProgress = labelProgress;
@@ -129,7 +129,7 @@ class PostDHHandler implements EventHandler<ActionEvent>
 {
 	private Stage stage = null;
 
-	public PostDHHandler(Stage stage)	
+	PostDHHandler(Stage stage)	
 	{
 		this.stage = stage;
 	}

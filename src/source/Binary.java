@@ -1,8 +1,8 @@
 import java.lang.StringBuilder;
 
-public class Binary 
+class Binary 
 {
-	public static String getBinaryFromChars(String inp)
+	static String getBinaryFromChars(String inp)
 	{
 		StringBuilder stringBuilder;
 		int currentIndex = 0;
@@ -23,7 +23,7 @@ public class Binary
 		return stringBuilder.toString();
 	}
 
-	public static String getBinaryFromDecimal(int decimal)
+	static String getBinaryFromDecimal(int decimal)
 	{
 		// decimal must be in [0, 255]
 
@@ -52,7 +52,7 @@ public class Binary
 		return new String(binary);
 	}
 
-	public static int getDecimalFromBinary(String binary)
+	static int getDecimalFromBinary(String binary)
 	{
 		int currentIndex, currentBit;
 		int exponent = 0, value;

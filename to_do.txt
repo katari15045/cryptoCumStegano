@@ -2,11 +2,9 @@
 
 1. Document the approach
 
-2. Change the access modifiers to private or make it default, but don't make it public!
+2. Demo video
 
-3. Demo video
-
-4. Titles in all screens
+3. Titles in all screens
 
 
 Notes for documentation
